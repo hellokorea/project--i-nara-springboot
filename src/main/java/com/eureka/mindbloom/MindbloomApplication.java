@@ -8,6 +8,7 @@ public class MindbloomApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MindbloomApplication.class, args);
+        System.out.println("jiyun");
     }
-
+    
 }
