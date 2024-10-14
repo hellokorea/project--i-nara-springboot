@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MindbloomApplication {
 
     public static void main(String[] args) {
+        System.out.println("mindbloom application");
         SpringApplication.run(MindbloomApplication.class, args);
     }
 
