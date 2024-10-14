@@ -8,7 +8,7 @@ public class MindbloomApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MindbloomApplication.class, args);
-        // 충돌테스트
+        System.out.println("Hello World22");
     }
 
 }
