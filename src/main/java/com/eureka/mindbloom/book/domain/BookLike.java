@@ -1,7 +1,6 @@
 package com.eureka.mindbloom.book.domain;
 
 import com.eureka.mindbloom.common.domain.BaseEntity;
-import com.eureka.mindbloom.common.domain.code.CommonCodeId;
 import com.eureka.mindbloom.member.domain.Child;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -19,7 +18,7 @@ public class BookLike extends BaseEntity {
     private BookChildId bookChildId;
 
 
-    private CommonCodeId type;
+    private String type;
 
     @MapsId("bookId")
     @ManyToOne
@@ -32,7 +31,7 @@ public class BookLike extends BaseEntity {
     private Child child;
 
     @Builder
-    public BookLike( CommonCodeId type , Book book , Child child ) {
+    public BookLike( String type , Book book , Child child ) {
         this.bookChildId = new BookChildId(book.getIsbn(), child.getId());
         this.type = type;
         this.book = book;

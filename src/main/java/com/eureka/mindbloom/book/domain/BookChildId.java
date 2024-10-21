@@ -4,14 +4,11 @@ import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Objects;
-
-import com.eureka.mindbloom.common.domain.code.CommonCodeId;
 
 @Embeddable
 @Getter
