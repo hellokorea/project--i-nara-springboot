@@ -3,12 +3,11 @@ package com.eureka.mindbloom.book.domain;
 import com.eureka.mindbloom.common.domain.SoftDeleteEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Book extends SoftDeleteEntity {
 
@@ -22,6 +21,8 @@ public class Book extends SoftDeleteEntity {
     private String author;
 
     private String publisher;
+
+    private String recommendedAge;
 
     private String coverImage;
 
