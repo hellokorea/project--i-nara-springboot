@@ -16,3 +16,7 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+jwt:
+  token:
+    secretKey: "aclkLc48O1xMi4eurekaCJJ426phEa1Wc4mindbloom"
