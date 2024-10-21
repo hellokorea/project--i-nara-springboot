@@ -33,7 +33,7 @@ public class BookLike extends BaseEntity {
 
     @Builder
     public BookLike( CommonCodeId type , Book book , Child child ) {
-        this.bookChildId = BookChildId.builder().bookId(book.getIsbn()).childId(child.getId()).build();
+        this.bookChildId = new BookChildId(book.getIsbn(), child.getId());
         this.type = type;
         this.book = book;
         this.child = child;

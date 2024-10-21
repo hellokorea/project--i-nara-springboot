@@ -4,6 +4,7 @@ package com.eureka.mindbloom.common.domain.code;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.Objects;
 
 @Getter
 @Embeddable
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommonCodeId implements Serializable {
     @Column(columnDefinition = "char(2)")

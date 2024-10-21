@@ -29,7 +29,7 @@ public class BookRecommendLike extends BaseEntity {
 
     @Builder
     public BookRecommendLike( BookRecommend bookRecommend , Child child ) {
-        this.id = RecommendLikeId.builder().bookRecommendId(bookRecommend.getId()).childId(child.getId()).build();
+        this.id = new RecommendLikeId(bookRecommend.getId(), child.getId());
         this.bookRecommend = bookRecommend;
         this.child = child;
 
