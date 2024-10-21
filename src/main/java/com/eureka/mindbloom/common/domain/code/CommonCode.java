@@ -11,10 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommonCode extends BaseEntity {
 
-    @EmbeddedId
-    private CommonCodeId id;
+    @Id
+    private String id;
 
-    @MapsId("codeGroup")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "code_group")
     private CommonCodeGroup codeGroup;
