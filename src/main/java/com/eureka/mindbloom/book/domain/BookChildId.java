@@ -1,14 +1,13 @@
 package com.eureka.mindbloom.book.domain;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.util.Objects;
 
 @Embeddable
 @Getter
