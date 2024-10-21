@@ -4,13 +4,13 @@ import com.eureka.mindbloom.common.domain.BaseEntity;
 import com.eureka.mindbloom.member.domain.Child;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BookRecommend extends BaseEntity {
 
@@ -25,4 +25,11 @@ public class BookRecommend extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "child_id")
     private Child child;
+
+    @Builder
+    public BookRecommend( Book book , Child child ) {
+        this.book = book;
+        this.child = child;
+
+    }
 }

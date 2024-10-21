@@ -7,7 +7,6 @@ import lombok.*;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Book extends SoftDeleteEntity {
 
@@ -29,4 +28,18 @@ public class Book extends SoftDeleteEntity {
     private String keywords;
 
     private Long viewCount;
+
+    @Builder
+    public Book( String isbn , String title , String plot , String author , String publisher , String recommendedAge , String coverImage , String keywords , Long viewCount ) {
+        this.isbn = isbn;
+        this.title = title;
+        this.plot = plot;
+        this.author = author;
+        this.publisher = publisher;
+        this.recommendedAge = recommendedAge;
+        this.coverImage = coverImage;
+        this.keywords = keywords;
+        this.viewCount = viewCount;
+
+    }
 }

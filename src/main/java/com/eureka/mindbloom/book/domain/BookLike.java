@@ -5,13 +5,13 @@ import com.eureka.mindbloom.common.domain.code.CommonCodeId;
 import com.eureka.mindbloom.member.domain.Child;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BookLike extends BaseEntity {
 
@@ -30,4 +30,13 @@ public class BookLike extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "child_id")
     private Child child;
+
+    @Builder
+    public BookLike( CommonCodeId type , Book book , Child child ) {
+        this.bookChildId = BookChildId.builder().bookId(book.getIsbn()).childId(child.getId()).build();
+        this.type = type;
+        this.book = book;
+        this.child = child;
+
+    }
 }

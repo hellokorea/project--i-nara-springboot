@@ -5,12 +5,12 @@ import com.eureka.mindbloom.member.domain.Child;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BookView extends BaseEntity {
 
@@ -25,4 +25,11 @@ public class BookView extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "child_id")
     private Child child;
+
+    @Builder
+    public BookView( Book book , Child child ) {
+        this.book = book;
+        this.child = child;
+
+    }
 }
