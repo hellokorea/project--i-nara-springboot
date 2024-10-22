@@ -1,19 +1,12 @@
 package com.eureka.mindbloom.member.domain;
 
+
 import java.time.LocalDateTime;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
+
 
 @Entity
 @Getter
@@ -47,4 +40,5 @@ public class Member {
 		this.role = role;
 		this.createdAt = LocalDateTime.now();
 	}
+
 }
