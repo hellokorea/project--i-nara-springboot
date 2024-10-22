@@ -7,7 +7,7 @@ public class ParentFixture {
 	public static final String PARENT_EMAIL = "xxx@naver.com";
 	public static final String PARENT_PASSWORD = "password";
 	public static final String PARENT_PHONE = "010-1234-5678";
-	public static final String USER_ROLE_CODE = "02_0400";
+	public static final String USER_ROLE_CODE = "0400_02";
 
 	public static Member getParent() {
 		Member parent = createParent(PARENT_NAME, PARENT_EMAIL, PARENT_PASSWORD, PARENT_PHONE);
