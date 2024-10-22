@@ -1,4 +1,4 @@
-package com.eureka.mindbloom.book.domain;
+package com.eureka.mindbloom.category;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
