@@ -1,7 +1,7 @@
 package com.eureka.mindbloom.member.controller;
 
-import com.eureka.mindbloom.auth.dto.SignUpRequest;
-import com.eureka.mindbloom.auth.dto.SignUpResponse;
+import com.eureka.mindbloom.member.dto.SignUpRequest;
+import com.eureka.mindbloom.member.dto.SignUpResponse;
 import com.eureka.mindbloom.common.dto.ApiResponse;
 import com.eureka.mindbloom.member.service.MemberService;
 import jakarta.validation.Valid;

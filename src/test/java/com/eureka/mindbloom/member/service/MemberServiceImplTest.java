@@ -1,6 +1,6 @@
 package com.eureka.mindbloom.member.service;
 
-import com.eureka.mindbloom.auth.dto.SignUpRequest;
+import com.eureka.mindbloom.member.dto.SignUpRequest;
 import com.eureka.mindbloom.auth.exception.DuplicationEmailException;
 import com.eureka.mindbloom.member.repository.MemberRepository;
 import com.eureka.mindbloom.member.service.Impl.MemberServiceImpl;
@@ -15,7 +15,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
-import com.eureka.mindbloom.auth.dto.SignUpResponse;
+import com.eureka.mindbloom.member.dto.SignUpResponse;
 import com.eureka.mindbloom.member.domain.Member;
 
 @ExtendWith(MockitoExtension.class)
