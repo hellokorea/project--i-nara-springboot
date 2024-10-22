@@ -4,6 +4,7 @@ import com.eureka.mindbloom.auth.filter.JwtAuthorizationFilter;
 import com.eureka.mindbloom.auth.filter.JwtLoginFilter;
 import com.eureka.mindbloom.auth.handler.JwtLogoutHandler;
 import com.eureka.mindbloom.auth.handler.JwtLogoutSuccessHandler;
+import com.eureka.mindbloom.auth.service.MemberDetailsService;
 import com.eureka.mindbloom.auth.utils.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -63,7 +64,8 @@ public class GlobalSecurityConfig {
         http.authorizeHttpRequests(common -> common
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .requestMatchers("/health", "/error").permitAll()
-                .anyRequest().permitAll());
+                .requestMatchers(ignoredRequests).permitAll()
+                .anyRequest().authenticated());
 
         http.formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable);
