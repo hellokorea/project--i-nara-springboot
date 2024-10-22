@@ -105,3 +105,11 @@ VALUES
     ('0500_01', '0500', '남성'),
     ('0500_02', '0500', '여성'),
     ('0500_03', '0500', 'Others');
+
+UPDATE common_code_group
+SET created_at = NOW()
+WHERE created_at IS NULL;
+
+UPDATE common_code
+SET created_at = NOW()
+WHERE created_at IS NULL;

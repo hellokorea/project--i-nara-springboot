@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 public class CommonCode extends BaseEntity {
 
     @Id
-    private String id;
+    @Column(columnDefinition = "char(7)")
+    private String code;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "code_group")
