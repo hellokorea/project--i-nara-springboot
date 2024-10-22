@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.Objects;
 
-import com.eureka.mindbloom.category.CategoryTraitId;
+import com.eureka.mindbloom.category.domain.CategoryTraitId;
 
 @Embeddable
 @Getter
