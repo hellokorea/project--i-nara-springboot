@@ -15,7 +15,7 @@ public class GlobalSecurityConfig {
     @Bean
     public SecurityFilterChain globalSecurityFilterChain(HttpSecurity http) throws Exception {
         http.cors(Customizer.withDefaults())
-                .csrf(Customizer.withDefaults());
+                .csrf(AbstractHttpConfigurer::disable);
 
         http.authorizeHttpRequests(common -> common
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
