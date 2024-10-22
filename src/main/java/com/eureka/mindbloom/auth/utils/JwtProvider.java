@@ -1,10 +1,14 @@
 package com.eureka.mindbloom.auth.utils;
 
 import com.eureka.mindbloom.auth.exception.AuthenticationException;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -44,8 +48,8 @@ public class JwtProvider {
             return Jwts.parser().verifyWith(key).build().parseSignedClaims(bearerRemovedToken);
         } catch (ExpiredJwtException e) {
             throw e;
-        } catch (JwtException | IllegalArgumentException e) {
-            throw AuthenticationException.unauthenticatedToken(token);
+        } catch (RuntimeException e) {
+            throw new BadCredentialsException(e.getMessage());
         }
     }
 }
