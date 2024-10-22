@@ -21,10 +21,10 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse<SignUpResponse>> signUp(@Valid @RequestBody SignUpRequest requestDto) {
-        SignUpResponse responseDto = memberService.signUp(requestDto);
+    public ResponseEntity<ApiResponse<SignUpResponse>> signUp(@Valid @RequestBody SignUpRequest request) {
+        SignUpResponse response = memberService.signUp(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(ApiResponse.success("회원가입이 성공적으로 완료되었습니다.", responseDto));
+                .body(ApiResponse.success("회원가입이 성공적으로 완료되었습니다.", response));
     }
 }

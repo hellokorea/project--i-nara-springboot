@@ -18,12 +18,12 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public SignUpResponse signUp(SignUpRequest signUpRequestDto) {
-        if(memberRepository.existsByEmail(signUpRequestDto.getEmail())) {
+    public SignUpResponse signUp(SignUpRequest signUpRequest) {
+        if(memberRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new DuplicationEmailException("이미 존재하는 이메일 주소입니다.");
         }
 
-        Member savedMember = createMemberFromDto(signUpRequestDto);
+        Member savedMember = createMemberFromDto(signUpRequest);
         savedMember = memberRepository.save(savedMember);
 
         return SignUpResponse.builder()
@@ -33,11 +33,11 @@ public class MemberServiceImpl implements MemberService {
                 .build();
     }
 
-    private Member createMemberFromDto(SignUpRequest dto) {
+    private Member createMemberFromDto(SignUpRequest request) {
         return Member.builder()
-                .name(dto.getName())
-                .email(dto.getEmail())
-                .password(passwordEncoder.encode(dto.getPassword()))
+                .name(request.getName())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
                 .role("0400_02") // 기본 역할 설정
                 .build();
     }
