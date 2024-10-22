@@ -50,7 +50,7 @@ public class ChildPreferredRepositoryTest {
 	@Test
 	public void 아이가_선호하는_콘텐츠가_저장된다() {
 		// Given
-		List<ChildPreferred> childPreferredList = ChildPreferredFixture.getChildPreferredList(savedChild);
+		List<ChildPreferred> childPreferredList = ChildPreferredFixture.getChildPreferences(savedChild);
 		childPreferredRepository.saveAll(childPreferredList);
 
 		// When

@@ -10,13 +10,13 @@ public class ChildPreferredFixture {
 	public static final String CATEGORY_CODE_NATURE = "0202";
 	public static final String CATEGORY_CODE_DAILY_LIFE = "0203";
 
-	public static List<ChildPreferred> getChildPreferredList(Child child) {
-		List<ChildPreferred> childPreferredList = List.of(
+	public static List<ChildPreferred> getChildPreferences(Child child) {
+		List<ChildPreferred> childPreferences = List.of(
 			createChildPreferred(CATEGORY_CODE_LEARNING, child),
 			createChildPreferred(CATEGORY_CODE_NATURE, child),
 			createChildPreferred(CATEGORY_CODE_DAILY_LIFE, child)
 		);
-		return childPreferredList;
+		return childPreferences;
 	}
 
 	public static ChildPreferred createChildPreferred(String categoryCode, Child child) {
