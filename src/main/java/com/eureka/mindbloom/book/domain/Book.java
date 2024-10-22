@@ -30,7 +30,7 @@ public class Book extends SoftDeleteEntity {
     private Long viewCount;
 
     @Builder
-    public Book( String isbn , String title , String plot , String author , String publisher , String recommendedAge , String coverImage , String keywords , Long viewCount ) {
+    public Book(String isbn, String title, String plot, String author, String publisher, String recommendedAge, String coverImage, String keywords, Long viewCount) {
         this.isbn = isbn;
         this.title = title;
         this.plot = plot;
@@ -40,6 +40,17 @@ public class Book extends SoftDeleteEntity {
         this.coverImage = coverImage;
         this.keywords = keywords;
         this.viewCount = viewCount;
+    }
 
+    // 기존 도서 정보를 업데이트하는 메서드
+    public void updateDetails(Book updatedBook) {
+        this.title = updatedBook.getTitle();
+        this.plot = updatedBook.getPlot();
+        this.author = updatedBook.getAuthor();
+        this.publisher = updatedBook.getPublisher();
+        this.recommendedAge = updatedBook.getRecommendedAge();
+        this.coverImage = updatedBook.getCoverImage();
+        this.keywords = updatedBook.getKeywords();
+        this.viewCount = updatedBook.getViewCount();
     }
 }
