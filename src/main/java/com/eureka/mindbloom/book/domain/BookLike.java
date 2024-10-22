@@ -2,9 +2,13 @@ package com.eureka.mindbloom.book.domain;
 
 import com.eureka.mindbloom.common.domain.BaseEntity;
 import com.eureka.mindbloom.member.domain.Child;
-import jakarta.persistence.*;
-import lombok.AccessLevel;
 
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,28 +18,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BookLike extends BaseEntity {
 
-    @EmbeddedId
-    private BookChildId bookChildId;
+	@EmbeddedId
+	private BookChildId bookChildId;
 
+	private String type;
 
-    private String type;
+	@MapsId("bookId")
+	@ManyToOne
+	@JoinColumn(name = "book_id")
+	private Book book;
 
-    @MapsId("bookId")
-    @ManyToOne
-    @JoinColumn(name = "book_id")
-    private Book book;
+	@MapsId("childId")
+	@ManyToOne
+	@JoinColumn(name = "child_id")
+	private Child child;
 
-    @MapsId("childId")
-    @ManyToOne
-    @JoinColumn(name = "child_id")
-    private Child child;
-
-    @Builder
-    public BookLike( String type , Book book , Child child ) {
-        this.bookChildId = new BookChildId(book.getIsbn(), child.getId());
-        this.type = type;
-        this.book = book;
-        this.child = child;
-
-    }
+	@Builder
+	public BookLike(String type, Book book, Child child) {
+		this.bookChildId = new BookChildId(book.getIsbn(), child.getId());
+		this.type = type;
+		this.book = book;
+		this.child = child;
+	}
 }
