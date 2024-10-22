@@ -1,9 +1,7 @@
 package com.eureka.mindbloom.member.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,4 +28,14 @@ public class Member {
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Child> children;
+
+    @Builder
+    public Member(String name, String email, String password, String phone, String role) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.role = role;
+        this.createdAt = LocalDateTime.now();
+    }
 }
