@@ -1,6 +1,5 @@
 package com.eureka.mindbloom.book.controller;
 
-import com.eureka.mindbloom.book.domain.BookLike;
 import com.eureka.mindbloom.book.dto.BookLikeRequest;
 import com.eureka.mindbloom.book.dto.BookLikeResponse;
 import com.eureka.mindbloom.book.service.BookLikeService;
