@@ -5,9 +5,10 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
 import java.util.Objects;
+import com.eureka.mindbloom.category.CategoryTraitId;
+
 
 @Embeddable
 @Getter

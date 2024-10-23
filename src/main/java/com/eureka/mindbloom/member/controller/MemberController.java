@@ -1,7 +1,7 @@
 package com.eureka.mindbloom.member.controller;
 
-import com.eureka.mindbloom.auth.dto.SignUpRequest;
-import com.eureka.mindbloom.auth.dto.SignUpResponse;
+import com.eureka.mindbloom.member.dto.SignUpRequest;
+import com.eureka.mindbloom.member.dto.SignUpResponse;
 import com.eureka.mindbloom.common.dto.ApiResponse;
 import com.eureka.mindbloom.member.service.MemberService;
 import jakarta.validation.Valid;
@@ -21,10 +21,10 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse<SignUpResponse>> signUp(@Valid @RequestBody SignUpRequest requestDto) {
-        SignUpResponse responseDto = memberService.signUp(requestDto);
+    public ResponseEntity<ApiResponse<SignUpResponse>> signUp(@Valid @RequestBody SignUpRequest request) {
+        SignUpResponse response = memberService.signUp(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(ApiResponse.success("회원가입이 성공적으로 완료되었습니다.", responseDto));
+                .body(ApiResponse.success("회원가입이 성공적으로 완료되었습니다.", response));
     }
 }
