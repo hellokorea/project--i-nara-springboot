@@ -1,5 +1,6 @@
 package com.eureka.mindbloom.auth.exception;
 
+import com.eureka.mindbloom.common.exception.BaseException;
 import org.springframework.http.HttpStatus;
 
 public class AuthenticationException extends BaseException {
