@@ -20,7 +20,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public SignUpResponse signUp(SignUpRequest signUpRequest) {
         if(memberRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new DuplicationEmailException("이미 존재하는 이메일 주소입니다.");
+            throw DuplicationEmailException.emailAlreadyExists(signUpRequest.getEmail());
         }
 
         Member savedMember = createMemberFromDto(signUpRequest);
