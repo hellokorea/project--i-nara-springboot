@@ -2,6 +2,7 @@ package com.eureka.mindbloom.book.service.Impl;
 
 import com.eureka.mindbloom.book.domain.Book;
 import com.eureka.mindbloom.book.domain.BookLike;
+import com.eureka.mindbloom.book.domain.BookChildId;
 import com.eureka.mindbloom.book.repository.BookLikeRepository;
 import com.eureka.mindbloom.book.repository.BookRepository;
 import com.eureka.mindbloom.book.service.BookLikeService;
@@ -34,5 +35,12 @@ public class BookLikeServiceImpl implements BookLikeService {
                 .child(child)
                 .build();
         return bookLikeRepository.save(bookLike);
+    }
+
+    @Override
+    @Transactional
+    public void removeLike(String isbn, Long childId) {
+        BookChildId bookChildId = new BookChildId(isbn, childId);
+        bookLikeRepository.deleteById(bookChildId);
     }
 }
