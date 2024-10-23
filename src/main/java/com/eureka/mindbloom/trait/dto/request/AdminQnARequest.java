@@ -1,6 +1,6 @@
 package com.eureka.mindbloom.trait.dto.request;
 
-import com.eureka.mindbloom.trait.dto.response.Answer;
+import com.eureka.mindbloom.trait.dto.response.AdminAnswer;
 import lombok.Getter;
 
 import java.util.List;
@@ -10,5 +10,5 @@ public class AdminQnARequest {
 
     private String questionContent;
     private boolean disabled;
-    private List<Answer> choices;
+    private List<AdminAnswer> choices;
 }

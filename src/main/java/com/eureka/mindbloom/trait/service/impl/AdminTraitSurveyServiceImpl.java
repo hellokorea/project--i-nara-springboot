@@ -3,22 +3,18 @@ package com.eureka.mindbloom.trait.service.impl;
 import com.eureka.mindbloom.trait.domain.survey.TraitAnswer;
 import com.eureka.mindbloom.trait.domain.survey.TraitQuestion;
 import com.eureka.mindbloom.trait.dto.request.AdminQnARequest;
+import com.eureka.mindbloom.trait.dto.response.AdminAnswer;
 import com.eureka.mindbloom.trait.dto.response.AdminQnADeleteResponse;
-import com.eureka.mindbloom.trait.dto.response.Answer;
 import com.eureka.mindbloom.trait.dto.response.AdminQnAResponse;
 import com.eureka.mindbloom.trait.repository.TraitAnswerRepository;
 import com.eureka.mindbloom.trait.repository.TraitQuestionRepository;
 import com.eureka.mindbloom.trait.service.AdminTraitSurveyService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -37,9 +33,9 @@ public class AdminTraitSurveyServiceImpl implements AdminTraitSurveyService {
         return traitQuestions.stream()
                 .map(q -> {
 
-                    List<Answer> relatedAnswers = traitAnswers.stream()
+                    List<AdminAnswer> relatedAdminAnswers = traitAnswers.stream()
                             .filter(answer -> answer.getQuestion().getId().equals(q.getId()))
-                            .map(a -> Answer.builder()
+                            .map(a -> AdminAnswer.builder()
                                         .answerId(a.getId())
                                         .content(a.getContent())
                                         .traitCode(a.getTraitCode())
@@ -52,7 +48,7 @@ public class AdminTraitSurveyServiceImpl implements AdminTraitSurveyService {
                             .traitCodeGroup(q.getTraitCodeGroup())
                             .content(q.getContent())
                             .disabled(q.isDisabled())
-                            .choices(relatedAnswers)
+                            .choices(relatedAdminAnswers)
                             .build();
                 })
                 .collect(Collectors.toList());
@@ -74,19 +70,19 @@ public class AdminTraitSurveyServiceImpl implements AdminTraitSurveyService {
         traitQuestionRepository.save(createToQuestion);
 
         // Answer 생성
-        List<Answer> createToAnswers = adminQnARequest.getChoices().stream()
-                .map(answer -> {
+        List<AdminAnswer> createToAdminAnswers = adminQnARequest.getChoices().stream()
+                .map(adminAnswer -> {
 
                     TraitAnswer answerData = TraitAnswer.builder()
                             .question(createToQuestion)
-                            .content(answer.getContent())
-                            .traitCode(answer.getTraitCode())
-                            .point(answer.getPoint())
+                            .content(adminAnswer.getContent())
+                            .traitCode(adminAnswer.getTraitCode())
+                            .point(adminAnswer.getPoint())
                             .build();
 
                     traitAnswerRepository.save(answerData);
 
-                    return Answer.builder()
+                    return AdminAnswer.builder()
                             .answerId(answerData.getId())
                             .content(answerData.getContent())
                             .traitCode(answerData.getTraitCode())
@@ -100,7 +96,7 @@ public class AdminTraitSurveyServiceImpl implements AdminTraitSurveyService {
                 .traitCodeGroup(createToQuestion.getTraitCodeGroup())
                 .content(createToQuestion.getContent())
                 .disabled(createToQuestion.isDisabled())
-                .choices(createToAnswers)
+                .choices(createToAdminAnswers)
                 .build();
     }
 
@@ -121,17 +117,17 @@ public class AdminTraitSurveyServiceImpl implements AdminTraitSurveyService {
         traitQuestionRepository.save(updateToQuestion);
 
         // Answer 업데이트
-        List<Answer> updateToAnswers = existingAnswers.stream()
+        List<AdminAnswer> updateToAdminAnswers = existingAnswers.stream()
                 .limit(adminQnARequest.getChoices().size())
                 .map(answer -> {
 
                     int index = existingAnswers.indexOf(answer);
-                    Answer answerDto = adminQnARequest.getChoices().get(index);
-                    answer.update(answerDto.getContent(), answerDto.getTraitCode(), answerDto.getPoint());
+                    AdminAnswer adminAnswerDto = adminQnARequest.getChoices().get(index);
+                    answer.update(adminAnswerDto.getContent(), adminAnswerDto.getTraitCode(), adminAnswerDto.getPoint());
 
                     traitAnswerRepository.save(answer);
 
-                    return Answer.builder()
+                    return AdminAnswer.builder()
                             .answerId(answer.getId())
                             .content(answer.getContent())
                             .traitCode(answer.getTraitCode())
@@ -145,7 +141,7 @@ public class AdminTraitSurveyServiceImpl implements AdminTraitSurveyService {
                 .traitCodeGroup(updateToQuestion.getTraitCodeGroup())
                 .content(updateToQuestion.getContent())
                 .disabled(updateToQuestion.isDisabled())
-                .choices(updateToAnswers)
+                .choices(updateToAdminAnswers)
                 .build();
     }
 
@@ -181,14 +177,14 @@ public class AdminTraitSurveyServiceImpl implements AdminTraitSurveyService {
         }
     }
 
-    private void validateAnswer(List<Answer> answers) {
-        if (answers == null || answers.isEmpty()) {
+    private void validateAnswer(List<AdminAnswer> adminAnswers) {
+        if (adminAnswers == null || adminAnswers.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "답변 데이터가 비어있습니다.");
         }
 
-        for (Answer answer : answers) {
+        for (AdminAnswer adminAnswer : adminAnswers) {
 
-            if (answer.getContent() == null || answer.getTraitCode() == null || answer.getPoint() == null) {
+            if (adminAnswer.getContent() == null || adminAnswer.getTraitCode() == null || adminAnswer.getPoint() == null) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "답변 Dto 데이터가 비어있습니다.");
             }
         }

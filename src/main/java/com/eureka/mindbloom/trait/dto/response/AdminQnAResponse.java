@@ -13,9 +13,9 @@ public class AdminQnAResponse {
     private String traitCodeGroup;
     private String content;
     private boolean disabled;
-    private List<Answer> choices;
+    private List<AdminAnswer> choices;
 
-    public AdminQnAResponse(Integer questionId, String traitCodeGroup, String content, boolean disabled, List<Answer> choices) {
+    public AdminQnAResponse(Integer questionId, String traitCodeGroup, String content, boolean disabled, List<AdminAnswer> choices) {
         this.questionId = questionId;
         this.traitCodeGroup = traitCodeGroup;
         this.content = content;
