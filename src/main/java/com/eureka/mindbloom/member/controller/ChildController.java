@@ -6,13 +6,12 @@ import com.eureka.mindbloom.member.dto.ChildProfileResponse;
 import com.eureka.mindbloom.member.dto.ChildRegisterRequest;
 import com.eureka.mindbloom.member.dto.ChildRegisterResponse;
 import com.eureka.mindbloom.member.service.ChildService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,5 +38,17 @@ public class ChildController {
         List<ChildProfileResponse> response = childService.getChildProfile(member);
 
         return ResponseEntity.ok().body(ApiResponse.success("OK", response));
+    }
+
+    @PostMapping("/members/children/{childId}")
+    public ResponseEntity<ApiResponse<?>> choiceChildProfile(
+            @PathVariable Long childId,
+            HttpServletResponse response) {
+
+        Cookie cookie = new Cookie("childId", String.valueOf(childId));
+        cookie.setPath("/");
+
+        response.addCookie(cookie);
+        return ResponseEntity.ok().body(ApiResponse.success("OK"));
     }
 }
