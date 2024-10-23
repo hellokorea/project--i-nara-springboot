@@ -1,11 +1,13 @@
 package com.eureka.mindbloom.member.repository;
 
-import com.eureka.mindbloom.member.domain.Child;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.eureka.mindbloom.member.domain.Child;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
+
 
 public interface ChildRepository extends JpaRepository<Child, Long> {
     List<Child> findByParentId(Long id);
@@ -17,4 +19,5 @@ public interface ChildRepository extends JpaRepository<Child, Long> {
             """
     )
     Optional<Child> findByParentIdAndId(Long parentId, Long id);
+    Optional<Child> findChildById(Long childId);
 }
