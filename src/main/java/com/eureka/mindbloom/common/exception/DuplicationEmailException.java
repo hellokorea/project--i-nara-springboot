@@ -1,4 +1,4 @@
-package com.eureka.mindbloom.common.exception;
+package com.eureka.mindbloom.auth.exception;
 
 import org.springframework.http.HttpStatus;
 
