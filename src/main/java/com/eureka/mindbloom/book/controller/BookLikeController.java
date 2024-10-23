@@ -1,5 +1,6 @@
 package com.eureka.mindbloom.book.controller;
 
+import com.eureka.mindbloom.book.domain.BookLike;
 import com.eureka.mindbloom.book.dto.BookLikeRequest;
 import com.eureka.mindbloom.book.dto.BookLikeResponse;
 import com.eureka.mindbloom.book.service.BookLikeService;
@@ -21,12 +22,13 @@ public class BookLikeController {
         @PathVariable String bookId,
         @RequestBody BookLikeRequest request) {
 
-        bookLikeService.addLike(bookId, request.getChildId(), request.getType());
+        BookLike bookLike = bookLikeService.addLike(bookId, request.getChildId(), request.getType());
 
         BookLikeResponse response = BookLikeResponse.builder()
-                .bookId(bookId)
-                .childId(request.getChildId())
-                .type(request.getType())
+                .bookId(bookLike.getBook().getIsbn())
+                .childId(bookLike.getChild().getId())
+                .type(bookLike.getType())
+                .likedAt(bookLike.getCreatedAt().toString())
                 .build();
 
         return ResponseEntity.status(HttpStatus.OK)
