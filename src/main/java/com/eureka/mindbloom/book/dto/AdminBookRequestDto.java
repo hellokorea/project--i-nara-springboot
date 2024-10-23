@@ -1,14 +1,15 @@
 package com.eureka.mindbloom.book.dto;
 
-
 import com.eureka.mindbloom.book.domain.Book;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Getter
 @NoArgsConstructor
-//등록수정
 public class AdminBookRequestDto {
 
     private String isbn;
@@ -19,11 +20,13 @@ public class AdminBookRequestDto {
     private String recommendedAge;
     private String coverImage;
     private String keywords;
-    private Long viewCount;
-
+    private Long viewCount;  // 여기서 int를 Long으로 변경
+    private List<AdminBookCategoryDto> categories;
 
     @Builder
-    public AdminBookRequestDto(String isbn, String title, String plot, String author, String publisher, String recommendedAge, String coverImage, String keywords, Long viewCount) {
+    public AdminBookRequestDto(String isbn, String title, String plot, String author, String publisher,
+                               String recommendedAge, String coverImage, String keywords, Long viewCount,  // 수정된 부분
+                               List<AdminBookCategoryDto> categories) {
         this.isbn = isbn;
         this.title = title;
         this.plot = plot;
@@ -33,9 +36,10 @@ public class AdminBookRequestDto {
         this.coverImage = coverImage;
         this.keywords = keywords;
         this.viewCount = viewCount;
+        this.categories = categories;
     }
 
-
+    // AdminBookRequestDto를 Book 엔티티로 변환하는 메서드
     public Book toEntity() {
         return Book.builder()
                 .isbn(this.isbn)
@@ -46,7 +50,12 @@ public class AdminBookRequestDto {
                 .recommendedAge(this.recommendedAge)
                 .coverImage(this.coverImage)
                 .keywords(this.keywords)
-                .viewCount(this.viewCount)
+                .viewCount(this.viewCount)  // 수정된 부분
                 .build();
+    }
+
+    // 카테고리 목록을 String 형태로 반환하는 메서드
+    public List<String> getCategoriesAsStrings() {
+        return categories.stream().map(AdminBookCategoryDto::getCategoryName).collect(Collectors.toList());
     }
 }
