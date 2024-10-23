@@ -9,6 +9,7 @@ import com.eureka.mindbloom.member.dto.UpdateChildRequest;
 import com.eureka.mindbloom.member.service.ChildService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,7 +26,7 @@ public class ChildController {
     @PostMapping("/members/children")
     public ResponseEntity<ApiResponse<?>> registerChild(
             @AuthenticationPrincipal(expression = "member") Member member,
-            @RequestBody ChildRegisterRequest request) {
+            @Valid @RequestBody ChildRegisterRequest request) {
 
         ChildRegisterResponse response = childService.registerChild(member, request);
 
@@ -57,7 +58,7 @@ public class ChildController {
     public ResponseEntity<ApiResponse<?>> updateChildProfile(
             @AuthenticationPrincipal(expression = "member") Member member,
             @PathVariable Long childId,
-            @RequestBody UpdateChildRequest request) {
+            @Valid @RequestBody UpdateChildRequest request) {
 
         childService.updateChildProfile(member, childId, request);
 
