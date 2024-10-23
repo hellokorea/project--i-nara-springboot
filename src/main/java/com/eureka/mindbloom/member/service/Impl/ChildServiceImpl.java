@@ -3,6 +3,7 @@ package com.eureka.mindbloom.member.service.Impl;
 import com.eureka.mindbloom.category.domain.ChildPreferred;
 import com.eureka.mindbloom.member.domain.Child;
 import com.eureka.mindbloom.member.domain.Member;
+import com.eureka.mindbloom.member.dto.ChildProfileResponse;
 import com.eureka.mindbloom.member.dto.ChildRegisterRequest;
 import com.eureka.mindbloom.member.dto.ChildRegisterResponse;
 import com.eureka.mindbloom.member.repository.ChildRepository;
@@ -39,5 +40,13 @@ public class ChildServiceImpl implements ChildService {
         child.addPreferredContent(preferred);
 
         return ChildRegisterResponse.from(child);
+    }
+
+    @Override
+    public List<ChildProfileResponse> getChildProfile(Member parents) {
+        List<Child> children = childRepository.findByParentId(parents.getId());
+
+        return children.stream().map(ChildProfileResponse::from)
+                .toList();
     }
 }
