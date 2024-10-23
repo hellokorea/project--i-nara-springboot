@@ -1,7 +1,7 @@
 package com.eureka.mindbloom.member.service;
 
 import com.eureka.mindbloom.member.dto.SignUpRequest;
-import com.eureka.mindbloom.auth.exception.DuplicationEmailException;
+import com.eureka.mindbloom.member.exception.DuplicationEmailException;
 import com.eureka.mindbloom.member.repository.MemberRepository;
 import com.eureka.mindbloom.member.service.Impl.MemberServiceImpl;
 import org.junit.jupiter.api.*;

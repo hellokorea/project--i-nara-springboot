@@ -5,9 +5,11 @@ import com.eureka.mindbloom.member.domain.Member;
 import com.eureka.mindbloom.member.dto.ChildProfileResponse;
 import com.eureka.mindbloom.member.dto.ChildRegisterRequest;
 import com.eureka.mindbloom.member.dto.ChildRegisterResponse;
+import com.eureka.mindbloom.member.dto.UpdateChildRequest;
 import com.eureka.mindbloom.member.service.ChildService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,7 +26,7 @@ public class ChildController {
     @PostMapping("/members/children")
     public ResponseEntity<ApiResponse<?>> registerChild(
             @AuthenticationPrincipal(expression = "member") Member member,
-            @RequestBody ChildRegisterRequest request) {
+            @Valid @RequestBody ChildRegisterRequest request) {
 
         ChildRegisterResponse response = childService.registerChild(member, request);
 
@@ -49,6 +51,27 @@ public class ChildController {
         cookie.setPath("/");
 
         response.addCookie(cookie);
+        return ResponseEntity.ok().body(ApiResponse.success("OK"));
+    }
+
+    @PutMapping("/members/children/{childId}")
+    public ResponseEntity<ApiResponse<?>> updateChildProfile(
+            @AuthenticationPrincipal(expression = "member") Member member,
+            @PathVariable Long childId,
+            @Valid @RequestBody UpdateChildRequest request) {
+
+        childService.updateChildProfile(member, childId, request);
+
+        return ResponseEntity.ok().body(ApiResponse.success("OK"));
+    }
+
+    @DeleteMapping("/members/children/{childId}")
+    public ResponseEntity<ApiResponse<?>> deleteChildProfile(
+            @AuthenticationPrincipal(expression = "member") Member member,
+            @PathVariable Long childId
+    ) {
+        childService.deleteChildProfile(member, childId);
+
         return ResponseEntity.ok().body(ApiResponse.success("OK"));
     }
 }
