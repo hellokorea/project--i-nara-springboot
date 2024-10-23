@@ -63,4 +63,14 @@ public class ChildController {
 
         return ResponseEntity.ok().body(ApiResponse.success("OK"));
     }
+
+    @DeleteMapping("/members/children/{childId}")
+    public ResponseEntity<ApiResponse<?>> deleteChildProfile(
+            @AuthenticationPrincipal(expression = "member") Member member,
+            @PathVariable Long childId
+    ) {
+        childService.deleteChildProfile(member, childId);
+
+        return ResponseEntity.ok().body(ApiResponse.success("OK"));
+    }
 }
