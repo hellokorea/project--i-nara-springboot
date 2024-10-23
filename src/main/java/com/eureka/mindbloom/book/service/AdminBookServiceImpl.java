@@ -2,14 +2,14 @@ package com.eureka.mindbloom.book.service;
 
 import com.eureka.mindbloom.book.domain.Book;
 import com.eureka.mindbloom.book.domain.BookCategory;
-import com.eureka.mindbloom.book.domain.CategoryTrait;
+import com.eureka.mindbloom.book.dto.AdminBookCategoryDto;
 import com.eureka.mindbloom.book.dto.AdminBookRequestDto;
 import com.eureka.mindbloom.book.dto.AdminBookResponseDto;
-import com.eureka.mindbloom.book.dto.AdminBookCategoryDto;
 import com.eureka.mindbloom.book.repository.BookCategoryRepository;
 import com.eureka.mindbloom.book.repository.BookRepository;
-import com.eureka.mindbloom.book.repository.CategoryTraitRepository;
 import com.eureka.mindbloom.book.repository.CommonCodeRepository;
+import com.eureka.mindbloom.category.domain.CategoryTrait;
+import com.eureka.mindbloom.category.repository.CategoryTraitRepository;
 import com.eureka.mindbloom.common.domain.code.CommonCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

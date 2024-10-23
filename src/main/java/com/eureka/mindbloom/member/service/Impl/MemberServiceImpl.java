@@ -1,9 +1,9 @@
 package com.eureka.mindbloom.member.service.Impl;
 
-import com.eureka.mindbloom.member.dto.SignUpResponse;
-import com.eureka.mindbloom.member.dto.SignUpRequest;
-import com.eureka.mindbloom.auth.exception.DuplicationEmailException;
+import com.eureka.mindbloom.common.exception.DuplicationEmailException;
 import com.eureka.mindbloom.member.domain.Member;
+import com.eureka.mindbloom.member.dto.SignUpRequest;
+import com.eureka.mindbloom.member.dto.SignUpResponse;
 import com.eureka.mindbloom.member.repository.MemberRepository;
 import com.eureka.mindbloom.member.service.MemberService;
 import lombok.RequiredArgsConstructor;

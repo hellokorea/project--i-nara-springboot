@@ -5,6 +5,7 @@ import com.eureka.mindbloom.member.domain.Member;
 import com.eureka.mindbloom.member.dto.ChildProfileResponse;
 import com.eureka.mindbloom.member.dto.ChildRegisterRequest;
 import com.eureka.mindbloom.member.dto.ChildRegisterResponse;
+import com.eureka.mindbloom.member.dto.UpdateChildRequest;
 import com.eureka.mindbloom.member.service.ChildService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -49,6 +50,17 @@ public class ChildController {
         cookie.setPath("/");
 
         response.addCookie(cookie);
+        return ResponseEntity.ok().body(ApiResponse.success("OK"));
+    }
+
+    @PutMapping("/members/children/{childId}")
+    public ResponseEntity<ApiResponse<?>> updateChildProfile(
+            @AuthenticationPrincipal(expression = "member") Member member,
+            @PathVariable Long childId,
+            @RequestBody UpdateChildRequest request) {
+
+        childService.updateChildProfile(member, childId, request);
+
         return ResponseEntity.ok().body(ApiResponse.success("OK"));
     }
 }
