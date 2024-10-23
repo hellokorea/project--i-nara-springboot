@@ -1,22 +1,25 @@
 package com.eureka.mindbloom.member.service;
 
+import com.eureka.mindbloom.common.exception.DuplicationEmailException;
+import com.eureka.mindbloom.member.domain.Member;
 import com.eureka.mindbloom.member.dto.SignUpRequest;
-import com.eureka.mindbloom.auth.exception.DuplicationEmailException;
+import com.eureka.mindbloom.member.dto.SignUpResponse;
 import com.eureka.mindbloom.member.repository.MemberRepository;
 import com.eureka.mindbloom.member.service.Impl.MemberServiceImpl;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.assertj.core.api.Assertions.assertThat;
-import com.eureka.mindbloom.member.dto.SignUpResponse;
-import com.eureka.mindbloom.member.domain.Member;
 
 @ExtendWith(MockitoExtension.class)
 public class MemberServiceImplTest {
