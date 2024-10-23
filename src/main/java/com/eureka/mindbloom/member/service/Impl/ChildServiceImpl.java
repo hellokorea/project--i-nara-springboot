@@ -31,9 +31,9 @@ public class ChildServiceImpl implements ChildService {
                         .name(request.name())
                         .birthDate(request.birthDate())
                         .gender(request.gender())
-                        .parent(parents)
                         .build()
         );
+        child.updateParent(parents);
 
         List<ChildPreferred> preferred = request.categories().stream()
                 .map(category -> new ChildPreferred(category, child))
