@@ -5,6 +5,7 @@ import com.eureka.mindbloom.member.dto.SignUpResponse;
 import com.eureka.mindbloom.member.dto.SignUpRequest;
 import com.eureka.mindbloom.member.exception.DuplicationEmailException;
 import com.eureka.mindbloom.member.domain.Member;
+import com.eureka.mindbloom.member.dto.UpdateMemberProfileRequest;
 import com.eureka.mindbloom.member.repository.MemberRepository;
 import com.eureka.mindbloom.member.service.GetMemberProfileResponse;
 import com.eureka.mindbloom.member.service.MemberService;
@@ -38,6 +39,14 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public GetMemberProfileResponse getMemberProfile(Member member) {
         return GetMemberProfileResponse.from(member);
+    }
+
+    @Override
+    public void updateMemberProfile(Member member, UpdateMemberProfileRequest request) {
+        String encodedPassword = passwordEncoder.encode(member.getPassword());
+        member.updateMember(request.name(), encodedPassword, request.phone());
+
+        memberRepository.save(member);
     }
 
     private Member createMemberFromDto(SignUpRequest request) {
