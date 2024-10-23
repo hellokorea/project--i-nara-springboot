@@ -30,8 +30,8 @@ public class Child extends SoftDeleteEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Member parent;
 
-    @OneToMany(mappedBy = "child", cascade = CascadeType.PERSIST)
-    private final List<ChildPreferred> preferredContents = new ArrayList<>();
+    @OneToMany(mappedBy = "child", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<ChildPreferred> preferredContents = new ArrayList<>();
 
     @Builder
     public Child(String name, String gender, LocalDate birthDate, Member parent) {
@@ -43,5 +43,11 @@ public class Child extends SoftDeleteEntity {
 
     public void addPreferredContent(List<ChildPreferred> preferredContents) {
         this.preferredContents.addAll(preferredContents);
+    }
+
+    public void updateChild(String name, List<ChildPreferred> preferredContents) {
+        this.name = name;
+        this.preferredContents.clear();
+        addPreferredContent(preferredContents);
     }
 }
