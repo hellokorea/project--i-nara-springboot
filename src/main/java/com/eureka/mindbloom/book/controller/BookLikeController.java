@@ -22,7 +22,7 @@ public class BookLikeController {
         @PathVariable String bookId,
         @RequestBody BookLikeRequest request) {
 
-        BookLike bookLike = bookLikeService.addLike(bookId, request.getChildId(), request.getType());
+        bookLikeService.addLike(bookId, request.getChildId(), request.getType());
 
         BookLikeResponse response = BookLikeResponse.builder()
                 .bookId(bookId)
