@@ -64,4 +64,12 @@ public class ChildServiceImpl implements ChildService {
 
         child.updateChild(request.name(), preferred);
     }
+
+    @Override
+    public void deleteChildProfile(Member member, Long childId) {
+        Child child = childRepository.findByParentIdAndId(member.getId(), childId)
+                .orElseThrow(() -> NotFoundException.childNotFound(childId));
+
+        childRepository.delete(child);
+    }
 }
