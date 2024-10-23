@@ -12,4 +12,5 @@ public interface ChildService {
     ChildRegisterResponse registerChild(Member parents, ChildRegisterRequest request);
     List<ChildProfileResponse> getChildProfile(Member parents);
     void updateChildProfile(Member member, Long childId, UpdateChildRequest request);
+    void deleteChildProfile(Member member, Long childId);
 }
