@@ -1,13 +1,10 @@
-package com.eureka.mindbloom.common.domain.code;
+package com.eureka.mindbloom.commoncode.domain;
 
 import com.eureka.mindbloom.common.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter

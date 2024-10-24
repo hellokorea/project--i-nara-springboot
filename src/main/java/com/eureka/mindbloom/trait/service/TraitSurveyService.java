@@ -10,5 +10,5 @@ public interface TraitSurveyService {
 
     List<QnAResponse> getQnA();
 
-    void createTraitByQnA(Member member, List<CreateTraitRequest> answers);
+    void createTraitByQnA(Long childId, List<CreateTraitRequest> answers);
 }

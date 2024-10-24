@@ -1,50 +1,48 @@
 package com.eureka.mindbloom.trait.service.impl;
 
 import com.eureka.mindbloom.member.domain.Child;
-import com.eureka.mindbloom.member.domain.Member;
-import com.eureka.mindbloom.member.dto.ChildProfileResponse;
 import com.eureka.mindbloom.member.repository.ChildRepository;
 import com.eureka.mindbloom.member.service.ChildService;
-import com.eureka.mindbloom.trait.domain.history.TraitRecord;
+import com.eureka.mindbloom.trait.domain.ChildTrait;
 import com.eureka.mindbloom.trait.domain.survey.TraitAnswer;
 import com.eureka.mindbloom.trait.domain.survey.TraitQuestion;
 import com.eureka.mindbloom.trait.dto.request.CreateTraitRequest;
 import com.eureka.mindbloom.trait.dto.response.Answer;
 import com.eureka.mindbloom.trait.dto.response.QnAResponse;
-import com.eureka.mindbloom.trait.repository.ChildTraitRepository;
+import com.eureka.mindbloom.trait.dto.response.TraitPointsResponse;
 import com.eureka.mindbloom.trait.repository.TraitAnswerRepository;
 import com.eureka.mindbloom.trait.repository.TraitQuestionRepository;
 import com.eureka.mindbloom.trait.service.ChildHistoryRecordService;
 import com.eureka.mindbloom.trait.service.ChildTraitService;
-import com.eureka.mindbloom.trait.service.TraitRecordService;
+import com.eureka.mindbloom.trait.service.TraitScoreRecordService;
 import com.eureka.mindbloom.trait.service.TraitSurveyService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TraitSurveyServiceImpl implements TraitSurveyService {
 
     private final TraitQuestionRepository questionRepository;
     private final TraitAnswerRepository answerRepository;
-    private final ChildTraitRepository childTraitRepository;
-    private final TraitAnswerRepository traitAnswerRepository;
     private final ChildRepository childRepository;
 
-    private final TraitRecordService traitRecordService;
+    private final TraitScoreRecordService traitScoreRecordService;
     private final ChildHistoryRecordService childHistoryRecordService;
     private final ChildTraitService childTraitService;
 
     private final ChildService childService;
 
     @Override
+    @Transactional(readOnly = true)
     public List<QnAResponse> getQnA() {
 
         List<TraitQuestion> traitQuestions = questionRepository.findAll();
@@ -70,69 +68,25 @@ public class TraitSurveyServiceImpl implements TraitSurveyService {
     }
 
     @Override
-    @Transactional
-    public void createTraitByQnA(Member member, List<CreateTraitRequest> answers) {
+    public void createTraitByQnA(Long childId, List<CreateTraitRequest> answers) {
 
-        // 일단 테스트 용도
-        List<ChildProfileResponse> childes =  childService.getChildProfile(member);
-        Optional<Child> child = childRepository.findById(childes.get(0).childId());
+        Optional<Child> child = childRepository.findById(childId);
 
-        // 1. 자녀 별 질의 응답 기록 저장
-        childHistoryRecordService.saveChildResponse(child.get(), answers);
-
-        // 2. 임시 child Trait 데이터 저장
-
-        // 3. trait record 연산 함수 호출 및 mbti 결과 생성
-//        calculatorTraitRecordBySurvey(1L, 1L, createTraitRequests);
-
-        // 4 child trait 데이터 저장 마무리
-    }
-
-    private void calculatorTraitRecordBySurvey(Long childId, Long childTraitId, List<CreateTraitRequest> createTraitRequests) {
-
-        List<Integer> answerIds = createTraitRequests.stream()
-                .map(CreateTraitRequest::getAnswerId)
-                .collect(Collectors.toList());
-
-        List<TraitAnswer> traitAnswers = traitAnswerRepository.findAllById(answerIds);
-
-        Map<String, Integer> traitCodeMap = new HashMap<>();
-
-        for (TraitAnswer traitAnswer : traitAnswers) {
-            String traitCode = traitAnswer.getTraitCode();
-            Integer point = traitAnswer.getPoint();
-
-            traitCodeMap.put(traitCode, traitCodeMap.getOrDefault(traitCode, 0) + point);
+        if (child.isEmpty()) {
+            throw new NoSuchElementException("자녀 정보가 올바르지 않습니다.");
         }
 
-        // 별도 분리 처리
-        // traitRecordService.saveTraitRecords(childId, childTraitId, traitCodeMap);
+        // 1. 자녀 별 질의 응답 기록 저장
+        Map<Integer, TraitAnswer> responseAnswersMap = childHistoryRecordService.saveChildResponse(child.get(), answers);
 
-        traitCodeMap.forEach((traitCode, traitScore) -> {
+        // 2. 임시 child Trait 데이터 저장
+        ChildTrait childTrait = childTraitService.partiallySaveChildTrait(child.get());
 
-            TraitRecord traitRecord = TraitRecord.builder()
-//                    .childTrait()
-//                    .child()
-                    .traitCode(traitCode)
-                    .traitScore(traitScore)
-                    .build();
+        // 3. trait record 연산 함수 호출 및 mbti 결과 생성
+        List<TraitPointsResponse> traitScores = traitScoreRecordService.saveTraitScoreRecord(childTrait, responseAnswersMap);
+        String traitValue = traitScoreRecordService.fetchTraitValue(traitScores);
 
-        });
-
-    }
-
-/**
- *     childId : 123,
- *     List : [
- *     {
- *        traitCode: 1101_1
- *        score : 80
- *     },
- * ]
- */
-
-    private String calculateMBTITraitValue(List<CreateTraitRequest> createTraitRequests) {
-        StringBuilder sb = new StringBuilder();
-        return sb.toString();
+        // 4. child trait 데이터 저장 마무리
+        childTraitService.finishSaveChildTrait(childTrait, traitValue);
     }
 }

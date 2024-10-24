@@ -1,6 +1,8 @@
 package com.eureka.mindbloom.member.exception;
 
 
+import com.eureka.mindbloom.common.exception.ConflictException;
+
 public class DuplicationEmailException extends ConflictException {
     private static final String DUPLICATION_EMAIL_MESSAGE = "이메일 '%s'는 이미 사용 중입니다.";
 
