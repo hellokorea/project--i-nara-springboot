@@ -1,5 +1,6 @@
-package com.eureka.mindbloom.book.domain;
+package com.eureka.mindbloom.recommend.domain;
 
+import com.eureka.mindbloom.book.domain.Book;
 import com.eureka.mindbloom.common.domain.BaseEntity;
 import com.eureka.mindbloom.member.domain.Child;
 

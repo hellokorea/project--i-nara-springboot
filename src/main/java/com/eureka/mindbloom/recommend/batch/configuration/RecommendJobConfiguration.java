@@ -1,4 +1,4 @@
-package com.eureka.mindbloom.batch.recommend.configuration;
+package com.eureka.mindbloom.recommend.batch.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +20,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import com.eureka.mindbloom.batch.recommend.dto.ChildBooks;
+import com.eureka.mindbloom.recommend.dto.ChildBooks;
 import com.eureka.mindbloom.book.repository.BookCategoryRepository;
-import com.eureka.mindbloom.book.repository.BookRecommendRepository;
+import com.eureka.mindbloom.recommend.repository.BookRecommendRepository;
 import com.eureka.mindbloom.book.repository.BookRepository;
 import com.eureka.mindbloom.book.repository.jdbc.BookRecommendBulkRepository;
 import com.eureka.mindbloom.category.repository.ChildPreferredRepository;
@@ -72,7 +72,6 @@ public class RecommendJobConfiguration extends DefaultBatchConfiguration {
 
 	@Bean
 	public CompositeItemProcessor<Long, ChildBooks> compositeProcessor() {
-		System.out.println("compositeProcessor");
 		List<ItemProcessor<?, ?>> processors = new ArrayList<>();
 		processors.add(findPreferredRecentBooksProcessor()); // Long -> ChildBooks
 		processors.add(findPreferredBooksProcessor()); // ChildBooks -> ChildBooks
