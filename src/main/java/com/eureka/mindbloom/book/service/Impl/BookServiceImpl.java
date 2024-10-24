@@ -1,8 +1,13 @@
-package com.eureka.mindbloom.book.service;
+package com.eureka.mindbloom.book.service.Impl;
 
 import com.eureka.mindbloom.book.domain.Book;
 import com.eureka.mindbloom.book.dto.BooksResponse;
+import com.eureka.mindbloom.book.dto.RecentlyBookResponse;
 import com.eureka.mindbloom.book.repository.BookRepository;
+import com.eureka.mindbloom.book.service.BookService;
+import com.eureka.mindbloom.book.service.SortOption;
+import com.eureka.mindbloom.member.domain.Member;
+import com.eureka.mindbloom.member.exception.ChildNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -62,5 +67,22 @@ public class BookServiceImpl implements BookService {
 
         // Slice<BooksResponse> 생성
         return new SliceImpl<>(bookResponses, pageable, books.hasNext());
+    }
+
+    @Override
+    public RecentlyBookResponse getRecentlyViewedBooks(int page, Long childId, Member member) {
+        if (isNotParent(member, childId)) {
+            throw new ChildNotFoundException(childId);
+        }
+
+        Pageable pageable = PageRequest.of(page, 10);
+
+        Slice<BooksResponse> books = bookRepository.findRecentlyReadBook(pageable, childId);
+
+        return new RecentlyBookResponse(books.getContent(), books.isLast());
+    }
+
+    private boolean isNotParent(Member member, Long childId) {
+        return member.getChildren().stream().noneMatch(child -> child.getId().equals(childId));
     }
 }
