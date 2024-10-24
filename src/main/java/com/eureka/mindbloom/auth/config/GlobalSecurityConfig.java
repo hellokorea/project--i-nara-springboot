@@ -56,6 +56,7 @@ import java.util.List;
                             new AntPathRequestMatcher("/auth/logout", HttpMethod.POST.name()),
                             new AntPathRequestMatcher("/health"),
                             new AntPathRequestMatcher("/error")
+
                     ));
 
             http.cors(Customizer.withDefaults())

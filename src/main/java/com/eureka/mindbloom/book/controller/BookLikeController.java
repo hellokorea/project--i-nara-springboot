@@ -32,6 +32,16 @@ public class BookLikeController {
                 .build();
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiResponse.success("도서 좋아요 상태가 성공적으로 변경되었습니다.", response));
+                .body(ApiResponse.success("도서 좋아요가 등록되었습니다.", response));
+    }
+
+    @DeleteMapping("/{bookId}/likes")
+    public ResponseEntity<ApiResponse<Void>> removeLike(
+            @PathVariable String bookId,
+            @RequestBody BookLikeRequest request) {
+
+        bookLikeService.removeLike(bookId, request.getChildId());
+
+        return ResponseEntity.ok(ApiResponse.success("도서 좋아요가 취소되었습니다."));
     }
 }

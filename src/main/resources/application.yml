@@ -12,7 +12,7 @@ spring:
     show-sql: true
 
   datasource:
-    url: jdbc:mysql://localhost:3306/db_mindbloom_core
+    url: jdbc:mysql://localhost:3306/db_mindbloom_core?&rewriteBatchedStatements=true
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -20,6 +20,7 @@ spring:
   sql:
     init:
       mode: always
+
 jwt:
   token:
     secretKey: "aclkLc48O1xMi4eurekaCJJ426phEa1Wc4mindbloom"

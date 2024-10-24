@@ -1,7 +1,7 @@
 package com.eureka.mindbloom.book.domain;
 
-
 import com.eureka.mindbloom.category.domain.CategoryTrait;
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,8 +18,8 @@ public class BookCategory {
     @MapsId("categoryTraitId")
     @ManyToOne
     @JoinColumns({
-            @JoinColumn(name = "trait_code"),
-            @JoinColumn(name = "category_code")
+            @JoinColumn(name = "category_code"),
+            @JoinColumn(name = "trait_code")
     })
     private CategoryTrait categoryTrait;
 
