@@ -11,7 +11,7 @@ spring:
     defer-datasource-initialization: true
 
   datasource:
-    url: jdbc:mysql://localhost:3306/db_mindbloom_core
+    url: jdbc:mysql://localhost:3306/db_mindbloom_core?&rewriteBatchedStatements=true
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
