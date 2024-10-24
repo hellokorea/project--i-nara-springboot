@@ -1,12 +1,12 @@
 package com.eureka.mindbloom.trait.controller;
 
 import com.eureka.mindbloom.common.dto.ApiResponse;
-import com.eureka.mindbloom.member.domain.Member;
 import com.eureka.mindbloom.trait.dto.request.CreateTraitRequest;
 import com.eureka.mindbloom.trait.dto.response.QnAResponse;
+import com.eureka.mindbloom.trait.dto.response.TraitValueResultResponse;
+import com.eureka.mindbloom.trait.service.ChildTraitService;
 import com.eureka.mindbloom.trait.service.TraitSurveyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,21 +17,28 @@ import java.util.List;
 public class TraitController {
 
     private final TraitSurveyService traitSurveyService;
+    private final ChildTraitService childTraitService;
 
     @GetMapping
     public ApiResponse<List<QnAResponse>> getQnA() {
 
         List<QnAResponse> qnAResponses = traitSurveyService.getQnA();
-
         return ApiResponse.success("자녀 MBTI 질문, 답변 리스트 조회 성공", qnAResponses);
     }
 
-    @PostMapping
-    public ApiResponse<String> createTraitByQnA(@AuthenticationPrincipal(expression = "member") Member member,
+    @PostMapping("/{childId}")
+    public ApiResponse<String> createTraitByQnA(@PathVariable("childId") Long childId,
                                                 @RequestBody List<CreateTraitRequest> answers) {
 
-        traitSurveyService.createTraitByQnA(member, answers);
-
+        traitSurveyService.createTraitByQnA(childId, answers);
         return ApiResponse.success("MBTI 결과가 생성 되었습니다.");
     }
+
+    @GetMapping("/result/{childId}")
+    public ApiResponse<TraitValueResultResponse> getChildTraitResult(@PathVariable("childId") Long childId) {
+
+        TraitValueResultResponse traitValueResultResponse = childTraitService.getTraitValueResult(childId);
+        return ApiResponse.success("MBTI 검사 결과 입니다.", traitValueResultResponse);
+    }
+
 }
