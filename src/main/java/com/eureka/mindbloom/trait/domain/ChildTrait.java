@@ -44,6 +44,10 @@ public class ChildTrait extends SoftDeleteEntity {
         this.deletedAt = deletedAt;
     }
 
+    public void update(String traitValue) {
+        this.traitValue = traitValue;
+    }
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();

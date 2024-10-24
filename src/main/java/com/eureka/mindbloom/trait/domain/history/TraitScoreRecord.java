@@ -2,7 +2,6 @@ package com.eureka.mindbloom.trait.domain.history;
 
 import com.eureka.mindbloom.common.domain.SoftDeleteEntity;
 import com.eureka.mindbloom.member.domain.Child;
-import com.eureka.mindbloom.trait.domain.ChildTrait;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,15 +14,11 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TraitRecord extends SoftDeleteEntity {
+public class TraitScoreRecord extends SoftDeleteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "child_trait_id")
-    private ChildTrait childTrait;
 
     @ManyToOne
     @JoinColumn(name = "child_id")
@@ -37,9 +32,8 @@ public class TraitRecord extends SoftDeleteEntity {
 
     private LocalDateTime deletedAt;
 
-    public TraitRecord(Long id, ChildTrait childTrait, Child child, String traitCode, Integer traitScore, LocalDateTime createdAt, LocalDateTime deletedAt) {
+    public TraitScoreRecord(Long id, Child child, String traitCode, Integer traitScore, LocalDateTime createdAt, LocalDateTime deletedAt) {
         this.id = id;
-        this.childTrait = childTrait;
         this.child = child;
         this.traitCode = traitCode;
         this.traitScore = traitScore;

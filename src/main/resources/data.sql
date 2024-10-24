@@ -121,45 +121,45 @@ INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '새로운 또래 친구들과 놀이를 하는 게 쉬운가요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (1, '새로운 친구들과 놀이를 하는건 어렵지 않아요', '0101_01', 5, '2024-10-22 15:00:00');
+VALUES (1, '새로운 친구들과 놀이를 하는건 어렵지 않아요', '0101_01', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (1, '나는 새로운 친구들과 놀이를 하는건 아직 어색해요', '0101_02', 5, '2024-10-22 15:00:00');
+VALUES (1, '나는 새로운 친구들과 놀이를 하는건 아직 어색해요', '0101_02', 20, '2024-10-22 15:00:00');
 
 -- 2번 질문
 INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '새로운 친구들과 만나기 전의 기분이 어떤가요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (2, '새로운 친구들을 사귀게 될 생각에 기분이 좋아요', '0101_01', 5, '2024-10-22 15:00:00');
+VALUES (2, '새로운 친구들을 사귀게 될 생각에 기분이 좋아요', '0101_01', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (2, '새로운 친구들과 사이좋게 어떻게 지내야할지 걱정 돼요', '0101_02', 5, '2024-10-22 15:00:00');
+VALUES (2, '새로운 친구들과 사이좋게 어떻게 지내야할지 걱정 돼요', '0101_02', 20, '2024-10-22 15:00:00');
 
 -- 3번 질문
 INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '여러명의 친구와 노는 것이 좋나요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (3, '네! 많은 친구들과 노는게 더 재밌고 좋아요', '0101_01', 5, '2024-10-22 15:00:00');
+VALUES (3, '네! 많은 친구들과 노는게 더 재밌고 좋아요', '0101_01', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (3, '아니요! 적은 친구들과 노는게 더 재밌고 좋아요', '0101_02', 5, '2024-10-22 15:00:00');
+VALUES (3, '아니요! 적은 친구들과 노는게 더 재밌고 좋아요', '0101_02', 20, '2024-10-22 15:00:00');
 
 -- 4번 질문
 INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '어떤 친구들과 얘기해야 좀 더 쉽고 편안하게 얘기할 수 있나요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (4, '친한 친구도 좋고 새로운 친구들과도 얘기하는 것도 편하고 쉬워요', '0101_01', 5, '2024-10-22 15:00:00');
+VALUES (4, '친한 친구도 좋고 새로운 친구들과도 얘기하는 것도 편하고 쉬워요', '0101_01', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (4, '나랑 친한 친구들끼리만 얘기해야 더 편하고 쉬워요', '0101_02', 5, '2024-10-22 15:00:00');
+VALUES (4, '나랑 친한 친구들끼리만 얘기해야 더 편하고 쉬워요', '0101_02', 20, '2024-10-22 15:00:00');
 
--- 5번 질문
+-- 20번 질문
 INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '새로운 친구를 만날 때 어떻게 하는게 더 좋은가요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (5, '내가 먼저 다가가서 말을 걸어서 친해지는게 더 좋아요', '0101_01', 5, '2024-10-22 15:00:00');
+VALUES (5, '내가 먼저 다가가서 말을 걸어서 친해지는게 더 좋아요', '0101_01', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (5, '친구가 먼저 다가와서 친해지는게 더 좋아요', '0101_02', 5, '2024-10-22 15:00:00');
+VALUES (5, '친구가 먼저 다가와서 친해지는게 더 좋아요', '0101_02', 20, '2024-10-22 15:00:00');
 
 -- N, S 테스트
 -- 6번 질문
@@ -167,45 +167,45 @@ INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '새로운 놀이를 알게 됐을 때 호기심이 생기나요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (6, '새로운 놀이를 배우는건 재밌고 흥미로워요', '0101_04', 5, '2024-10-22 15:00:00');
+VALUES (6, '새로운 놀이를 배우는건 재밌고 흥미로워요', '0101_04', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (6, '내가 할 줄 아는 놀이가 더 편안해요', '0101_03', 5, '2024-10-22 15:00:00');
+VALUES (6, '내가 할 줄 아는 놀이가 더 편안해요', '0101_03', 20, '2024-10-22 15:00:00');
 
 -- 7번 질문
 INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '재밌는 책을 읽고 있을 때 상상력은 어떤가요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (7, '책을 읽는 동안 머릿 속에서 다양한 상상의 나래가 펼쳐져요', '0101_04', 5, '2024-10-22 15:00:00');
+VALUES (7, '책을 읽는 동안 머릿 속에서 다양한 상상의 나래가 펼쳐져요', '0101_04', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (7, '상상보다는 책의 내용을 집중해서 더 읽는거 같아요', '0101_03', 5, '2024-10-22 15:00:00');
+VALUES (7, '상상보다는 책의 내용을 집중해서 더 읽는거 같아요', '0101_03', 20, '2024-10-22 15:00:00');
 
 -- 8번 질문
 INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '어떤 책의 내용이 더 재밌고 좋은가요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (8, '상상으로만 일어날 수 있는 내용이 더 재밌고 좋아요', '0101_04', 5, '2024-10-22 15:00:00');
+VALUES (8, '상상으로만 일어날 수 있는 내용이 더 재밌고 좋아요', '0101_04', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (8, '현실에서 일어날 수 있는 내용이 더 재밌고 좋아요', '0101_03', 5, '2024-10-22 15:00:00');
+VALUES (8, '현실에서 일어날 수 있는 내용이 더 재밌고 좋아요', '0101_03', 20, '2024-10-22 15:00:00');
 
 -- 9번 질문
 INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '그림이나 만화를 보면 나도 잘할 수 있겠다고 생각하나요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (9, '나는 이 그림이나 만화보다 더 잘그릴 수 있다고 자신감이 생겨요', '0101_04', 5, '2024-10-22 15:00:00');
+VALUES (9, '나는 이 그림이나 만화보다 더 잘그릴 수 있다고 자신감이 생겨요', '0101_04', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (9, '나는 미술 능력이 부족하다고 생각해서 자신감은 크게 없어요', '0101_03', 5, '2024-10-22 15:00:00');
+VALUES (9, '나는 미술 능력이 부족하다고 생각해서 자신감은 크게 없어요', '0101_03', 20, '2024-10-22 15:00:00');
 
 -- 10번 질문
 INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '친구한테 실수를 했던 경험을 떠올리며 후회를 하나요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (10, '그 때 그러지말걸 하면서 자주 후회해요', '0101_04', 5, '2024-10-22 15:00:00');
+VALUES (10, '그 때 그러지말걸 하면서 자주 후회해요', '0101_04', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (10, '후회하기 보다는 경험 삼아 더 친구들한테 잘하고 싶어요', '0101_03', 5, '2024-10-22 15:00:00');
+VALUES (10, '후회하기 보다는 경험 삼아 더 친구들한테 잘하고 싶어요', '0101_03', 20, '2024-10-22 15:00:00');
 
 -- T, F 테스트
 -- 11번 질문
@@ -213,44 +213,44 @@ INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '친구가 울고 있을 때 어떤 생각이 드나요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (11, '궁금해서 친구에게 왜 울어?라고 물어볼거 같아요', '0101_05', 5, '2024-10-22 15:00:00');
+VALUES (11, '궁금해서 친구에게 왜 울어?라고 물어볼거 같아요', '0101_020', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (11, '나도 같이 슬퍼져서 친구야 울지마라고 말할거 같아요', '0101_06', 5, '2024-10-22 15:00:00');
+VALUES (11, '나도 같이 슬퍼져서 친구야 울지마라고 말할거 같아요', '0101_06', 20, '2024-10-22 15:00:00');
 
 -- 12번 질문
 INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '친구들에게 간식을 나눠 줄 때 어떻게 하나요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (12, '모든 친구들에게 공평하게 나눠 주는게 좋아요', '0101_05', 5, '2024-10-22 15:00:00');
+VALUES (12, '모든 친구들에게 공평하게 나눠 주는게 좋아요', '0101_020', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (12, '나랑 친한 친구한테는 몇개 더 나눠 주는게 좋아요', '0101_06', 5, '2024-10-22 15:00:00');
+VALUES (12, '나랑 친한 친구한테는 몇개 더 나눠 주는게 좋아요', '0101_06', 20, '2024-10-22 15:00:00');
 
 -- 13번 질문
 INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '친한 친구가 나에게 잘못 했을 때 어떻게 반응하나요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (13, '일단 어떻게 화해 할 수 있는지 먼저 생각해요', '0101_05', 5, '2024-10-22 15:00:00');
+VALUES (13, '일단 어떻게 화해 할 수 있는지 먼저 생각해요', '0101_020', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (13, '화가나는 기분이 들어서 화해하고 싶지 않아요', '0101_06', 5, '2024-10-22 15:00:00');
+VALUES (13, '화가나는 기분이 들어서 화해하고 싶지 않아요', '0101_06', 20, '2024-10-22 15:00:00');
 
 -- 14번 질문
 INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '게임에서 친구가 규칙을 어겼을 때 어떻게 할 것 같나요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (14, '왜 규칙을 지키지 않았는지 물어보고 다시 규칙대로 하자고 말할 거예요', '0101_05', 5, '2024-10-22 15:00:00');
+VALUES (14, '왜 규칙을 지키지 않았는지 물어보고 다시 규칙대로 하자고 말할 거예요', '0101_020', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (14, '친구가 기분 나빠할까 봐 그냥 넘어가고 계속 같이 놀아요', '0101_06', 5, '2024-10-22 15:00:00');
+VALUES (14, '친구가 기분 나빠할까 봐 그냥 넘어가고 계속 같이 놀아요', '0101_06', 20, '2024-10-22 15:00:00');
 
--- 15번 질문
+-- 120번 질문
 INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '슬픈 책이나 영화를 볼 때 눈물이 많이 나는 편인가요?', true, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (15, '슬프게 생각되지는 않아서 눈물이 잘 안나와요', '0101_05', 5, '2024-10-22 15:00:00');
+VALUES (15, '슬프게 생각되지는 않아서 눈물이 잘 안나와요', '0101_020', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (15, '나도 같이 슬퍼져서 눈물이 많이 나요', '0101_06', 5, '2024-10-22 15:00:00');
+VALUES (15, '나도 같이 슬퍼져서 눈물이 많이 나요', '0101_06', 20, '2024-10-22 15:00:00');
 
 -- J, P 테스트
 -- 16번 질문
@@ -258,42 +258,42 @@ INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '숙제를 할 때 보통 어떻게 하는 편인가요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (16, '빨리 시작해서 끝내고 그 뒤에 재밌게 노는 게 좋아요', '0101_08', 5, '2024-10-22 15:00:00');
+VALUES (16, '빨리 시작해서 끝내고 그 뒤에 재밌게 노는 게 좋아요', '0101_08', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (16, '재밌게 놀면서 숙제는 하고 싶을 때 하고, 마지막에 하는 게 좋아요', '0101_07', 5, '2024-10-22 15:00:00');
+VALUES (16, '재밌게 놀면서 숙제는 하고 싶을 때 하고, 마지막에 하는 게 좋아요', '0101_07', 20, '2024-10-22 15:00:00');
 
 -- 17번 질문
 INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '소풍을 간다고 했을 때 준비를 어떻게 하는 게 좋은가요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (17, '소풍에 필요한 물건들은 계획해서 꼼꼼히 챙기는 게 좋아요', '0101_08', 5, '2024-10-22 15:00:00');
+VALUES (17, '소풍에 필요한 물건들은 계획해서 꼼꼼히 챙기는 게 좋아요', '0101_08', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (17, '소풍 가기 전에 생각나는 것만 얼른 챙기는 게 더 좋아요', '0101_07', 5, '2024-10-22 15:00:00');
+VALUES (17, '소풍 가기 전에 생각나는 것만 얼른 챙기는 게 더 좋아요', '0101_07', 20, '2024-10-22 15:00:00');
 
 -- 18번 질문
 INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '정해진 시간에 잠을 자는 편인가요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (18, '네! 정해진 시간에 자는 편이에요', '0101_08', 5, '2024-10-22 15:00:00');
+VALUES (18, '네! 정해진 시간에 자는 편이에요', '0101_08', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (18, '아니요! 매일 잠드는 시간이 항상 달라요', '0101_07', 5, '2024-10-22 15:00:00');
+VALUES (18, '아니요! 매일 잠드는 시간이 항상 달라요', '0101_07', 20, '2024-10-22 15:00:00');
 
 -- 19번 질문
 INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '새로운 놀이를 하게 될 때 어떻게 하나요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (19, '먼저 놀이의 규칙을 배우고 나서 시작하는 게 좋아요', '0101_08', 5, '2024-10-22 15:00:00');
+VALUES (19, '먼저 놀이의 규칙을 배우고 나서 시작하는 게 좋아요', '0101_08', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (19, '먼저 놀이를 시작하고 나서 규칙을 배워나가며 하는 게 좋아요', '0101_07', 5, '2024-10-22 15:00:00');
+VALUES (19, '먼저 놀이를 시작하고 나서 규칙을 배워나가며 하는 게 좋아요', '0101_07', 20, '2024-10-22 15:00:00');
 
 -- 20번 질문
 INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
 VALUES ('0101', '쉬는 날 어떻게 보내는 게 더 좋은가요?', true, '2024-10-22 15:00:00');
 
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (20, '그날 계획을 세워놓고 즐겁고 재밌게 쉬는 게 좋아요', '0101_08', 5, '2024-10-22 15:00:00');
+VALUES (20, '그날 계획을 세워놓고 즐겁고 재밌게 쉬는 게 좋아요', '0101_08', 20, '2024-10-22 15:00:00');
 INSERT INTO trait_answer (question_id, content, trait_code, point, created_at)
-VALUES (20, '특별한 계획 없이 즐겁고 재밌게 쉬는 게 좋아요', '0101_07', 5, '2024-10-22 15:00:00');
+VALUES (20, '특별한 계획 없이 즐겁고 재밌게 쉬는 게 좋아요', '0101_07', 20, '2024-10-22 15:00:00');

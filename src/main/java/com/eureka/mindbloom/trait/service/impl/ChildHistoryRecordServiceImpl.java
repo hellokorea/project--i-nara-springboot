@@ -12,14 +12,17 @@ import com.eureka.mindbloom.trait.service.ChildHistoryRecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ChildHistoryRecordServiceImpl implements ChildHistoryRecordService {
 
     private final ChildTraitResponseRepository childTraitResponseRepository;
@@ -27,38 +30,12 @@ public class ChildHistoryRecordServiceImpl implements ChildHistoryRecordService 
     private final TraitAnswerRepository traitAnswerRepository;
 
     @Override
-    public void saveChildResponse(Child child, List<CreateTraitRequest> answers) {
+    public Map<Integer, TraitAnswer> saveChildResponse(Child child, List<CreateTraitRequest> answers) {
 
-        // Answers 검증
-        List<Integer> questionIds = answers.stream()
-                .map(CreateTraitRequest::getQuestionId)
-                .collect(Collectors.toList());
+        Map<Integer, TraitQuestion> questionMap = fetchQuestionMap(answers);
+        Map<Integer, TraitAnswer> answerMap = fetchAnswerMap(answers);
+        Map<Integer, ChildTraitResponses> childTraitResponsesMap = fetchChildResponseMap(child.getId(), questionMap);
 
-        validateQuestion(questionIds);
-
-        List<Integer> answerIds = answers.stream()
-                .map(CreateTraitRequest::getAnswerId)
-                .collect(Collectors.toList());
-
-        validateAnswer(answerIds);
-
-        // QnA HashMap 생성
-        Map<Integer, TraitQuestion> questionMap = traitQuestionRepository.findAllById(questionIds)
-                .stream()
-                .collect(Collectors.toMap(TraitQuestion::getId, question -> question));
-
-        Map<Integer, TraitAnswer> answerMap = traitAnswerRepository.findAllById(answerIds)
-                .stream()
-                .collect(Collectors.toMap(TraitAnswer::getId, answer -> answer));
-
-        // ChildTraitResponse HashMap 생성
-        List<ChildTraitResponses> existingResponse = childTraitResponseRepository
-                .findByChildIdAndQuestionIds(child.getId(),questionIds);
-
-        Map<Integer, ChildTraitResponses> childTraitResponsesMap = existingResponse.stream()
-                .collect(Collectors.toMap(response -> response.getQuestion().getId(), response -> response));
-
-        // ChildTraitResponse 저장 및 업데이트
         List<ChildTraitResponses> responses = answers.stream()
                 .map(traitData -> {
 
@@ -81,21 +58,58 @@ public class ChildHistoryRecordServiceImpl implements ChildHistoryRecordService 
                 .collect(Collectors.toList());
 
         childTraitResponseRepository.saveAll(responses);
+
+        return answerMap;
     }
 
-    private void validateQuestion(List<Integer> questionIds) {
-        List<TraitQuestion> questions = traitQuestionRepository.findAllById(questionIds);
+    private Map<Integer, TraitQuestion> fetchQuestionMap(List<CreateTraitRequest> answers) {
+        List<Integer> questionIds = answers.stream()
+                .map(CreateTraitRequest::getQuestionId)
+                .collect(Collectors.toList());
 
-        if (questions.size() != questionIds.size()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "일부 질문 Id 찾을 수 없습니다.");
+        validateQuestions(questionIds);
+
+        return traitQuestionRepository.findAllById(questionIds)
+                .stream()
+                .collect(Collectors.toMap(TraitQuestion::getId, question -> question));
+    }
+
+    private Map<Integer, TraitAnswer> fetchAnswerMap(List<CreateTraitRequest> answers) {
+        List<Integer> answerIds = answers.stream()
+                .map(CreateTraitRequest::getAnswerId)
+                .collect(Collectors.toList());
+
+        validateAnswers(answerIds);
+
+        return traitAnswerRepository.findAllById(answerIds)
+                .stream()
+                .collect(Collectors.toMap(TraitAnswer::getId, answer -> answer));
+    }
+
+    private Map<Integer, ChildTraitResponses> fetchChildResponseMap(Long childId, Map<Integer, TraitQuestion> questions) {
+        List<Integer> questionIds = new ArrayList<>(questions.keySet());
+
+        List<ChildTraitResponses> existingResponse = childTraitResponseRepository
+                .findByChildIdAndQuestionIds(childId, questionIds);
+
+        return existingResponse.stream()
+                .collect(Collectors.toMap(response -> response.getQuestion().getId(), response -> response));
+    }
+
+
+    private void validateQuestions(List<Integer> Ids) {
+        List<TraitQuestion> questions = traitQuestionRepository.findAllById(Ids);
+
+        if (questions.size() != Ids.size()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "모든 질문에 대한 답변을 해야 합니다.");
         }
     }
 
-    private void validateAnswer(List<Integer> answerIds) {
-        List<TraitAnswer> answers = traitAnswerRepository.findAllById(answerIds);
+    private void validateAnswers(List<Integer> Ids) {
+        List<TraitAnswer> answers = traitAnswerRepository.findAllById(Ids);
 
-        if (answers.size() != answerIds.size()) {
-           throw new ResponseStatusException(HttpStatus.NOT_FOUND, "일부 답변 Id 찾을 수 없습니다.");
+        if (answers.size() != Ids.size()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "모든 질문에 대한 답변을 해야 합니다.");
         }
     }
 }

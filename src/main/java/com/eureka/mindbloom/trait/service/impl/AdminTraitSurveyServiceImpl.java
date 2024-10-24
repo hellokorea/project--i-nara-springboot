@@ -12,6 +12,7 @@ import com.eureka.mindbloom.trait.service.AdminTraitSurveyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -20,12 +21,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AdminTraitSurveyServiceImpl implements AdminTraitSurveyService {
 
     private final TraitQuestionRepository traitQuestionRepository;
     private final TraitAnswerRepository traitAnswerRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<AdminQnAResponse> getQnA() {
         List<TraitQuestion> traitQuestions = traitQuestionRepository.findAll();
         List<TraitAnswer> traitAnswers = traitAnswerRepository.findAll();
