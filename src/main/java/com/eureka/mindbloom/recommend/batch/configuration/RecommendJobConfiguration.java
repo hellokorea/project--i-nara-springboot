@@ -1,4 +1,4 @@
-package com.eureka.mindbloom.batch.recommend.configuration;
+package com.eureka.mindbloom.recommend.batch.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import com.eureka.mindbloom.batch.recommend.dto.ChildBooks;
+import com.eureka.mindbloom.recommend.dto.ChildBooks;
 import com.eureka.mindbloom.book.repository.BookCategoryRepository;
 import com.eureka.mindbloom.book.repository.BookRecommendRepository;
 import com.eureka.mindbloom.book.repository.BookRepository;

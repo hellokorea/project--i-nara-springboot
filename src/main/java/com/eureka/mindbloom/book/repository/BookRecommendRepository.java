@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.eureka.mindbloom.book.domain.BookRecommend;
+import com.eureka.mindbloom.recommend.domain.BookRecommend;
 import com.eureka.mindbloom.book.dto.BookRecommendResponse;
 
 public interface BookRecommendRepository extends JpaRepository<BookRecommend, Long> {

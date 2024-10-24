@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.eureka.mindbloom.batch.recommend.dto.ChildBooks;
+import com.eureka.mindbloom.recommend.dto.ChildBooks;
 
 import lombok.RequiredArgsConstructor;
 

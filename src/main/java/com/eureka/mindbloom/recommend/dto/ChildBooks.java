@@ -1,4 +1,4 @@
-package com.eureka.mindbloom.batch.recommend.dto;
+package com.eureka.mindbloom.recommend.dto;
 
 import java.util.List;
 
