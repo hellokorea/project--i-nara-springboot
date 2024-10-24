@@ -1,4 +1,4 @@
-package com.eureka.mindbloom.book.service;
+package com.eureka.mindbloom.book.service.Impl;
 
 import com.eureka.mindbloom.book.domain.Book;
 import com.eureka.mindbloom.book.domain.BookCategory;
@@ -7,6 +7,7 @@ import com.eureka.mindbloom.book.dto.AdminBookRequestDto;
 import com.eureka.mindbloom.book.dto.AdminBookResponseDto;
 import com.eureka.mindbloom.book.repository.BookCategoryRepository;
 import com.eureka.mindbloom.book.repository.BookRepository;
+import com.eureka.mindbloom.book.service.AdminBookService;
 import com.eureka.mindbloom.category.domain.CategoryTrait;
 import com.eureka.mindbloom.category.repository.CategoryTraitRepository;
 import com.eureka.mindbloom.commoncode.domain.CommonCode;

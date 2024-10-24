@@ -230,7 +230,7 @@ SET created_at = NOW()
 WHERE created_at IS NULL;
 
 
---trait sql data (1회만 사용 한정 / 초기 세팅값)
+-- trait sql data (1회만 사용 한정 / 초기 세팅값)
 -- I, E 테스트
 -- 1번 질문
 INSERT INTO trait_question (trait_code_group, content, disabled, created_at)
