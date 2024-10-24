@@ -22,7 +22,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.eureka.mindbloom.recommend.dto.ChildBooks;
 import com.eureka.mindbloom.book.repository.BookCategoryRepository;
-import com.eureka.mindbloom.book.repository.BookRecommendRepository;
+import com.eureka.mindbloom.recommend.repository.BookRecommendRepository;
 import com.eureka.mindbloom.book.repository.BookRepository;
 import com.eureka.mindbloom.book.repository.jdbc.BookRecommendBulkRepository;
 import com.eureka.mindbloom.category.repository.ChildPreferredRepository;
