@@ -14,7 +14,7 @@ public interface BookRecommendRepository extends JpaRepository<BookRecommend, Lo
 		+ "FROM BookRecommend br "
 		+ "JOIN Book b ON br.book.isbn = b.isbn "
 		+ "left JOIN BookRecommendLike brl ON br.id = brl.id.bookRecommendId "
-		+ "where br.child.id = :childId AND br.child.id = brl.child.id AND br.createdAt = current_date")
+		+ "where br.child.id = :childId AND br.createdAt = current_date")
 	List<BookRecommendResponse> findByChildIdAndCurrentDate(Long childId);
 
 	@Query("SELECT br.book.isbn FROM BookRecommend br where br.child.id = :childId And br.book.isbn Not In (SELECT distinct bv.book.isbn FROM BookView bv WHERE bv.child.id = :childId)")
