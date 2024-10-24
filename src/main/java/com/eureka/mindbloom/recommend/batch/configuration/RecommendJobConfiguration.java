@@ -72,7 +72,6 @@ public class RecommendJobConfiguration extends DefaultBatchConfiguration {
 
 	@Bean
 	public CompositeItemProcessor<Long, ChildBooks> compositeProcessor() {
-		System.out.println("compositeProcessor");
 		List<ItemProcessor<?, ?>> processors = new ArrayList<>();
 		processors.add(findPreferredRecentBooksProcessor()); // Long -> ChildBooks
 		processors.add(findPreferredBooksProcessor()); // ChildBooks -> ChildBooks
