@@ -16,7 +16,7 @@ import com.eureka.mindbloom.recommend.service.RecommendService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/books/recommend")
+@RequestMapping("/member/books/recommend")
 @RequiredArgsConstructor
 public class RecommendController {
 
