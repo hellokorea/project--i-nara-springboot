@@ -18,8 +18,8 @@ public class BookCategory {
     @MapsId("categoryTraitId")
     @ManyToOne
     @JoinColumns({
-            @JoinColumn(name = "trait_code"),
-            @JoinColumn(name = "category_code")
+            @JoinColumn(name = "category_code"),
+            @JoinColumn(name = "trait_code")
     })
     private CategoryTrait categoryTrait;
 

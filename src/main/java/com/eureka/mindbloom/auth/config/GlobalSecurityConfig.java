@@ -55,7 +55,8 @@ import java.util.List;
                             new AntPathRequestMatcher("/auth/login", HttpMethod.POST.name()),
                             new AntPathRequestMatcher("/auth/logout", HttpMethod.POST.name()),
                             new AntPathRequestMatcher("/health"),
-                            new AntPathRequestMatcher("/error")
+                            new AntPathRequestMatcher("/error"),
+                            new AntPathRequestMatcher("/member/books", HttpMethod.GET.name())
                     ));
 
             http.cors(Customizer.withDefaults())
