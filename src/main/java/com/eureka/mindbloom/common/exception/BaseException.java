@@ -1,4 +1,4 @@
-package com.eureka.mindbloom.auth.exception;
+package com.eureka.mindbloom.common.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatusCode;

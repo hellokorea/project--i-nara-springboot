@@ -1,4 +1,4 @@
-package com.eureka.mindbloom.auth.dto;
+package com.eureka.mindbloom.member.dto;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -1,5 +1,6 @@
 package com.eureka.mindbloom.book.domain;
 
+import com.eureka.mindbloom.category.domain.CategoryTraitId;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,6 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.Objects;
 
-import com.eureka.mindbloom.category.CategoryTraitId;
 
 @Embeddable
 @Getter
