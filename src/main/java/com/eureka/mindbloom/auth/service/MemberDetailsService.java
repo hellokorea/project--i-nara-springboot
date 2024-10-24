@@ -1,5 +1,6 @@
-package com.eureka.mindbloom.auth.config;
+package com.eureka.mindbloom.auth.service;
 
+import com.eureka.mindbloom.auth.dto.MemberDetails;
 import com.eureka.mindbloom.member.domain.Member;
 import com.eureka.mindbloom.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

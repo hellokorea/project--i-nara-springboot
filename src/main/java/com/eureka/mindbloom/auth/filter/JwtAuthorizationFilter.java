@@ -1,7 +1,7 @@
 package com.eureka.mindbloom.auth.filter;
 
-import com.eureka.mindbloom.auth.config.MemberDetails;
-import com.eureka.mindbloom.auth.config.MemberDetailsService;
+import com.eureka.mindbloom.auth.dto.MemberDetails;
+import com.eureka.mindbloom.auth.service.MemberDetailsService;
 import com.eureka.mindbloom.auth.utils.JwtProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

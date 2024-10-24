@@ -1,4 +1,4 @@
-package com.eureka.mindbloom.auth.config;
+package com.eureka.mindbloom.auth.dto;
 
 import com.eureka.mindbloom.member.domain.Member;
 import org.springframework.security.core.GrantedAuthority;

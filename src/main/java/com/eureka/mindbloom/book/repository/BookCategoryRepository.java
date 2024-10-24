@@ -1,5 +1,6 @@
 package com.eureka.mindbloom.book.repository;
 
+import com.eureka.mindbloom.book.domain.Book;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,4 +18,9 @@ public interface BookCategoryRepository extends JpaRepository<BookCategory, Book
 
 	@Query("SELECT b.id.isbn FROM BookCategory b WHERE b.id.categoryTraitId.traitCode IN :traitCodes")
 	List<String> findIsbnByTraitCodes(String[] traitCodes);
+
+    void deleteByBook(Book book);
+
+    void deleteByBookIsbn(String isbn);
+
 }
