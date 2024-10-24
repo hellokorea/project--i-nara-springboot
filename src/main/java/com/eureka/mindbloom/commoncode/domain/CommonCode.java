@@ -1,4 +1,4 @@
-package com.eureka.mindbloom.common.domain.code;
+package com.eureka.mindbloom.commoncode.domain;
 
 import com.eureka.mindbloom.common.domain.BaseEntity;
 import jakarta.persistence.*;
@@ -20,4 +20,13 @@ public class CommonCode extends BaseEntity {
     private CommonCodeGroup codeGroup;
 
     private String name;
+
+    private boolean disabled = false;
+
+    public CommonCode(String code, CommonCodeGroup codeGroup, boolean disabled, String name) {
+        this.code = code;
+        this.codeGroup = codeGroup;
+        this.disabled = disabled;
+        this.name = name;
+    }
 }
