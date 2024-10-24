@@ -1,7 +1,7 @@
 package com.eureka.mindbloom.book.domain;
 
-
 import com.eureka.mindbloom.category.domain.CategoryTrait;
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
