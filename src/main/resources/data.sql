@@ -14,97 +14,96 @@ VALUES
     ('0500', '성별', '사용자 성별', NULL, FALSE);
 
 -- Inserting CommonCode data for MBTI
-INSERT INTO common_code (code, code_group, name)
+INSERT INTO common_code (code, code_group, name, disabled)
 VALUES
-    ('0101_01', '0101', 'E'),
-    ('0101_02', '0101', 'I'),
-    ('0101_03', '0101', 'S'),
-    ('0101_04', '0101', 'N'),
-    ('0101_05', '0101', 'T'),
-    ('0101_06', '0101', 'F'),
-    ('0101_07', '0101', 'P'),
-    ('0101_08', '0101', 'J');
+    ('0101_01', '0101', 'E', FALSE),
+    ('0101_02', '0101', 'I', FALSE),
+    ('0101_03', '0101', 'S', FALSE),
+    ('0101_04', '0101', 'N', FALSE),
+    ('0101_05', '0101', 'T', FALSE),
+    ('0101_06', '0101', 'F', FALSE),
+    ('0101_07', '0101', 'P', FALSE),
+    ('0101_08', '0101', 'J', FALSE);
 
 -- Inserting CommonCode data for 배우기 category
-INSERT INTO common_code (code, code_group, name)
+INSERT INTO common_code (code, code_group, name, disabled)
 VALUES
-    ('0201_01', '0201', '한글'),
-    ('0201_02', '0201', '수학'),
-    ('0201_03', '0201', '과학'),
-    ('0201_04', '0201', '역사'),
-    ('0201_05', '0201', '문화'),
-    ('0201_06', '0201', '퀴즈'),
-    ('0201_07', '0201', '생활'),
-    ('0201_08', '0201', '안전'),
-    ('0201_09', '0201', '성교육');
+    ('0201_01', '0201', '한글', FALSE),
+    ('0201_02', '0201', '수학', FALSE),
+    ('0201_03', '0201', '과학', FALSE),
+    ('0201_04', '0201', '역사', FALSE),
+    ('0201_05', '0201', '문화', FALSE),
+    ('0201_06', '0201', '퀴즈', FALSE),
+    ('0201_07', '0201', '생활', FALSE),
+    ('0201_08', '0201', '안전', FALSE),
+    ('0201_09', '0201', '성교육', FALSE);
 
 -- Inserting CommonCode data for 자연 category
-INSERT INTO common_code (code, code_group, name)
+INSERT INTO common_code (code, code_group, name, disabled)
 VALUES
-    ('0202_01', '0202', '계절'),
-    ('0202_02', '0202', '산'),
-    ('0202_03', '0202', '바다'),
-    ('0202_04', '0202', '하늘'),
-    ('0202_05', '0202', '우주'),
-    ('0202_06', '0202', '식물');
+    ('0202_01', '0202', '계절', FALSE),
+    ('0202_02', '0202', '산', FALSE),
+    ('0202_03', '0202', '바다', FALSE),
+    ('0202_04', '0202', '하늘', FALSE),
+    ('0202_05', '0202', '우주', FALSE),
+    ('0202_06', '0202', '식물', FALSE);
 
 -- Inserting CommonCode data for 일상생활 category
-INSERT INTO common_code (code, code_group, name)
+INSERT INTO common_code (code, code_group, name, disabled)
 VALUES
-    ('0203_01', '0203', '가족'),
-    ('0203_02', '0203', '친구'),
-    ('0203_03', '0203', '똥-방귀'),
-    ('0203_04', '0203', '잠자기'),
-    ('0203_05', '0203', '탈것'),
-    ('0203_06', '0203', '음식'),
-    ('0203_07', '0203', '놀이'),
-    ('0203_08', '0203', '그림'),
-    ('0203_09', '0203', '음악');
+    ('0203_01', '0203', '가족', FALSE),
+    ('0203_02', '0203', '친구', FALSE),
+    ('0203_03', '0203', '똥-방귀', FALSE),
+    ('0203_04', '0203', '잠자기', FALSE),
+    ('0203_05', '0203', '탈것', FALSE),
+    ('0203_06', '0203', '음식', FALSE),
+    ('0203_07', '0203', '놀이', FALSE),
+    ('0203_08', '0203', '그림', FALSE),
+    ('0203_09', '0203', '음악', FALSE);
 
 -- Inserting CommonCode data for 동화 category
-INSERT INTO common_code (code, code_group, name)
+INSERT INTO common_code (code, code_group, name, disabled)
 VALUES
-    ('0204_01', '0204', '명작동화'),
-    ('0204_02', '0204', '전래동화'),
-    ('0204_03', '0204', '창작동화'),
-    ('0204_04', '0204', '위인전'),
-    ('0204_05', '0204', '공주-왕자'),
-    ('0204_06', '0204', '모험'),
-    ('0204_07', '0204', '유명작가'),
-    ('0204_08', '0204', '브랜드전집');
+    ('0204_01', '0204', '명작동화', FALSE),
+    ('0204_02', '0204', '전래동화', FALSE),
+    ('0204_03', '0204', '창작동화', FALSE),
+    ('0204_04', '0204', '위인전', FALSE),
+    ('0204_05', '0204', '공주-왕자', FALSE),
+    ('0204_06', '0204', '모험', FALSE),
+    ('0204_07', '0204', '유명작가', FALSE),
+    ('0204_08', '0204', '브랜드전집', FALSE);
 
 -- Inserting CommonCode data for 동물 category
-INSERT INTO common_code (code, code_group, name)
+INSERT INTO common_code (code, code_group, name, disabled)
 VALUES
-    ('0205_01', '0205', '동물'),
-    ('0205_02', '0205', '곤충'),
-    ('0205_03', '0205', '파충류'),
-    ('0205_04', '0205', '공룡'),
-    ('0205_05', '0205', '새'),
-    ('0205_06', '0205', '반려동물'),
-    ('0205_07', '0205', '바다동물'),
-    ('0205_08', '0205', '물고기');
+    ('0205_01', '0205', '동물', FALSE),
+    ('0205_02', '0205', '곤충', FALSE),
+    ('0205_03', '0205', '파충류', FALSE),
+    ('0205_04', '0205', '공룡', FALSE),
+    ('0205_05', '0205', '새', FALSE),
+    ('0205_06', '0205', '반려동물', FALSE),
+    ('0205_07', '0205', '바다동물', FALSE),
+    ('0205_08', '0205', '물고기', FALSE);
 
 -- Inserting CommonCode data for 행동
-INSERT INTO common_code (code, code_group, name)
+INSERT INTO common_code (code, code_group, name, disabled)
 VALUES
-    ('0300_01', '0300', '조회'),
-    ('0300_02', '0300', '좋아요'),
-    ('0300_03', '0300', '싫어요'),
-    ('0300_04', '0300', '추천좋아요');
+    ('0300_01', '0300', '조회', FALSE),
+    ('0300_02', '0300', '좋아요', FALSE),
+    ('0300_03', '0300', '싫어요', FALSE),
+    ('0300_04', '0300', '추천좋아요', FALSE);
 
 -- Inserting CommonCode data for 권한
-INSERT INTO common_code (code, code_group, name)
+INSERT INTO common_code (code, code_group, name, disabled)
 VALUES
-    ('0400_01', '0400', 'Admin'),
-    ('0400_02', '0400', 'User');
+    ('0400_01', '0400', 'Admin', FALSE),
+    ('0400_02', '0400', 'User', FALSE);
 
 -- Inserting CommonCode data for 성별
-INSERT INTO common_code (code, code_group, name)
+INSERT INTO common_code (code, code_group, name, disabled)
 VALUES
-    ('0500_01', '0500', '남성'),
-    ('0500_02', '0500', '여성'),
-    ('0500_03', '0500', 'Others');
+    ('0500_01', '0500', '남성', FALSE),
+    ('0500_02', '0500', '여성', FALSE);
 
 UPDATE common_code_group
 SET created_at = NOW()
