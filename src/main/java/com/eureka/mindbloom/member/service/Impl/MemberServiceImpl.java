@@ -1,13 +1,13 @@
 package com.eureka.mindbloom.member.service.Impl;
 
 
-import com.eureka.mindbloom.member.dto.SignUpResponse;
-import com.eureka.mindbloom.member.dto.SignUpRequest;
-import com.eureka.mindbloom.member.exception.DuplicationEmailException;
 import com.eureka.mindbloom.member.domain.Member;
+import com.eureka.mindbloom.member.dto.GetMemberProfileResponse;
+import com.eureka.mindbloom.member.dto.SignUpRequest;
+import com.eureka.mindbloom.member.dto.SignUpResponse;
 import com.eureka.mindbloom.member.dto.UpdateMemberProfileRequest;
+import com.eureka.mindbloom.member.exception.DuplicationEmailException;
 import com.eureka.mindbloom.member.repository.MemberRepository;
-import com.eureka.mindbloom.member.service.GetMemberProfileResponse;
 import com.eureka.mindbloom.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
