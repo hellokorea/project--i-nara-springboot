@@ -17,15 +17,15 @@ public class TraitScoreDailyRecord extends SoftDeleteEntity {
     private Long id;
 
     @ManyToOne
-    private TraitScoreRecord traitScoreRecordId;
+    private TraitScoreRecord traitScoreRecord;
 
     private String traitCode;
 
     private String traitScore;
 
     @Builder
-    public TraitScoreDailyRecord(TraitScoreRecord traitScoreRecordId, String traitCode, String traitScore) {
-        this.traitScoreRecordId = traitScoreRecordId;
+    public TraitScoreDailyRecord(TraitScoreRecord traitScoreRecord, String traitCode, String traitScore) {
+        this.traitScoreRecord = traitScoreRecord;
         this.traitCode = traitCode;
         this.traitScore = traitScore;
     }
