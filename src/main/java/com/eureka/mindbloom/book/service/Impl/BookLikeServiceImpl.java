@@ -48,7 +48,7 @@ public class BookLikeServiceImpl implements BookLikeService {
                 .child(child)
                 .build();
 
-        updateLikeStats(book, LIKE_CODE, LikeOperation.ADD);
+        updateLikeStats(book, LikeOperation.ADD);
         return bookLikeRepository.save(bookLike);
     }
 
@@ -60,7 +60,7 @@ public class BookLikeServiceImpl implements BookLikeService {
         BookLike bookLike = bookLikeRepository.findById(bookChildId)
                 .orElseThrow(() -> NotFoundException.bookLikeNotFound(isbn));
 
-        updateLikeStats(bookLike.getBook(), LIKE_CODE, LikeOperation.REMOVE);
+        updateLikeStats(bookLike.getBook(), LikeOperation.REMOVE);
         bookLikeRepository.delete(bookLike);
     }
 
@@ -77,7 +77,7 @@ public class BookLikeServiceImpl implements BookLikeService {
                 .collect(Collectors.toList());
     }
 
-    private void updateLikeStats(Book book, String type, LikeOperation operation){
+    private void updateLikeStats(Book book, LikeOperation operation){
         BookLikeStatsId statsId = new BookLikeStatsId(book.getIsbn(), LIKE_CODE);
         BookLikeStats bookLikeStats = bookLikeStatsRepository.findById(statsId)
                 .orElse(BookLikeStats.builder()
