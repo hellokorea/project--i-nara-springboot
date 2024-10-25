@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Configuration
-public class RecommendJobConfiguration extends DefaultBatchConfiguration {
+public class RecommendJobConfiguration {
 
 	private final DataSource dataSource;
 	private final BookRepository bookRepository;
