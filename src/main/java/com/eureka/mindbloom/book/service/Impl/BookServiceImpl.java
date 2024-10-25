@@ -1,6 +1,7 @@
 package com.eureka.mindbloom.book.service.Impl;
 
 import com.eureka.mindbloom.book.domain.Book;
+import com.eureka.mindbloom.book.domain.BookLikeStats;
 import com.eureka.mindbloom.book.dto.BookDetailResponse;
 import com.eureka.mindbloom.book.dto.BooksResponse;
 import com.eureka.mindbloom.book.dto.RecentlyBookResponse;
@@ -101,6 +102,13 @@ public class BookServiceImpl implements BookService {
 
         String categoryName = commonCodeConvertService.codeToCommonCodeName(categoryCode);
 
+        List<BookLikeStats> likeStatsList = bookLikeStatsRepository.likeCountByIsbn(isbn);
+        Long likeCount = likeStatsList.stream()
+                .filter(stats -> "0300_02".equals(stats.getId().getType()))
+                .map(BookLikeStats::getCount)
+                .findFirst()
+                .orElse(0L); // 없으면 0으로 초기화
+
         return new BookDetailResponse(
                 book.getIsbn(),
                 book.getTitle(),
@@ -112,7 +120,7 @@ public class BookServiceImpl implements BookService {
                 categoryName,
                 book.getKeywords(),
                 book.getViewCount(),
-                bookLikeStatsRepository.likeCountByIsbn(isbn),
+                likeCount,
                 book.getCreatedAt()
         );
     }
