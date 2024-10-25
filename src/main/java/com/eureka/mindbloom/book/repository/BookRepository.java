@@ -71,7 +71,7 @@ public interface BookRepository extends JpaRepository<Book, String> {
     );
 
     // 모든 책 조회 with 좋아요수
-    @Query("SELECT b FROM Book b LEFT JOIN BookLikeStats blc ON b.isbn = blc.book.isbn")
+    @Query("SELECT b FROM Book b LEFT JOIN BookLikeStats bls ON b.isbn = bls.book.isbn")
     Slice<Book> findAllBooksSortedByLikes(Pageable pageable);
 
     Book findByIsbn(String isbn);

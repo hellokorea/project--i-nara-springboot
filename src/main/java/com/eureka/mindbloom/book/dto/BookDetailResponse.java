@@ -14,7 +14,7 @@ public class BookDetailResponse {
     private String author;
     private String plot;
     private String publisher;
-    private String recommededAge;
+    private String recommendedAge;
     private String coverImage;
     private String category;
     private String keyword;
@@ -28,7 +28,7 @@ public class BookDetailResponse {
         this.author = author;
         this.plot = plot;
         this.publisher = publisher;
-        this.recommededAge = recommendedAge;
+        this.recommendedAge = recommendedAge;
         this.coverImage = coverImage;
         this.category = categoryName;
         this.keyword = keywords;
