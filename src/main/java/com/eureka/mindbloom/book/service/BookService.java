@@ -3,6 +3,7 @@ package com.eureka.mindbloom.book.service;
 import com.eureka.mindbloom.book.dto.BookDetailResponse;
 import com.eureka.mindbloom.book.dto.BooksResponse;
 import com.eureka.mindbloom.book.dto.RecentlyBookResponse;
+import com.eureka.mindbloom.book.type.SortOption;
 import com.eureka.mindbloom.member.domain.Member;
 import org.springframework.data.domain.Slice;
 

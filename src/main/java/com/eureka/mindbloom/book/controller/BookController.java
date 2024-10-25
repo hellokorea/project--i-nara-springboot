@@ -4,7 +4,7 @@ import com.eureka.mindbloom.book.dto.BookDetailResponse;
 import com.eureka.mindbloom.book.dto.BooksResponse;
 import com.eureka.mindbloom.book.dto.RecentlyBookResponse;
 import com.eureka.mindbloom.book.service.BookService;
-import com.eureka.mindbloom.book.service.SortOption;
+import com.eureka.mindbloom.book.type.SortOption;
 import com.eureka.mindbloom.common.dto.ApiResponse;
 import com.eureka.mindbloom.member.domain.Member;
 import lombok.RequiredArgsConstructor;

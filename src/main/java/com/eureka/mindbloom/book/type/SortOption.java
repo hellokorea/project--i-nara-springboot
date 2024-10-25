@@ -1,4 +1,4 @@
-package com.eureka.mindbloom.book.service;
+package com.eureka.mindbloom.book.type;
 
 public enum SortOption {
     VIEWCOUNT("viewCount"),
