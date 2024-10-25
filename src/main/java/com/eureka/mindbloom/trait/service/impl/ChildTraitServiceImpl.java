@@ -26,7 +26,6 @@ public class ChildTraitServiceImpl implements ChildTraitService {
         ChildTrait childTrait = ChildTrait.builder()
                 .child(child)
                 .traitGroupCode("0101")
-                .deleted(false)
                 .build();
 
         childTraitRepository.save(childTrait);
