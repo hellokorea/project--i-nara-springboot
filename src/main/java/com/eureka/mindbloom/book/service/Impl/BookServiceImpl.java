@@ -1,11 +1,15 @@
 package com.eureka.mindbloom.book.service.Impl;
 
 import com.eureka.mindbloom.book.domain.Book;
+import com.eureka.mindbloom.book.dto.BookDetailResponse;
 import com.eureka.mindbloom.book.dto.BooksResponse;
 import com.eureka.mindbloom.book.dto.RecentlyBookResponse;
+import com.eureka.mindbloom.book.repository.BookCategoryRepository;
+import com.eureka.mindbloom.book.repository.BookLikeStatsRepository;
 import com.eureka.mindbloom.book.repository.BookRepository;
 import com.eureka.mindbloom.book.service.BookService;
 import com.eureka.mindbloom.book.service.SortOption;
+import com.eureka.mindbloom.commoncode.service.CommonCodeConvertService;
 import com.eureka.mindbloom.member.domain.Member;
 import com.eureka.mindbloom.member.exception.ChildNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +24,9 @@ import java.util.stream.Collectors;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+    private final BookLikeStatsRepository bookLikeStatsRepository;
+    private final BookCategoryRepository bookCategoryRepository;
+    private final CommonCodeConvertService commonCodeConvertService;
 
     @Override
     public Slice<BooksResponse> getBooks(String categoryCode, String search, int page, SortOption sortOption) {
@@ -85,4 +92,29 @@ public class BookServiceImpl implements BookService {
     private boolean isNotParent(Member member, Long childId) {
         return member.getChildren().stream().noneMatch(child -> child.getId().equals(childId));
     }
+
+    @Override
+    public BookDetailResponse getBookDetail(String isbn) {
+        Book book = bookRepository.findByIsbn(isbn);
+
+        String categoryCode = bookCategoryRepository.findCategoryCodeByIsbn(isbn);
+
+        String categoryName = commonCodeConvertService.codeToCommonCodeName(categoryCode);
+
+        return new BookDetailResponse(
+                book.getIsbn(),
+                book.getTitle(),
+                book.getAuthor(),
+                book.getPlot(),
+                book.getPublisher(),
+                book.getRecommendedAge(),
+                book.getCoverImage(),
+                categoryName,
+                book.getKeywords(),
+                book.getViewCount(),
+                bookLikeStatsRepository.findLikeCountByIsbn(isbn),
+                book.getCreatedAt()
+        );
+    }
+
 }
