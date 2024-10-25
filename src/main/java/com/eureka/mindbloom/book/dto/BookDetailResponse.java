@@ -18,11 +18,11 @@ public class BookDetailResponse {
     private String coverImage;
     private String category;
     private String keyword;
-    private String viewCount;
-    private String likeCount;
+    private Long viewCount;
+    private Long likeCount;
     private String createdAt;
 
-    public BookDetailResponse(String isbn, String title, String author, String plot, String publisher, String recommendedAge, String coverImage, String categoryName, String keywords, Long viewCount, List<BookLikeStats> likeCountByIsbn, LocalDateTime createdAt) {
+    public BookDetailResponse(String isbn, String title, String author, String plot, String publisher, String recommendedAge, String coverImage, String categoryName, String keywords, Long viewCount, Long likeCount, LocalDateTime createdAt) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
@@ -32,8 +32,8 @@ public class BookDetailResponse {
         this.coverImage = coverImage;
         this.category = categoryName;
         this.keyword = keywords;
-        this.viewCount = String.valueOf(viewCount);
-        this.likeCount = String.valueOf(likeCountByIsbn);
+        this.viewCount = viewCount;
+        this.likeCount = likeCount;
         this.createdAt = createdAt.toString();
     }
 }
