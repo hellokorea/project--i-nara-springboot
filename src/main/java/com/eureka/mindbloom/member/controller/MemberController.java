@@ -2,10 +2,10 @@ package com.eureka.mindbloom.member.controller;
 
 import com.eureka.mindbloom.common.dto.ApiResponse;
 import com.eureka.mindbloom.member.domain.Member;
+import com.eureka.mindbloom.member.dto.GetMemberProfileResponse;
 import com.eureka.mindbloom.member.dto.SignUpRequest;
 import com.eureka.mindbloom.member.dto.SignUpResponse;
 import com.eureka.mindbloom.member.dto.UpdateMemberProfileRequest;
-import com.eureka.mindbloom.member.service.GetMemberProfileResponse;
 import com.eureka.mindbloom.member.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
