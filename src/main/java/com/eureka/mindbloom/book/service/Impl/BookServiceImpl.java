@@ -37,7 +37,7 @@ public class BookServiceImpl implements BookService {
         // 정렬 기준 설정
         Sort sort = switch (sortOption) {
             case VIEWCOUNT -> Sort.by("viewCount").descending(); // 조회수 높은순
-            case LIKES -> Sort.by("blc.count").descending(); // 좋아요 많은순(BookLikeCount테이블 필드명)
+            case LIKES -> Sort.by("bls.count").descending(); // 좋아요 많은순(BookLikeCount테이블 필드명)
             case RECENT -> Sort.by("createdAt").descending(); // 최신순
         };
 
