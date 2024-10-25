@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BookLikeCount {
+public class BookLikeStats {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

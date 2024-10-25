@@ -44,4 +44,14 @@ public class CommonCodeConvertService {
         return caches.stream()
                 .filter(cache -> codeGroup.equals(cache.getCodeGroup().getCodeGroup())).toList();
     }
+
+    public String codeToCommonCodeName(String code) {
+        List<CommonCode> caches = commonCodeCacheService.getAllCommonCodes();
+
+        return caches.stream()
+                .filter(cache -> code.equals(cache.getCode()))
+                .map(CommonCode::getName)
+                .findFirst()
+                .orElseThrow(() -> new CommonCodeNotFoundException(code));
+    }
 }

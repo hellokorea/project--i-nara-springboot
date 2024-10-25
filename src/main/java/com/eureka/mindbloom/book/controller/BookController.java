@@ -1,5 +1,6 @@
 package com.eureka.mindbloom.book.controller;
 
+import com.eureka.mindbloom.book.dto.BookDetailResponse;
 import com.eureka.mindbloom.book.dto.BooksResponse;
 import com.eureka.mindbloom.book.dto.RecentlyBookResponse;
 import com.eureka.mindbloom.book.service.BookService;
@@ -39,5 +40,11 @@ public class BookController {
         RecentlyBookResponse response = bookService.getRecentlyViewedBooks(page, childId, member);
 
         return ResponseEntity.ok().body(ApiResponse.success("OK", response));
+    }
+
+    @GetMapping("/detail/{isbn}")
+    public ResponseEntity<?> getDetailBook(@PathVariable String isbn) {
+        BookDetailResponse bookDetail = bookService.getBookDetail(isbn);
+        return ResponseEntity.ok().body(ApiResponse.success("OK", bookDetail));
     }
 }
