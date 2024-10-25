@@ -67,7 +67,7 @@ public class BookLikeServiceImpl implements BookLikeService {
     @Override
     @Transactional(readOnly = true)
     public List<BookLikeStatsResponse> getBookLikeStats(String isbn) {
-        return bookLikeStatsRepository.findAllByIsbn(isbn).stream()
+        return bookLikeStatsRepository.likeCountByIsbn(isbn).stream()
                 .filter(stats -> LIKE_CODE.equals(stats.getId().getType()))
                 .map(stats -> BookLikeStatsResponse.builder()
                         .isbn(stats.getBook().getIsbn())

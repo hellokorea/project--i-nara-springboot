@@ -12,5 +12,5 @@ import java.util.List;
 public interface BookLikeStatsRepository extends JpaRepository<BookLikeStats, BookLikeStatsId> {
     @Query("select stats from BookLikeStats stats "+
             "WHERE stats.id.isbn = :isbn")  // 수정된 부분
-    List<BookLikeStats> findAllByIsbn(@Param("isbn") String isbn);
+    List<BookLikeStats> likeCountByIsbn(@Param("isbn") String isbn);
 }

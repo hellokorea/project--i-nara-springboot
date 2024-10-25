@@ -112,7 +112,7 @@ public class BookServiceImpl implements BookService {
                 categoryName,
                 book.getKeywords(),
                 book.getViewCount(),
-                bookLikeStatsRepository.findAllByIsbn(isbn),
+                bookLikeStatsRepository.likeCountByIsbn(isbn),
                 book.getCreatedAt()
         );
     }
