@@ -2,9 +2,9 @@ package com.eureka.mindbloom.book.service.Impl;
 
 import com.eureka.mindbloom.book.domain.Book;
 import com.eureka.mindbloom.book.domain.BookCategory;
-import com.eureka.mindbloom.book.dto.AdminBookCategoryDto;
-import com.eureka.mindbloom.book.dto.AdminBookRequestDto;
-import com.eureka.mindbloom.book.dto.AdminBookResponseDto;
+import com.eureka.mindbloom.book.dto.AdminBookCategory;
+import com.eureka.mindbloom.book.dto.AdminBookRequest;
+import com.eureka.mindbloom.book.dto.AdminBookResponse;
 import com.eureka.mindbloom.book.repository.BookCategoryRepository;
 import com.eureka.mindbloom.book.repository.BookRepository;
 import com.eureka.mindbloom.book.service.AdminBookService;
@@ -31,7 +31,7 @@ public class AdminBookServiceImpl implements AdminBookService {
 
     @Override
     @Transactional
-    public AdminBookResponseDto registerBook(AdminBookRequestDto dto) {
+    public AdminBookResponse registerBook(AdminBookRequest dto) {
         // 도서 등록
         Book book = dto.toEntity();
         bookRepository.save(book);
@@ -42,12 +42,12 @@ public class AdminBookServiceImpl implements AdminBookService {
 
         saveBookCategories(dto.getCategories(), book, categoryNames, traitNames);
 
-        return new AdminBookResponseDto(book, categoryNames, traitNames);
+        return new AdminBookResponse(book, categoryNames, traitNames);
     }
 
     // 카테고리 저장 로직에 traitName 포함
-    private void saveBookCategories(List<AdminBookCategoryDto> categories, Book book, List<String> categoryNames, List<String> traitNames) {
-        for (AdminBookCategoryDto categoryDto : categories) {
+    private void saveBookCategories(List<AdminBookCategory> categories, Book book, List<String> categoryNames, List<String> traitNames) {
+        for (AdminBookCategory categoryDto : categories) {
             // CommonCode에서 categoryCode를 찾음
             CommonCode commonCode = commonCodeRepository.findByName(categoryDto.getCategory())
                     .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 카테고리 이름입니다."));
@@ -76,7 +76,7 @@ public class AdminBookServiceImpl implements AdminBookService {
 
     @Override
     @Transactional
-    public Optional<AdminBookResponseDto> updateBook(String isbn, AdminBookRequestDto dto) {
+    public Optional<AdminBookResponse> updateBook(String isbn, AdminBookRequest dto) {
         return bookRepository.findById(isbn).map(existingBook -> {
             // 도서 정보 업데이트
             existingBook.updateDetails(dto.toEntity());
@@ -88,7 +88,7 @@ public class AdminBookServiceImpl implements AdminBookService {
 
             saveBookCategories(dto.getCategories(), existingBook, categoryNames, traitNames); // 카테고리와 관련 정보 저장
 
-            return new AdminBookResponseDto(existingBook, categoryNames, traitNames);
+            return new AdminBookResponse(existingBook, categoryNames, traitNames);
         });
     }
 

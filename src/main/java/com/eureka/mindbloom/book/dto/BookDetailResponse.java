@@ -1,8 +1,10 @@
 package com.eureka.mindbloom.book.dto;
 
+import com.eureka.mindbloom.book.domain.BookLikeStats;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class BookDetailResponse {
@@ -20,7 +22,7 @@ public class BookDetailResponse {
     private String likeCount;
     private String createdAt;
 
-    public BookDetailResponse(String isbn, String title, String author, String plot, String publisher, String recommendedAge, String coverImage, String categoryName, String keywords, Long viewCount, Long likeCountByIsbn, LocalDateTime createdAt) {
+    public BookDetailResponse(String isbn, String title, String author, String plot, String publisher, String recommendedAge, String coverImage, String categoryName, String keywords, Long viewCount, List<BookLikeStats> likeCountByIsbn, LocalDateTime createdAt) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;

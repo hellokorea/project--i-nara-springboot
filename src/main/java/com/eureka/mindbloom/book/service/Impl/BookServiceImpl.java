@@ -8,7 +8,7 @@ import com.eureka.mindbloom.book.repository.BookCategoryRepository;
 import com.eureka.mindbloom.book.repository.BookLikeStatsRepository;
 import com.eureka.mindbloom.book.repository.BookRepository;
 import com.eureka.mindbloom.book.service.BookService;
-import com.eureka.mindbloom.book.service.SortOption;
+import com.eureka.mindbloom.book.type.SortOption;
 import com.eureka.mindbloom.commoncode.service.CommonCodeConvertService;
 import com.eureka.mindbloom.member.domain.Member;
 import com.eureka.mindbloom.member.exception.ChildNotFoundException;
@@ -112,7 +112,7 @@ public class BookServiceImpl implements BookService {
                 categoryName,
                 book.getKeywords(),
                 book.getViewCount(),
-                bookLikeStatsRepository.findLikeCountByIsbn(isbn),
+                bookLikeStatsRepository.likeCountByIsbn(isbn),
                 book.getCreatedAt()
         );
     }

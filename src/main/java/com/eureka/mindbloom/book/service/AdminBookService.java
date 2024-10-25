@@ -1,15 +1,15 @@
 package com.eureka.mindbloom.book.service;
 
-import com.eureka.mindbloom.book.dto.AdminBookRequestDto;
-import com.eureka.mindbloom.book.dto.AdminBookResponseDto;
+import com.eureka.mindbloom.book.dto.AdminBookRequest;
+import com.eureka.mindbloom.book.dto.AdminBookResponse;
 
 import java.util.Optional;
 
 public interface AdminBookService {
 
-    AdminBookResponseDto registerBook(AdminBookRequestDto dto);
+    AdminBookResponse registerBook(AdminBookRequest dto);
 
-    Optional<AdminBookResponseDto> updateBook(String isbn, AdminBookRequestDto dto);
+    Optional<AdminBookResponse> updateBook(String isbn, AdminBookRequest dto);
 
     void deleteBook(String isbn);
 }

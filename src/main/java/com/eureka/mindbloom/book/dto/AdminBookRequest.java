@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
-public class AdminBookRequestDto {
+public class AdminBookRequest {
 
     private String isbn;
     private String title;
@@ -21,12 +21,12 @@ public class AdminBookRequestDto {
     private String coverImage;
     private String keywords;
     private Long viewCount;  // 여기서 int를 Long으로 변경
-    private List<AdminBookCategoryDto> categories;
+    private List<AdminBookCategory> categories;
 
     @Builder
-    public AdminBookRequestDto(String isbn, String title, String plot, String author, String publisher,
-                               String recommendedAge, String coverImage, String keywords, Long viewCount,  // 수정된 부분
-                               List<AdminBookCategoryDto> categories) {
+    public AdminBookRequest(String isbn, String title, String plot, String author, String publisher,
+                            String recommendedAge, String coverImage, String keywords, Long viewCount,  // 수정된 부분
+                            List<AdminBookCategory> categories) {
         this.isbn = isbn;
         this.title = title;
         this.plot = plot;
@@ -56,6 +56,6 @@ public class AdminBookRequestDto {
 
     // 카테고리 목록을 String 형태로 반환하는 메서드
     public List<String> getCategoriesAsStrings() {
-        return categories.stream().map(AdminBookCategoryDto::getCategoryName).collect(Collectors.toList());
+        return categories.stream().map(AdminBookCategory::getCategoryName).collect(Collectors.toList());
     }
 }

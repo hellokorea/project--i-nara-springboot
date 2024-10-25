@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class AdminBookCategoryDto {
+public class AdminBookCategory {
 
     private String category;  // 카테고리 이름을 나타냄
 
     @Builder
-    public AdminBookCategoryDto(String category) {
+    public AdminBookCategory(String category) {
         this.category = category;
     }
 
