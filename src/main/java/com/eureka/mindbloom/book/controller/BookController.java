@@ -21,14 +21,14 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    public ApiResponse<Slice<BooksResponse>> getBooks(
+    public ResponseEntity<ApiResponse<Slice<BooksResponse>>> getBooks(
             @RequestParam(required = false) String categoryCode,
             @RequestParam(required = false) String search,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(required = false) SortOption sortOption
     ) {
         Slice<BooksResponse> books = bookService.getBooks(categoryCode, search, page, sortOption);
-        return ApiResponse.success("OK", books);
+        return ResponseEntity.ok(ApiResponse.success("OK", books));
     }
 
     @GetMapping("/{childId}")
