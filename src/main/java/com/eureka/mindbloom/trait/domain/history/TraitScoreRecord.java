@@ -8,11 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TraitScoreRecord extends SoftDeleteEntity {
 
@@ -28,21 +25,10 @@ public class TraitScoreRecord extends SoftDeleteEntity {
 
     private Integer traitScore;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime deletedAt;
-
-    public TraitScoreRecord(Long id, Child child, String traitCode, Integer traitScore, LocalDateTime createdAt, LocalDateTime deletedAt) {
-        this.id = id;
+    @Builder
+    public TraitScoreRecord(Child child, String traitCode, Integer traitScore) {
         this.child = child;
         this.traitCode = traitCode;
         this.traitScore = traitScore;
-        this.createdAt = createdAt;
-        this.deletedAt = deletedAt;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
     }
 }
