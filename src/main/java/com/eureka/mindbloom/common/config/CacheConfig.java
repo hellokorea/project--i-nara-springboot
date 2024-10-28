@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableCaching
 public class CacheConfig {
 
-    @Bean
+    @Bean(name = "commonCodeCacheManager")
     public CaffeineCacheManager commonCodeCacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager("groupCodes", "commonCode");
         cacheManager.setCaffeine(Caffeine.newBuilder().recordStats());

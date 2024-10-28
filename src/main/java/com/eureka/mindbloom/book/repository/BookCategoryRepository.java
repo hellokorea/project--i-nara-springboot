@@ -5,27 +5,25 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.eureka.mindbloom.book.domain.BookCategory;
 import com.eureka.mindbloom.book.domain.BookCategoryId;
-import org.springframework.data.repository.query.Param;
-
 
 public interface BookCategoryRepository extends JpaRepository<BookCategory, BookCategoryId> {
-    @Query("SELECT bc.id.categoryTraitId.categoryCode FROM BookCategory bc WHERE bc.id.isbn = :isbn")
-    String findCategoryCodeByIsbn(@Param("isbn") String isbn);
 
-    @Query("SELECT b.id.isbn FROM BookCategory b WHERE b.id.categoryTraitId.categoryCode IN :categoryCodes")
-    List<String> findIsbnByCategoryTrait_Id_CategoryCodeIn(List<String> categoryCodes);
+	@Query("SELECT b.id.isbn FROM BookCategory b WHERE b.id.categoryTraitId.categoryCode = :categoryCode")
+	List<String> findIsbnByCategoryCodes(String categoryCode);
 
-    @Query("SELECT b.id.isbn FROM BookCategory b WHERE b.id.categoryTraitId.traitCode IN :traitCodes AND b.id.isbn IN :preferredBooks")
-    List<String> findIsbnByTraitCodesAndPreferredBooksIn(String[] traitCodes, List<String> preferredBooks);
+	@Query("SELECT bc.id.categoryTraitId.categoryCode FROM BookCategory bc WHERE bc.id.isbn = :isbn")
+	String findCategoryCodeByIsbn(@Param("isbn") String isbn);
 
-    @Query("SELECT b.id.isbn FROM BookCategory b WHERE b.id.categoryTraitId.traitCode IN :traitCodes")
-    List<String> findIsbnByTraitCodes(String[] traitCodes);
+	@Query("SELECT b.id.isbn FROM BookCategory b WHERE b.id.categoryTraitId.traitCode = :traitCodes")
+	List<String> findIsbnByTraitCode(String traitCodes);
 
-    void deleteByBook(Book book);
+	void deleteByBook(Book book);
 
-    void deleteByBookIsbn(String isbn);
+	void deleteByBookIsbn(String isbn);
 
 }
+
