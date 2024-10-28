@@ -25,6 +25,15 @@ spring:
     jdbc:
       initialize-schema: always
 
+  cache:
+    type: redis
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2000
+      password: ${REDIS_PWD}
 jwt:
   token:
     secretKey: "aclkLc48O1xMi4eurekaCJJ426phEa1Wc4mindbloom"
