@@ -31,8 +31,11 @@ public class BookRecommendLike extends BaseEntity {
 	@JoinColumn(name = "child_id")
 	private Child child;
 
-	public BookRecommendLike(BookRecommend bookRecommend, Child child) {
+	private String traitValue;
+
+	public BookRecommendLike(BookRecommend bookRecommend, Child child, String traitValue) {
 		this.bookRecommend = bookRecommend;
 		this.child = child;
+		this.traitValue = traitValue;
 	}
 }

@@ -15,8 +15,9 @@ import lombok.RequiredArgsConstructor;
 public class RecommendCacheRepository {
 	private final BookCategoryRepository bookCategoryRepository;
 	private final BookRepository bookRepository;
+	private final BookRecommendLikeRepository bookRecommendLikeRepository;
 
-	@Cacheable(cacheNames = "categoryBooks", key = "#categoryCode", cacheManager = "redisCacheManager")
+	@Cacheable(cacheNames = "CategoryBooks", key = "#categoryCode", cacheManager = "redisCacheManager")
 	public List<String> getCategoryBooks(String categoryCode) {
 		return bookCategoryRepository.findIsbnByCategoryCodes(categoryCode);
 	}
@@ -29,5 +30,10 @@ public class RecommendCacheRepository {
 	@Cacheable(cacheNames = "TopBook", key = "'Top10ViewedBook'", cacheManager = "redisCacheManager")
 	public List<String> getTop10ViewedBook() {
 		return bookRepository.findTop10IsbnByOrderByViewCount();
+	}
+
+	@Cacheable(cacheNames = "TraitBooksLike", key = "#trait", cacheManager = "redisCacheManager")
+	public List<String> getTraitBooksLike(String trait) {
+		return bookRecommendLikeRepository.findIsbnByTraitValue(trait);
 	}
 }

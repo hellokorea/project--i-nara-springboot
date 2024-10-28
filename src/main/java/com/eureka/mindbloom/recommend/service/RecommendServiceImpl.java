@@ -43,7 +43,8 @@ public class RecommendServiceImpl implements RecommendService {
 		BookRecommend bookRecommend = bookRecommendRepository.findById(bookRecommendId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 아이디의 추천 도서가 존재하지 않습니다."));
 		if (likeType == RecommendLikeType.LIKE) {
-			bookRecommendLikeRepository.save(new BookRecommendLike(bookRecommend, child));
+			//TODO : 자녀 성향 엔티티 생성되면 성향에 따라 성향 누적 테이블에 저장 , 현재는 ESTP로 고정
+			bookRecommendLikeRepository.save(new BookRecommendLike(bookRecommend, child,"ESTP"));
 			return;
 		}
 		bookRecommendLikeRepository.deleteById(bookRecommendId);
@@ -84,6 +85,13 @@ public class RecommendServiceImpl implements RecommendService {
 	@Override
 	public List<String> getTopViewedBooks() {
 		return recommendCacheRepository.getTop10ViewedBook();
+	}
+
+	@Override
+	public List<String> getSimilarTraitLikeBooks(Long childId) {
+		// TODO : 자녀 성향 공통코드 조회 -> 아직 자녀 성향 누적 테이블이 존재하지 않아 임시 성향을 고정으로 조회
+		String traitValue = "ESTP";
+		return recommendCacheRepository.getTraitBooksLike(traitValue);
 	}
 
 }
