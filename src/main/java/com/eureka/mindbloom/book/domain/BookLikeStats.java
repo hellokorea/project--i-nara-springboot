@@ -1,23 +1,33 @@
 package com.eureka.mindbloom.book.domain;
 
+import com.eureka.mindbloom.common.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-// TODO: 좋아요 수 기능 구현시 BookLikeCount 삭제
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BookLikeStats {
+@Table(name = "book_like_stats")
+public class BookLikeStats extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @EmbeddedId
+    private BookLikeStatsId id;
 
+    @MapsId("isbn")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "isbn")
     private Book book;
 
-    private int count;
+    @Column(name = "count")
+    private Long count;
+
+    @Builder
+    public BookLikeStats(Book book, String type, Long count) {
+        this.id = new BookLikeStatsId(book.getIsbn(), type);
+        this.book = book;
+        this.count = count;
+    }
 }
