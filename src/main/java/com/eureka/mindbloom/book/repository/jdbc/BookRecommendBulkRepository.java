@@ -24,10 +24,10 @@ public class BookRecommendBulkRepository {
 		Long childId = childBooks.getChildId();
 		Date date = new Date(Instant.now().toEpochMilli());
 		jdbcTemplate.batchUpdate(sql,
-			childBooks.getTraitBooksIsbn(),
-			childBooks.getTraitBooksIsbn().size(),
-			(PreparedStatement ps, String traitBook) -> {
-				ps.setString(1, traitBook);
+			childBooks.getRecommendBooksIsbn(),
+			childBooks.getRecommendBooksIsbn().size(),
+			(PreparedStatement ps, String recommendBook) -> {
+				ps.setString(1, recommendBook);
 				ps.setLong(2, childId);
 				ps.setDate(3, date);
 			});

@@ -8,4 +8,7 @@ import com.eureka.mindbloom.recommend.eums.RecommendLikeType;
 public interface RecommendService {
 	List<BookRecommendResponse> getRecommendBooks(Long childId);
 	void likeRecommendBook(Long childId, Long bookRecommendId, RecommendLikeType likeType);
+	List<String> getPreferencesBooksByChildId(Long childId);
+	List<String> getTraitBooksByChildId(Long childId);
+	List<String> getTopViewedBooks();
 }
