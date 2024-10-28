@@ -26,7 +26,7 @@ public class RecommendCacheRepository {
 		return bookCategoryRepository.findIsbnByTraitCode(traitCode);
 	}
 
-	@Cacheable(cacheNames = "TopBook", key = "Top10ViewedBook", cacheManager = "redisCacheManager")
+	@Cacheable(cacheNames = "TopBook", key = "'Top10ViewedBook'", cacheManager = "redisCacheManager")
 	public List<String> getTop10ViewedBook() {
 		return bookRepository.findTop10IsbnByOrderByViewCount();
 	}
