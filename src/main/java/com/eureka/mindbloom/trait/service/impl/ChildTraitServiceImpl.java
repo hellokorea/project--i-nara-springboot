@@ -7,7 +7,7 @@ import com.eureka.mindbloom.member.exception.ChildNotFoundException;
 import com.eureka.mindbloom.trait.domain.ChildTrait;
 import com.eureka.mindbloom.trait.dto.response.TraitValueResultResponse;
 import com.eureka.mindbloom.trait.repository.ChildTraitRepository;
-import com.eureka.mindbloom.trait.service.ChildHistoryRecordService;
+import com.eureka.mindbloom.trait.service.ChildTraitResponseService;
 import com.eureka.mindbloom.trait.service.ChildTraitService;
 import com.eureka.mindbloom.trait.service.TraitScoreRecordService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class ChildTraitServiceImpl implements ChildTraitService {
 
     private final ChildTraitRepository childTraitRepository;
     private final TraitScoreRecordService traitScoreRecordService;
-    private final ChildHistoryRecordService childHistoryRecordService;
+    private final ChildTraitResponseService childTraitResponseService;
 
     @Override
     public ChildTrait partiallySaveChildTrait(Child child) {
@@ -65,7 +65,7 @@ public class ChildTraitServiceImpl implements ChildTraitService {
             throw new ChildNotFoundException(childId);
         }
         childTraitRepository.softDeleteChildTrait(childId);
-        childHistoryRecordService.softDeleteChildResponse(childId);
+        childTraitResponseService.softDeleteChildResponse(childId);
     }
 
     private boolean isNotParent(Member member, Long childId) {
