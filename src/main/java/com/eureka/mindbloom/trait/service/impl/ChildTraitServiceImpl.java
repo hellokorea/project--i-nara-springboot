@@ -1,6 +1,8 @@
 package com.eureka.mindbloom.trait.service.impl;
 
 import com.eureka.mindbloom.member.domain.Child;
+import com.eureka.mindbloom.member.domain.Member;
+import com.eureka.mindbloom.member.exception.ChildNotFoundException;
 import com.eureka.mindbloom.trait.domain.ChildTrait;
 import com.eureka.mindbloom.trait.dto.response.TraitValueResultResponse;
 import com.eureka.mindbloom.trait.repository.ChildTraitRepository;
@@ -26,7 +28,6 @@ public class ChildTraitServiceImpl implements ChildTraitService {
         ChildTrait childTrait = ChildTrait.builder()
                 .child(child)
                 .traitGroupCode("0101")
-                .deleted(false)
                 .build();
 
         childTraitRepository.save(childTrait);
@@ -52,5 +53,17 @@ public class ChildTraitServiceImpl implements ChildTraitService {
                 .traitValue(childTrait.getTraitValue())
                 .valueData(childTraitScores)
                 .build();
+    }
+
+    @Override
+    public void softDeleteChildTraits(Member member, Long childId) {
+        if(isNotParent(member, childId)) {
+            throw new ChildNotFoundException(childId);
+        }
+        childTraitRepository.softDeleteChildTrait(childId);
+    }
+
+    private boolean isNotParent(Member member, Long childId) {
+        return member.getChildren().stream().noneMatch(child -> child.getId().equals(childId));
     }
 }

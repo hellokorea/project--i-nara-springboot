@@ -3,12 +3,15 @@ package com.eureka.mindbloom.book.controller;
 import com.eureka.mindbloom.book.domain.BookLike;
 import com.eureka.mindbloom.book.dto.BookLikeRequest;
 import com.eureka.mindbloom.book.dto.BookLikeResponse;
+import com.eureka.mindbloom.book.dto.BookLikeStatsResponse;
 import com.eureka.mindbloom.book.service.BookLikeService;
 import com.eureka.mindbloom.common.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("books")
@@ -43,5 +46,12 @@ public class BookLikeController {
         bookLikeService.removeLike(bookId, request.getChildId());
 
         return ResponseEntity.ok(ApiResponse.success("도서 좋아요가 취소되었습니다."));
+    }
+
+    @GetMapping("/{bookId}/likes/stats")
+    public ResponseEntity<ApiResponse<List<BookLikeStatsResponse>>> getLikeStats(
+            @PathVariable String bookId) {
+        List<BookLikeStatsResponse> stats = bookLikeService.getBookLikeStats(bookId);
+        return ResponseEntity.ok(ApiResponse.success("도서 좋아요 통계를 조회했습니다.", stats));
     }
 }

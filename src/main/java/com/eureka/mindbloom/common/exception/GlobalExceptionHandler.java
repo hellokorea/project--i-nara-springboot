@@ -20,14 +20,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BaseException.class)
     public final ResponseEntity<ApiResponse<Void>> handleBaseException(BaseException e, HttpServletRequest request) {
         log.warn("source = {} {}, message = {}",
-                request.getMethod(), request.getRequestURI(), e.getMessage());
+                request.getMethod(), request.getRequestURI(), e.getMessage(), e);
+
         return buildResponseEntity(e.getStatus(), e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Map<String, String>>> handleValidationExceptions(
             MethodArgumentNotValidException ex, HttpServletRequest request) {
-        log.warn("source = {} {}, message = {}",
+        log.info("source = {} {}, message = {}",
                 request.getMethod(), request.getRequestURI(), ex.getMessage());
 
         Map<String, String> errors = new HashMap<>();

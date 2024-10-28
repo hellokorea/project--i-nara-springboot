@@ -1,7 +1,6 @@
-package com.eureka.mindbloom.member.service;
+package com.eureka.mindbloom.member.dto;
 
 import com.eureka.mindbloom.member.domain.Member;
-import com.eureka.mindbloom.member.dto.ChildProfileResponse;
 
 import java.util.List;
 
