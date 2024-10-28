@@ -24,7 +24,7 @@ public class ChildTraitServiceImpl implements ChildTraitService {
 
     private final ChildTraitRepository childTraitRepository;
     private final TraitScoreRecordService traitScoreRecordService;
-    private final ChildTraitResponseService childHistoryRecordService;
+    private final ChildTraitResponseService childTraitResponseService;
 
     @Override
     public ChildTrait partiallySaveChildTrait(Child child) {
@@ -65,7 +65,7 @@ public class ChildTraitServiceImpl implements ChildTraitService {
             throw new ChildNotFoundException(childId);
         }
         childTraitRepository.softDeleteChildTrait(childId);
-        childHistoryRecordService.softDeleteChildResponse(childId);
+        childTraitResponseService.softDeleteChildResponse(childId);
     }
 
     private boolean isNotParent(Member member, Long childId) {
