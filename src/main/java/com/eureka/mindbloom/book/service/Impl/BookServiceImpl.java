@@ -12,6 +12,7 @@ import com.eureka.mindbloom.book.repository.BookLikeStatsRepository;
 import com.eureka.mindbloom.book.repository.BookRepository;
 import com.eureka.mindbloom.book.repository.BookViewRepository;
 import com.eureka.mindbloom.book.service.BookService;
+import com.eureka.mindbloom.book.service.BookViewCacheService;
 import com.eureka.mindbloom.book.type.SortOption;
 import com.eureka.mindbloom.common.exception.NotFoundException;
 import com.eureka.mindbloom.commoncode.service.CommonCodeConvertService;
@@ -23,10 +24,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,6 +37,7 @@ public class BookServiceImpl implements BookService {
     private final CommonCodeConvertService commonCodeConvertService;
     private final BookViewRepository bookViewRepository;
     private final ChildRepository childRepository;
+    private final BookViewCacheService bookViewCacheService;
 
     @Override
     public Slice<BooksResponse> getBooks(String categoryCode, String search, int page, SortOption sortOption) {
@@ -146,21 +145,14 @@ public class BookServiceImpl implements BookService {
             throw new ChildNotFoundException(childId);
         }
 
-        LocalDateTime now = LocalDateTime.now();
-
-        Optional<BookView> recentView = bookViewRepository.findTopByBookAndChildOrderByCreatedAtDesc(book, child);
-
-        if (recentView.isPresent() &&
-                Duration.between(recentView.get().getCreatedAt(), now).toHours() < 1) {
-            // 1시간 이내에 조회한 기록이 있다면 조회수 증가 방지
+        boolean viewExists = bookViewRepository.existsByBookAndChild(book, child);
+        if (viewExists) {
             return new ReadBookResponse(
                     book.getIsbn(),
                     book.getTitle()
             );
         }
-
-        book.incrementViewCount();
-        bookRepository.save(book);
+        bookViewCacheService.incrementViewCount(isbn);
 
         BookView bookView = new BookView(book, child);
         bookViewRepository.save(bookView);

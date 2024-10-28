@@ -14,6 +14,5 @@ public interface BookViewRepository extends JpaRepository<BookView, Long> {
     @Query("SELECT distinct bv.book.isbn FROM BookView bv WHERE bv.child.id = :childId")
     List<String> findReadIsbnByChildId(Long childId);
 
-    Optional<BookView> findTopByBookAndChildOrderByCreatedAtDesc(Book book, Child child);
-
+    boolean existsByBookAndChild(Book book, Child child);
 }
