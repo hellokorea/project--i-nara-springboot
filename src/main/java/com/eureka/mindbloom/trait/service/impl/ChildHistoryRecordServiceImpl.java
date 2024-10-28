@@ -62,6 +62,11 @@ public class ChildHistoryRecordServiceImpl implements ChildHistoryRecordService 
         return answerMap;
     }
 
+    @Override
+    public void softDeleteChildResponse(Long childId) {
+        childTraitResponseRepository.deleteByChildId(childId);
+    }
+
     private Map<Integer, TraitQuestion> fetchQuestionMap(List<CreateTraitRequest> answers) {
         List<Integer> questionIds = answers.stream()
                 .map(CreateTraitRequest::getQuestionId)
