@@ -12,7 +12,7 @@ import com.eureka.mindbloom.trait.dto.response.QnAResponse;
 import com.eureka.mindbloom.trait.dto.response.TraitPointsResponse;
 import com.eureka.mindbloom.trait.repository.TraitAnswerRepository;
 import com.eureka.mindbloom.trait.repository.TraitQuestionRepository;
-import com.eureka.mindbloom.trait.service.ChildHistoryRecordService;
+import com.eureka.mindbloom.trait.service.ChildTraitResponseService;
 import com.eureka.mindbloom.trait.service.ChildTraitService;
 import com.eureka.mindbloom.trait.service.TraitScoreRecordService;
 import com.eureka.mindbloom.trait.service.TraitSurveyService;
@@ -36,7 +36,7 @@ public class TraitSurveyServiceImpl implements TraitSurveyService {
     private final ChildRepository childRepository;
 
     private final TraitScoreRecordService traitScoreRecordService;
-    private final ChildHistoryRecordService childHistoryRecordService;
+    private final ChildTraitResponseService childTraitResponseService;
     private final ChildTraitService childTraitService;
 
     private final ChildService childService;
@@ -77,7 +77,7 @@ public class TraitSurveyServiceImpl implements TraitSurveyService {
         }
 
         // 1. 자녀 별 질의 응답 기록 저장
-        Map<Integer, TraitAnswer> responseAnswersMap = childHistoryRecordService.saveChildResponse(child.get(), answers);
+        Map<Integer, TraitAnswer> responseAnswersMap = childTraitResponseService.saveChildResponse(child.get(), answers);
 
         // 2. 임시 child Trait 데이터 저장
         ChildTrait childTrait = childTraitService.partiallySaveChildTrait(child.get());

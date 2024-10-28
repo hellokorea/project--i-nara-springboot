@@ -3,7 +3,9 @@ package com.eureka.mindbloom.trait.controller;
 import com.eureka.mindbloom.common.dto.ApiResponse;
 import com.eureka.mindbloom.trait.dto.request.CreateTraitRequest;
 import com.eureka.mindbloom.trait.dto.response.QnAResponse;
+import com.eureka.mindbloom.trait.dto.response.TraitHistoryResponse;
 import com.eureka.mindbloom.trait.dto.response.TraitValueResultResponse;
+import com.eureka.mindbloom.trait.service.ChildRecordHistoryService;
 import com.eureka.mindbloom.trait.service.ChildTraitService;
 import com.eureka.mindbloom.trait.service.TraitSurveyService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ public class TraitController {
 
     private final TraitSurveyService traitSurveyService;
     private final ChildTraitService childTraitService;
+    private final ChildRecordHistoryService childRecordHistoryService;
 
     @GetMapping
     public ApiResponse<List<QnAResponse>> getQnA() {
@@ -41,4 +44,10 @@ public class TraitController {
         return ApiResponse.success("MBTI 검사 결과 입니다.", traitValueResultResponse);
     }
 
+    @GetMapping("/history/{childId}")
+    public ApiResponse<List<TraitHistoryResponse>> getChildTraitHistory(@PathVariable("childId") Long childId) {
+
+        List<TraitHistoryResponse> data = childRecordHistoryService.getHistory(childId);
+        return ApiResponse.success("MBTI 로그 조회 완료 했습니다.", data);
+    }
 }

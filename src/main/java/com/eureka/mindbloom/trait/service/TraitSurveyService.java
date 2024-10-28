@@ -1,6 +1,5 @@
 package com.eureka.mindbloom.trait.service;
 
-import com.eureka.mindbloom.member.domain.Member;
 import com.eureka.mindbloom.trait.dto.request.CreateTraitRequest;
 import com.eureka.mindbloom.trait.dto.response.QnAResponse;
 

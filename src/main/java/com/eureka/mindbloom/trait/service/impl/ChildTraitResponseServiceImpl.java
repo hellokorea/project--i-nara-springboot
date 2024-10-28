@@ -8,7 +8,7 @@ import com.eureka.mindbloom.trait.dto.request.CreateTraitRequest;
 import com.eureka.mindbloom.trait.repository.ChildTraitResponseRepository;
 import com.eureka.mindbloom.trait.repository.TraitAnswerRepository;
 import com.eureka.mindbloom.trait.repository.TraitQuestionRepository;
-import com.eureka.mindbloom.trait.service.ChildHistoryRecordService;
+import com.eureka.mindbloom.trait.service.ChildTraitResponseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class ChildHistoryRecordServiceImpl implements ChildHistoryRecordService {
+public class ChildTraitResponseServiceImpl implements ChildTraitResponseService {
 
     private final ChildTraitResponseRepository childTraitResponseRepository;
     private final TraitQuestionRepository traitQuestionRepository;
@@ -95,7 +95,6 @@ public class ChildHistoryRecordServiceImpl implements ChildHistoryRecordService 
         return existingResponse.stream()
                 .collect(Collectors.toMap(response -> response.getQuestion().getId(), response -> response));
     }
-
 
     private void validateQuestions(List<Integer> Ids) {
         List<TraitQuestion> questions = traitQuestionRepository.findAllById(Ids);

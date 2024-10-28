@@ -26,7 +26,7 @@ public class TraitScoreRecordServiceImpl implements TraitScoreRecordService {
                                                           Map<Integer, TraitAnswer> responseAnswersMap) {
 
         List<String> allTraitCodes = List.of("0101_01", "0101_02", "0101_03", "0101_04",
-                                             "0101_05", "0101_06", "0101_07", "0101_08");
+                                             "0101_05", "0101_06", "0101_07", "0101_08"); // 공통 코드 변경
 
         Map<String, Integer> traitScores = allTraitCodes.stream()
                         .collect(Collectors.toMap(traitCode -> traitCode, traitCode -> 0));
