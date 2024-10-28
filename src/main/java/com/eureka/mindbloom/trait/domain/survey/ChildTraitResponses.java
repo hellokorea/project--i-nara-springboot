@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
 public class ChildTraitResponses extends SoftDeleteEntity {
 
     @Id
@@ -29,25 +28,15 @@ public class ChildTraitResponses extends SoftDeleteEntity {
     @ManyToOne
     private TraitAnswer answer;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime deletedAt;
-
-    public ChildTraitResponses(Long id, Child child, TraitQuestion question, TraitAnswer answer, LocalDateTime createdAt, LocalDateTime deletedAt) {
+    @Builder
+    public ChildTraitResponses(Long id, Child child, TraitQuestion question, TraitAnswer answer) {
         this.id = id;
         this.child = child;
         this.question = question;
         this.answer = answer;
-        this.createdAt = createdAt;
-        this.deletedAt = deletedAt;
     }
 
     public void updateAnswer(TraitAnswer newAnswer) {
         this.answer = newAnswer;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
     }
 }

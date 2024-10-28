@@ -1,8 +1,9 @@
 package com.eureka.mindbloom.trait.service.impl;
 
+import com.eureka.mindbloom.common.exception.BaseException;
 import com.eureka.mindbloom.member.domain.Child;
+import com.eureka.mindbloom.member.exception.ChildNotFoundException;
 import com.eureka.mindbloom.member.repository.ChildRepository;
-import com.eureka.mindbloom.member.service.ChildService;
 import com.eureka.mindbloom.trait.domain.ChildTrait;
 import com.eureka.mindbloom.trait.domain.survey.TraitAnswer;
 import com.eureka.mindbloom.trait.domain.survey.TraitQuestion;
@@ -10,6 +11,7 @@ import com.eureka.mindbloom.trait.dto.request.CreateTraitRequest;
 import com.eureka.mindbloom.trait.dto.response.Answer;
 import com.eureka.mindbloom.trait.dto.response.QnAResponse;
 import com.eureka.mindbloom.trait.dto.response.TraitPointsResponse;
+import com.eureka.mindbloom.trait.repository.ChildTraitRepository;
 import com.eureka.mindbloom.trait.repository.TraitAnswerRepository;
 import com.eureka.mindbloom.trait.repository.TraitQuestionRepository;
 import com.eureka.mindbloom.trait.service.ChildTraitResponseService;
@@ -17,12 +19,14 @@ import com.eureka.mindbloom.trait.service.ChildTraitService;
 import com.eureka.mindbloom.trait.service.TraitScoreRecordService;
 import com.eureka.mindbloom.trait.service.TraitSurveyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -34,16 +38,28 @@ public class TraitSurveyServiceImpl implements TraitSurveyService {
     private final TraitQuestionRepository questionRepository;
     private final TraitAnswerRepository answerRepository;
     private final ChildRepository childRepository;
+    private final ChildTraitRepository childTraitRepository;
 
     private final TraitScoreRecordService traitScoreRecordService;
     private final ChildTraitResponseService childTraitResponseService;
     private final ChildTraitService childTraitService;
 
-    private final ChildService childService;
-
     @Override
     @Transactional(readOnly = true)
-    public List<QnAResponse> getQnA() {
+    public List<QnAResponse> getQnA(Long childId) {
+
+        Optional<Child> child = childRepository.findById(childId);
+
+        if (child.isEmpty()) {
+            throw new ChildNotFoundException(childId);
+        }
+
+        Pageable pageable = PageRequest.of(0, 1);
+        List<ChildTrait> childTraits = childTraitRepository.findChildTraitByDeletedAtIsNull(childId, pageable);
+
+        if (!childTraits.isEmpty()) {
+            throw new BaseException("해당 자녀는 이미 MBTI 를 가지고 있습니다.", HttpStatus.CONFLICT);
+        }
 
         List<TraitQuestion> traitQuestions = questionRepository.findAll();
         List<TraitAnswer> traitAnswers = answerRepository.findAll();
@@ -73,7 +89,7 @@ public class TraitSurveyServiceImpl implements TraitSurveyService {
         Optional<Child> child = childRepository.findById(childId);
 
         if (child.isEmpty()) {
-            throw new NoSuchElementException("자녀 정보가 올바르지 않습니다.");
+            throw new ChildNotFoundException(childId);
         }
 
         // 1. 자녀 별 질의 응답 기록 저장

@@ -11,10 +11,10 @@ import java.util.List;
 public interface TraitRecordHistoryRepository extends JpaRepository<TraitRecordHistory, Long> {
 
     @Query(value = """
-        SELECT trh
+        SELECT new com.eureka.mindbloom.trait.dto.response.ActionFeedbackResponse(trh.traitCode, trh.point)
         FROM TraitRecordHistory trh
         WHERE trh.child.id = :childId
         AND trh.deletedAt IS NULL
         """)
-    List<ActionFeedbackResponse> getChildActionHistory(@Param("childId") Long childId);
+    List<ActionFeedbackResponse> getChildActionHistoryDeletedAtIsNull(@Param("childId") Long childId);
 }

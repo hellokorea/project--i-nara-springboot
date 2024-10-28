@@ -12,5 +12,5 @@ public interface ChildRecordHistoryService {
     ActionFeedbackResponse createChildTraitHistory(Child child, String actionCode,
                                                    String traitCode, Integer point);
 
-    void getTotalActionHistoryPoint(List<ActionFeedbackResponse> actionFeedbackResponses);
+    ActionFeedbackResponse testPost(Long childId);
 }

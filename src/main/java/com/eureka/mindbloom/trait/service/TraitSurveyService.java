@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TraitSurveyService {
 
-    List<QnAResponse> getQnA();
+    List<QnAResponse> getQnA(Long childId);
 
     void createTraitByQnA(Long childId, List<CreateTraitRequest> answers);
 }

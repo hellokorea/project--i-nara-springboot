@@ -1,5 +1,6 @@
 package com.eureka.mindbloom.trait.service.impl;
 
+import com.eureka.mindbloom.common.exception.BaseException;
 import com.eureka.mindbloom.trait.domain.survey.TraitAnswer;
 import com.eureka.mindbloom.trait.domain.survey.TraitQuestion;
 import com.eureka.mindbloom.trait.dto.request.AdminQnARequest;
@@ -176,26 +177,26 @@ public class AdminTraitSurveyServiceImpl implements AdminTraitSurveyService {
 
     private void validateQuestion(AdminQnARequest adminQnARequest) {
         if (adminQnARequest == null || adminQnARequest.getQuestionContent() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "입력한 질문 데이터가 올바르지 않습니다.");
+            throw new BaseException( "입력한 질문 데이터가 올바르지 않습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
     private void validateAnswer(List<AdminAnswer> adminAnswers) {
         if (adminAnswers == null || adminAnswers.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "답변 데이터가 비어있습니다.");
+            throw new BaseException("답변 데이터가 비어있습니다.", HttpStatus.BAD_REQUEST);
         }
 
         for (AdminAnswer adminAnswer : adminAnswers) {
 
             if (adminAnswer.getContent() == null || adminAnswer.getTraitCode() == null || adminAnswer.getPoint() == null) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "답변 Dto 데이터가 비어있습니다.");
+                throw new BaseException("답변 Dto 데이터가 비어있습니다.", HttpStatus.BAD_REQUEST);
             }
         }
     }
 
     private void validateQnARepository(Optional<TraitQuestion> question, List<TraitAnswer> answers) {
         if (question.isEmpty() || answers.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 질문 및 답변 데이터를 찾을 수 없습니다.");
+            throw new BaseException("해당 질문 및 답변 데이터를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -3,10 +3,7 @@ package com.eureka.mindbloom.trait.domain.history;
 import com.eureka.mindbloom.common.domain.SoftDeleteEntity;
 import com.eureka.mindbloom.member.domain.Child;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
@@ -30,5 +27,9 @@ public class TraitScoreRecord extends SoftDeleteEntity {
         this.child = child;
         this.traitCode = traitCode;
         this.traitScore = traitScore;
+    }
+
+    public void updateScore(Integer newScore) {
+        this.traitScore = newScore;
     }
 }

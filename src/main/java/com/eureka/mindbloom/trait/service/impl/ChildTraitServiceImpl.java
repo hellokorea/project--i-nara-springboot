@@ -1,5 +1,6 @@
 package com.eureka.mindbloom.trait.service.impl;
 
+import com.eureka.mindbloom.common.exception.BaseException;
 import com.eureka.mindbloom.member.domain.Child;
 import com.eureka.mindbloom.member.domain.Member;
 import com.eureka.mindbloom.member.exception.ChildNotFoundException;
@@ -9,6 +10,7 @@ import com.eureka.mindbloom.trait.repository.ChildTraitRepository;
 import com.eureka.mindbloom.trait.service.ChildTraitService;
 import com.eureka.mindbloom.trait.service.TraitScoreRecordService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +47,7 @@ public class ChildTraitServiceImpl implements ChildTraitService {
     public TraitValueResultResponse getTraitValueResult(Long childId) {
 
         ChildTrait childTrait = childTraitRepository.findByChildId(childId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 자녀는 MBTI 검사를 실시하지 않았습니다"));
+                .orElseThrow(() -> new BaseException("해당 자녀는 MBTI 검사를 실시하지 않았습니다", HttpStatus.NOT_FOUND));
 
         Map<String, Integer> childTraitScores = traitScoreRecordService.getChildTraitScores(childTrait.getChild());
 
