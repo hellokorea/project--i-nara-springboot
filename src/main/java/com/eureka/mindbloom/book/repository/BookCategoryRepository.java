@@ -10,6 +10,10 @@ import com.eureka.mindbloom.book.domain.BookCategory;
 import com.eureka.mindbloom.book.domain.BookCategoryId;
 
 public interface BookCategoryRepository extends JpaRepository<BookCategory, BookCategoryId> {
+
+	@Query("SELECT b.id.isbn FROM BookCategory b WHERE b.id.categoryTraitId.categoryCode = :categoryCodes")
+	List<String> findIsbnByCategoryCodes(String categoryCodes);
+
 	@Query("SELECT b.id.isbn FROM BookCategory b WHERE b.id.categoryTraitId.categoryCode IN :categoryCodes")
 	List<String> findIsbnByCategoryTrait_Id_CategoryCodeIn(List<String> categoryCodes);
 
@@ -18,6 +22,9 @@ public interface BookCategoryRepository extends JpaRepository<BookCategory, Book
 
 	@Query("SELECT b.id.isbn FROM BookCategory b WHERE b.id.categoryTraitId.traitCode IN :traitCodes")
 	List<String> findIsbnByTraitCodes(String[] traitCodes);
+
+	@Query("SELECT b.id.isbn FROM BookCategory b WHERE b.id.categoryTraitId.traitCode = :traitCodes")
+	List<String> findIsbnByTraitCode(String traitCodes);
 
     void deleteByBook(Book book);
 
