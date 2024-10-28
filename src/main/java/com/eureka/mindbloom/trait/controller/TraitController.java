@@ -1,12 +1,17 @@
 package com.eureka.mindbloom.trait.controller;
 
 import com.eureka.mindbloom.common.dto.ApiResponse;
+import com.eureka.mindbloom.member.domain.Member;
 import com.eureka.mindbloom.trait.dto.request.CreateTraitRequest;
 import com.eureka.mindbloom.trait.dto.response.QnAResponse;
+import com.eureka.mindbloom.trait.dto.response.TraitHistoryResponse;
 import com.eureka.mindbloom.trait.dto.response.TraitValueResultResponse;
+import com.eureka.mindbloom.trait.service.ChildRecordHistoryService;
 import com.eureka.mindbloom.trait.service.ChildTraitService;
 import com.eureka.mindbloom.trait.service.TraitSurveyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +23,8 @@ public class TraitController {
 
     private final TraitSurveyService traitSurveyService;
     private final ChildTraitService childTraitService;
+
+    private final ChildRecordHistoryService childRecordHistoryService;
 
     @GetMapping
     public ApiResponse<List<QnAResponse>> getQnA() {
