@@ -10,4 +10,6 @@ import java.util.Map;
 public interface ChildTraitResponseService {
 
     Map<Integer, TraitAnswer> saveChildResponse(Child child, List<CreateTraitRequest> answers);
+
+    void softDeleteChildResponse(Long childId);
 }

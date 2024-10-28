@@ -2,6 +2,7 @@ package com.eureka.mindbloom.trait.repository;
 
 import com.eureka.mindbloom.trait.domain.survey.ChildTraitResponses;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -16,4 +17,12 @@ public interface ChildTraitResponseRepository extends JpaRepository<ChildTraitRe
         """)
     List<ChildTraitResponses> findByChildIdAndQuestionIds(@Param("childId") Long childId,
                                                           @Param("questionIds") List<Integer> questionIds);
+
+    @Query("""
+            UPDATE ChildTraitResponses ctr
+            SET ctr.deletedAt = now()
+            WHERE ctr.child.id = :childId AND ctr.deletedAt IS NULL
+            """)
+    @Modifying
+    void deleteByChildId(Long childId);
 }
