@@ -2,22 +2,31 @@ package com.eureka.mindbloom.book.service.Impl;
 
 import com.eureka.mindbloom.book.domain.Book;
 import com.eureka.mindbloom.book.domain.BookLikeStats;
+import com.eureka.mindbloom.book.domain.BookView;
 import com.eureka.mindbloom.book.dto.BookDetailResponse;
 import com.eureka.mindbloom.book.dto.BooksResponse;
+import com.eureka.mindbloom.book.dto.ReadBookResponse;
 import com.eureka.mindbloom.book.dto.RecentlyBookResponse;
 import com.eureka.mindbloom.book.repository.BookCategoryRepository;
 import com.eureka.mindbloom.book.repository.BookLikeStatsRepository;
 import com.eureka.mindbloom.book.repository.BookRepository;
+import com.eureka.mindbloom.book.repository.BookViewRepository;
 import com.eureka.mindbloom.book.service.BookService;
 import com.eureka.mindbloom.book.type.SortOption;
+import com.eureka.mindbloom.common.exception.NotFoundException;
 import com.eureka.mindbloom.commoncode.service.CommonCodeConvertService;
+import com.eureka.mindbloom.member.domain.Child;
 import com.eureka.mindbloom.member.domain.Member;
 import com.eureka.mindbloom.member.exception.ChildNotFoundException;
+import com.eureka.mindbloom.member.repository.ChildRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +37,8 @@ public class BookServiceImpl implements BookService {
     private final BookLikeStatsRepository bookLikeStatsRepository;
     private final BookCategoryRepository bookCategoryRepository;
     private final CommonCodeConvertService commonCodeConvertService;
+    private final BookViewRepository bookViewRepository;
+    private final ChildRepository childRepository;
 
     @Override
     public Slice<BooksResponse> getBooks(String categoryCode, String search, int page, SortOption sortOption) {
@@ -125,4 +136,38 @@ public class BookServiceImpl implements BookService {
         );
     }
 
+    @Override
+    public ReadBookResponse readBook(String isbn, Long childId, Member member) {
+        Book book = bookRepository.findByIsbn(isbn);
+        Child child = childRepository.findChildById(childId)
+                .orElseThrow(() -> NotFoundException.childNotFound(childId));
+
+        if (isNotParent(member, childId)) {
+            throw new ChildNotFoundException(childId);
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+
+        Optional<BookView> recentView = bookViewRepository.findTopByBookAndChildOrderByCreatedAtDesc(book, child);
+
+        if (recentView.isPresent() &&
+                Duration.between(recentView.get().getCreatedAt(), now).toHours() < 1) {
+            // 1시간 이내에 조회한 기록이 있다면 조회수 증가 방지
+            return new ReadBookResponse(
+                    book.getIsbn(),
+                    book.getTitle()
+            );
+        }
+
+        book.incrementViewCount();
+        bookRepository.save(book);
+
+        BookView bookView = new BookView(book, child);
+        bookViewRepository.save(bookView);
+
+        return new ReadBookResponse(
+                book.getIsbn(),
+                book.getTitle()
+        );
+    }
 }

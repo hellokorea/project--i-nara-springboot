@@ -59,4 +59,7 @@ public class Book extends SoftDeleteEntity {
         this.viewCount = updatedBook.getViewCount();
     }
 
+    public void incrementViewCount(){
+        this.viewCount++;
+    }
 }
