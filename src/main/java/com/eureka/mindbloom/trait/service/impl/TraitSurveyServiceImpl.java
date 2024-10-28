@@ -2,7 +2,6 @@ package com.eureka.mindbloom.trait.service.impl;
 
 import com.eureka.mindbloom.member.domain.Child;
 import com.eureka.mindbloom.member.repository.ChildRepository;
-import com.eureka.mindbloom.member.service.ChildService;
 import com.eureka.mindbloom.trait.domain.ChildTrait;
 import com.eureka.mindbloom.trait.domain.survey.TraitAnswer;
 import com.eureka.mindbloom.trait.domain.survey.TraitQuestion;
@@ -38,8 +37,6 @@ public class TraitSurveyServiceImpl implements TraitSurveyService {
     private final TraitScoreRecordService traitScoreRecordService;
     private final ChildHistoryRecordService childHistoryRecordService;
     private final ChildTraitService childTraitService;
-
-    private final ChildService childService;
 
     @Override
     @Transactional(readOnly = true)
