@@ -5,21 +5,20 @@ import com.eureka.mindbloom.book.dto.AdminBookRequest;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BookCsvImporter {
 
-    // CSV 파일을 파싱하여 AdminBookRequest 객체 리스트로 변환하는 메서드
-    public static List<AdminBookRequest> parseCsvFile(MultipartFile file) throws IOException {
+    // CSV 파일 경로를 받아 AdminBookRequest 객체 리스트로 변환하는 메서드
+    public static List<AdminBookRequest> parseCsvFileFromPath(String filePath) throws IOException {
         List<AdminBookRequest> bookRequests = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath));
              CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader())) {
 
             for (CSVRecord csvRecord : csvParser) {

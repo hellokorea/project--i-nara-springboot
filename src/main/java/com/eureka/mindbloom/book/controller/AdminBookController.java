@@ -3,15 +3,13 @@ package com.eureka.mindbloom.book.controller;
 import com.eureka.mindbloom.book.dto.AdminBookRequest;
 import com.eureka.mindbloom.book.dto.AdminBookResponse;
 import com.eureka.mindbloom.book.service.AdminBookService;
-import com.eureka.mindbloom.book.util.BookCsvImporter;
+import com.eureka.mindbloom.book.util.BookFileProcessor;
 import com.eureka.mindbloom.common.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -20,6 +18,7 @@ import java.util.Optional;
 public class AdminBookController {
 
     private final AdminBookService adminBookService;
+    private final BookFileProcessor bookFileProcessor;  // BookFileProcessor 주입
 
     // 도서 등록
     @PostMapping("/")
@@ -28,14 +27,14 @@ public class AdminBookController {
         return ResponseEntity.ok(ApiResponse.success("도서가 성공적으로 등록되었습니다.", savedBook));
     }
 
-    @PostMapping("/bulk")
-    public ResponseEntity<ApiResponse<List<AdminBookResponse>>> registerBooksBulk(@RequestParam("file") MultipartFile file) {
+    // 서버 경로에 있는 CSV 파일을 사용하여 도서 벌크 등록
+    @PostMapping("/csv")//post로
+    public ResponseEntity<ApiResponse<String>> processCsvFile(@RequestParam String filePath) {
         try {
-            List<AdminBookRequest> bookRequests = BookCsvImporter.parseCsvFile(file);
-            List<AdminBookResponse> responses = adminBookService.bulkRegisterBooks(bookRequests);
-            return ResponseEntity.ok(ApiResponse.success("도서들이 성공적으로 등록되었습니다.", responses));
+            bookFileProcessor.processCsvFileFromPath(filePath);
+            return ResponseEntity.ok(ApiResponse.success("CSV 파일이 성공적으로 처리되었습니다.", "파일 경로: " + filePath));
         } catch (IOException e) {
-            return ResponseEntity.status(500).body(ApiResponse.failure("파일 처리 중 오류가 발생했습니다."));
+            return ResponseEntity.status(500).body(ApiResponse.failure("CSV 파일 처리 중 오류 발생: " + e.getMessage()));
         }
     }
 
