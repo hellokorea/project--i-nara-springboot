@@ -21,10 +21,10 @@ public class TraitScoreDailyRecord extends SoftDeleteEntity {
 
     private String traitCode;
 
-    private String traitScore;
+    private Integer traitScore;
 
     @Builder
-    public TraitScoreDailyRecord(TraitScoreRecord traitScoreRecord, String traitCode, String traitScore) {
+    public TraitScoreDailyRecord(TraitScoreRecord traitScoreRecord, String traitCode, Integer traitScore) {
         this.traitScoreRecord = traitScoreRecord;
         this.traitCode = traitCode;
         this.traitScore = traitScore;

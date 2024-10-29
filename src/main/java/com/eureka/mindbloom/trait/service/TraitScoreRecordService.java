@@ -15,4 +15,6 @@ public interface TraitScoreRecordService {
     String fetchTraitValue(List<TraitPointsResponse> traitScores);
 
     Map<String, Integer> getChildTraitScores(Child child);
+
+    void updateTraitPointsBatch(Child child);
 }
