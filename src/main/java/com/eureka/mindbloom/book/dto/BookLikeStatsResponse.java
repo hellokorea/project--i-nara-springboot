@@ -2,8 +2,10 @@ package com.eureka.mindbloom.book.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class BookLikeStatsResponse {
     private String isbn;
     private String type;
