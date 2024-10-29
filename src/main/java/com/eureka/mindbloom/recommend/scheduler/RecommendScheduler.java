@@ -5,19 +5,17 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import lombok.RequiredArgsConstructor;
 
-@EnableScheduling
 @Configuration
 @RequiredArgsConstructor
 public class RecommendScheduler {
 	private final JobLauncher jobLauncher;
 	private final Job generateRecommendBooks;
 
-	@Scheduled(cron = "0 0 1 * * ?")
+	@Scheduled(cron = "0 30 1 * * ?")
 	public void runBatchJob() {
 		try {
 			JobParameters jobParameters = new JobParametersBuilder()

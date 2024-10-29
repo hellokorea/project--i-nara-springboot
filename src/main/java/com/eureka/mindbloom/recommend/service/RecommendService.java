@@ -11,4 +11,5 @@ public interface RecommendService {
 	List<String> getPreferencesBooksByChildId(Long childId);
 	List<String> getTraitBooksByChildId(Long childId);
 	List<String> getTopViewedBooks();
+	List<String> getSimilarTraitLikeBooks(Long childId);
 }

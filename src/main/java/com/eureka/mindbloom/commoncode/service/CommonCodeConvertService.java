@@ -1,6 +1,7 @@
 package com.eureka.mindbloom.commoncode.service;
 
 import com.eureka.mindbloom.commoncode.domain.CommonCode;
+import com.eureka.mindbloom.commoncode.domain.CommonCodeGroup;
 import com.eureka.mindbloom.commoncode.exception.CommonCodeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,5 +54,10 @@ public class CommonCodeConvertService {
                 .map(CommonCode::getName)
                 .findFirst()
                 .orElseThrow(() -> new CommonCodeNotFoundException(code));
+    }
+    public List<CommonCodeGroup> parentCodeGroupToCodeGroups(String parentCodeGroup) {
+        List<CommonCodeGroup> caches = commonCodeCacheService.getAllCommonCodeGroups();
+        return caches.stream()
+                .filter(cache -> cache.getParent()!=null && parentCodeGroup.equals(cache.getParent().getCodeGroup())).toList();
     }
 }
