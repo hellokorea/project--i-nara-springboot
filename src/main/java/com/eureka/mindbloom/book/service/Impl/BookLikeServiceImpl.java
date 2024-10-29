@@ -51,8 +51,6 @@ public class BookLikeServiceImpl implements BookLikeService {
         Child child = childRepository.findChildById(childId)
                 .orElseThrow(() -> NotFoundException.childNotFound(childId));
 
-        BookChildId bookChildId = new BookChildId(isbn, childId);
-
         // 데이터베이스 저장 전 중복 좋아요 검사
         if (isDuplicateLike(isbn, childId)) {
             throw DuplicateLikeException.likeAlreadyExists(isbn);
