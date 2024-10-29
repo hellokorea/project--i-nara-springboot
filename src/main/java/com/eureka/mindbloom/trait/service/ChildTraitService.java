@@ -13,4 +13,6 @@ public interface ChildTraitService {
     TraitValueResultResponse getTraitValueResult(Long childId);
 
     void softDeleteChildTraits(Member member, Long childId);
+
+    ChildTrait getChildTraitValue(Long childId);
 }

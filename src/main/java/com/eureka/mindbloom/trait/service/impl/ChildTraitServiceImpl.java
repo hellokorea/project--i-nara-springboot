@@ -47,9 +47,7 @@ public class ChildTraitServiceImpl implements ChildTraitService {
 
     @Override
     public TraitValueResultResponse getTraitValueResult(Long childId) {
-
-        ChildTrait childTrait = childTraitRepository.findByChildId(childId)
-                .orElseThrow(() -> new BaseException("해당 자녀는 MBTI 검사를 실시하지 않았습니다", HttpStatus.NOT_FOUND));
+        ChildTrait childTrait = getChildTraitValue(childId);
 
         Map<String, Integer> childTraitScores = traitScoreRecordService.getChildTraitScores(childTrait.getChild());
 
@@ -57,6 +55,13 @@ public class ChildTraitServiceImpl implements ChildTraitService {
                 .traitValue(childTrait.getTraitValue())
                 .valueData(childTraitScores)
                 .build();
+    }
+
+    @Override
+    public ChildTrait getChildTraitValue(Long childId) {
+        ChildTrait childTrait = childTraitRepository.findByChildId(childId)
+                .orElseThrow(() -> new BaseException("해당 자녀는 MBTI 검사를 실시하지 않았습니다", HttpStatus.NOT_FOUND));
+        return childTrait;
     }
 
     @Override
