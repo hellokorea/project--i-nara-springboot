@@ -45,6 +45,18 @@ public class AdminBookServiceImpl implements AdminBookService {
         return new AdminBookResponse(book, categoryNames, traitNames);
     }
 
+    @Override
+    @Transactional
+    public List<AdminBookResponse> bulkRegisterBooks(List<AdminBookRequest> bookRequests) {
+        List<AdminBookResponse> responses = new ArrayList<>();
+
+        for (AdminBookRequest request : bookRequests) {
+            responses.add(registerBook(request));
+        }
+
+        return responses;
+    }
+
     // 카테고리 저장 로직에 traitName 포함
     private void saveBookCategories(List<AdminBookCategory> categories, Book book, List<String> categoryNames, List<String> traitNames) {
         for (AdminBookCategory categoryDto : categories) {
