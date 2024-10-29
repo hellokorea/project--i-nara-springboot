@@ -2,17 +2,24 @@ package com.eureka.mindbloom.book.service.Impl;
 
 import com.eureka.mindbloom.book.domain.Book;
 import com.eureka.mindbloom.book.domain.BookLikeStats;
+import com.eureka.mindbloom.book.domain.BookView;
 import com.eureka.mindbloom.book.dto.BookDetailResponse;
 import com.eureka.mindbloom.book.dto.BooksResponse;
+import com.eureka.mindbloom.book.dto.ReadBookResponse;
 import com.eureka.mindbloom.book.dto.RecentlyBookResponse;
 import com.eureka.mindbloom.book.repository.BookCategoryRepository;
 import com.eureka.mindbloom.book.repository.BookLikeStatsRepository;
 import com.eureka.mindbloom.book.repository.BookRepository;
+import com.eureka.mindbloom.book.repository.BookViewRepository;
 import com.eureka.mindbloom.book.service.BookService;
+import com.eureka.mindbloom.book.service.BookViewCacheService;
 import com.eureka.mindbloom.book.type.SortOption;
+import com.eureka.mindbloom.common.exception.NotFoundException;
 import com.eureka.mindbloom.commoncode.service.CommonCodeConvertService;
+import com.eureka.mindbloom.member.domain.Child;
 import com.eureka.mindbloom.member.domain.Member;
 import com.eureka.mindbloom.member.exception.ChildNotFoundException;
+import com.eureka.mindbloom.member.repository.ChildRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -28,6 +35,9 @@ public class BookServiceImpl implements BookService {
     private final BookLikeStatsRepository bookLikeStatsRepository;
     private final BookCategoryRepository bookCategoryRepository;
     private final CommonCodeConvertService commonCodeConvertService;
+    private final BookViewRepository bookViewRepository;
+    private final ChildRepository childRepository;
+    private final BookViewCacheService bookViewCacheService;
 
     @Override
     public Slice<BooksResponse> getBooks(String categoryCode, String search, int page, SortOption sortOption) {
@@ -125,4 +135,31 @@ public class BookServiceImpl implements BookService {
         );
     }
 
+    @Override
+    public ReadBookResponse readBook(String isbn, Long childId, Member member) {
+        Book book = bookRepository.findByIsbn(isbn);
+        Child child = childRepository.findChildById(childId)
+                .orElseThrow(() -> NotFoundException.childNotFound(childId));
+
+        if (isNotParent(member, childId)) {
+            throw new ChildNotFoundException(childId);
+        }
+
+        boolean viewExists = bookViewRepository.existsByBookAndChild(book, child);
+        if (viewExists) {
+            return new ReadBookResponse(
+                    book.getIsbn(),
+                    book.getTitle()
+            );
+        }
+        bookViewCacheService.incrementViewCount(isbn);
+
+        BookView bookView = new BookView(book, child);
+        bookViewRepository.save(bookView);
+
+        return new ReadBookResponse(
+                book.getIsbn(),
+                book.getTitle()
+        );
+    }
 }
