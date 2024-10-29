@@ -26,6 +26,8 @@ import com.eureka.mindbloom.book.repository.BookViewRepository;
 import com.eureka.mindbloom.book.repository.jdbc.BookRecommendBulkRepository;
 import com.eureka.mindbloom.category.repository.ChildPreferredRepository;
 import com.eureka.mindbloom.common.dto.Pair;
+import com.eureka.mindbloom.commoncode.domain.CommonCode;
+import com.eureka.mindbloom.commoncode.service.CommonCodeConvertService;
 import com.eureka.mindbloom.recommend.dto.ChildBooks;
 import com.eureka.mindbloom.recommend.repository.BookRecommendRepository;
 import com.eureka.mindbloom.recommend.service.RecommendService;
@@ -44,10 +46,12 @@ public class RecommendJobConfiguration {
 	private final BookRecommendBulkRepository bookRecommendBulkRepository;
 	private final RecommendService recommendService;
 	private final BookViewRepository bookViewRepository;
+	private final CommonCodeConvertService commonCodeConvertService;
 
 	private final int needBookCount = 10;
 	private final int preferredWeight = 3;
 	private final int traitWeight = 2;
+	private final int similarTraitLikeWeight = 1;
 
 	@Bean
 	public Job generateRecommendBooks(JobRepository jobRepository) {
@@ -82,6 +86,7 @@ public class RecommendJobConfiguration {
 		processors.add(findPreferredRecentBooksProcessor());
 		processors.add(findPreferredBooksProcessor());
 		processors.add(findTraitBooksProcessor());
+		processors.add(findSimilarTraitLikeBooksProcessor());
 		processors.add(excludeReadBooksProcessor());
 		processors.add(excludeNotReadRecommendBooksProcessor());
 		processors.add(extractRecommendBooksProcessor());
@@ -103,11 +108,16 @@ public class RecommendJobConfiguration {
 	@Bean
 	public ItemProcessor<Long, ChildBooks> findPreferredRecentBooksProcessor() {
 		return child -> {
-			List<String> preferences = childPreferredRepository.findCategoryCodeByChildId(child);
+			List<String> preferencesGroupCode = childPreferredRepository.findCategoryCodeByChildId(child);
+			List<String> preferences = new ArrayList<>();
+			preferencesGroupCode.forEach(preference -> {
+				preferences.addAll(commonCodeConvertService.codeGroupToCommonCodes(preference).stream().map(CommonCode::getCode).toList());
+			});
+
 			List<String> booksIsbn;
 			if (preferences.size() > 0) {
 				booksIsbn = bookRepository.findIsbnByCategoryCodeSortRecent(preferences);
-				return new ChildBooks(child, booksIsbn.isEmpty() ? new ArrayList<>() : booksIsbn);
+				return new ChildBooks(child, booksIsbn);
 			}
 			booksIsbn = new ArrayList<>();
 			return new ChildBooks(child, booksIsbn);
@@ -139,6 +149,18 @@ public class RecommendJobConfiguration {
 	}
 
 	@Bean
+	public ItemProcessor<ChildBooks, ChildBooks> findSimilarTraitLikeBooksProcessor() {
+		return childBooks -> {
+			List<String> similarTraitBooks = recommendService.getSimilarTraitLikeBooks(childBooks.childId);
+			if (!similarTraitBooks.isEmpty()) {
+				Map<String, Integer> traitBooksIsbn = childBooks.getTraitBooksIsbn();
+				similarTraitBooks.stream().forEach(isbn -> traitBooksIsbn.put(isbn, traitBooksIsbn.getOrDefault(isbn, 0) + similarTraitLikeWeight));
+			}
+			return childBooks;
+		};
+	}
+
+	@Bean
 	public ItemProcessor<ChildBooks, ChildBooks> excludeReadBooksProcessor() {
 		return childBooks -> {
 			if (childBooks.getTraitBooksIsbn().size() >= needBookCount) {
@@ -160,6 +182,7 @@ public class RecommendJobConfiguration {
 				if (traitBooksIsbn.size() - notReadRecommendBooks.size() >= needBookCount) {
 					traitBooksIsbn.keySet().removeAll(notReadRecommendBooks);
 				}
+
 			}
 			return childBooks;
 		};

@@ -19,8 +19,8 @@ public class ChildFixture {
 			.name(name)
 			.gender(gender)
 			.birthDate(birthDate)
-			.parent(parent)
 			.build();
+		child.updateParent(parent);
 		return child;
 	}
 }

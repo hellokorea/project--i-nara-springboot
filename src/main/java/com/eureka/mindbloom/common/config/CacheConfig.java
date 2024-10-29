@@ -12,7 +12,7 @@ public class CacheConfig {
 
     @Bean(name = "commonCodeCacheManager")
     public CaffeineCacheManager commonCodeCacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager("groupCodes", "commonCode");
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager("codeGroup", "commonCode");
         cacheManager.setCaffeine(Caffeine.newBuilder().recordStats());
         return cacheManager;
     }
