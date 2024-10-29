@@ -31,4 +31,9 @@ public class BookView extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "child_id")
     private Child child;
+
+    public BookView(Book book, Child child) {
+        this.book = book;
+        this.child = child;
+    }
 }

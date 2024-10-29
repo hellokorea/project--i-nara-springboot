@@ -22,7 +22,7 @@ public interface BookRepository extends JpaRepository<Book, String> {
             "WHERE b.title LIKE %:search% OR b.author LIKE %:search% ")
     Slice<Book> findByTitleContainingOrAuthorContainingSortedByLikes(@Param("search") String search, Pageable pageable);
 
-	@Query("SELECT b.isbn FROM Book b JOIN BookCategory bc ON b.isbn = bc.id.isbn WHERE bc.id.categoryTraitId.categoryCode IN :preferences ORDER BY b.createdAt DESC LIMIT 2")
+	@Query("SELECT b.isbn FROM Book b JOIN BookCategory bc ON b.isbn = bc.id.isbn WHERE bc.categoryTrait.id.categoryCode IN :preferences ORDER BY b.createdAt DESC LIMIT 2")
 	List<String> findIsbnByCategoryCodeSortRecent(List<String> preferences);
 
 	@Query("SELECT b.isbn FROM Book b ORDER BY b.viewCount DESC LIMIT 10")
