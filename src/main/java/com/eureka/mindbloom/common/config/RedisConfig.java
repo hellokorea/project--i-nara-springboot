@@ -50,10 +50,13 @@ public class RedisConfig {
 		RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig()
 			.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
 			.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+
+
 		Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>();
 		cacheConfigurations.put("categoryBooks", cacheConfig.entryTtl(Duration.ofMinutes(1440)));
 		cacheConfigurations.put("TraitBooks", cacheConfig.entryTtl(Duration.ofMinutes(1440)));
-		cacheConfigurations.put("TopBook", cacheConfig.entryTtl(Duration.ofHours(1440)));
+		cacheConfigurations.put("TopBook", cacheConfig.entryTtl(Duration.ofMinutes(1440)));
+		cacheConfigurations.put("bookLikes", cacheConfig.entryTtl(Duration.ofMinutes(1440)));
 
 
 		return RedisCacheManager
