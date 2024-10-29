@@ -1,6 +1,7 @@
 package com.eureka.mindbloom.recommend.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.eureka.mindbloom.book.dto.BookRecommendResponse;
 import com.eureka.mindbloom.category.repository.ChildPreferredRepository;
 import com.eureka.mindbloom.commoncode.domain.CommonCode;
+import com.eureka.mindbloom.commoncode.domain.CommonCodeGroup;
 import com.eureka.mindbloom.commoncode.service.CommonCodeConvertService;
 import com.eureka.mindbloom.member.domain.Child;
 import com.eureka.mindbloom.member.repository.ChildRepository;
@@ -17,7 +19,7 @@ import com.eureka.mindbloom.recommend.domain.BookRecommendLike;
 import com.eureka.mindbloom.recommend.eums.RecommendLikeType;
 import com.eureka.mindbloom.recommend.repository.BookRecommendLikeRepository;
 import com.eureka.mindbloom.recommend.repository.BookRecommendRepository;
-import com.eureka.mindbloom.recommend.repository.RecommendCacheRepository;
+import com.eureka.mindbloom.recommend.repository.RecommendCacheService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +31,7 @@ public class RecommendServiceImpl implements RecommendService {
 	private final ChildRepository childRepository;
 	private final ChildPreferredRepository childPreferredRepository;
 	private final CommonCodeConvertService commonCodeConvertService;
-	private final RecommendCacheRepository recommendCacheRepository;
+	private final RecommendCacheService recommendCacheService;
 
 	@Override
 	public List<BookRecommendResponse> getRecommendBooks(Long childId) {
@@ -58,7 +60,7 @@ public class RecommendServiceImpl implements RecommendService {
 		preferences.forEach(preference -> {
 			commonCodeConvertService.codeGroupToCommonCodes(preference).stream().map(CommonCode::getCode)
 				.forEach(categoryCode -> {
-					books.addAll(recommendCacheRepository.getCategoryBooks(categoryCode));
+					books.addAll(recommendCacheService.getCategoryBooks(categoryCode));
 				});
 		});
 
@@ -76,7 +78,7 @@ public class RecommendServiceImpl implements RecommendService {
 		traitCodes.add("0101_07");
 
 		traitCodes.forEach(traitCode -> {
-			books.addAll(recommendCacheRepository.getTraitBooks(traitCode));
+			books.addAll(recommendCacheService.getTraitBooks(traitCode));
 		});
 
 		return books;
@@ -84,14 +86,56 @@ public class RecommendServiceImpl implements RecommendService {
 
 	@Override
 	public List<String> getTopViewedBooks() {
-		return recommendCacheRepository.getTop10ViewedBook();
+		return recommendCacheService.getTop10ViewedBook();
 	}
 
 	@Override
 	public List<String> getSimilarTraitLikeBooks(Long childId) {
 		// TODO : 자녀 성향 공통코드 조회 -> 아직 자녀 성향 누적 테이블이 존재하지 않아 임시 성향을 고정으로 조회
 		String traitValue = "ESTP";
-		return recommendCacheRepository.getTraitBooksLike(traitValue);
+		return recommendCacheService.getTraitBooksLike(traitValue);
+	}
+
+	public List<String> getAllPreferencesBooks() {
+
+		List<String> books = new LinkedList<>();
+		List<String> preferences = commonCodeConvertService.parentCodeGroupToCodeGroups("0200").stream().map(CommonCodeGroup::getCodeGroup).toList();
+
+		preferences.forEach(preference -> {
+			commonCodeConvertService.codeGroupToCommonCodes(preference).stream().map(CommonCode::getCode)
+				.forEach(categoryCode -> {
+					books.addAll(recommendCacheService.getCategoryBooks(categoryCode));
+				});
+		});
+
+		return books;
+	}
+
+	public List<String> getAllSimilarTraitLikeBooks() {
+
+		List<String> books = new LinkedList<>();
+		String[] traits = new String[] {"INTP", "INTJ", "ENTP", "ENTJ", "INFJ", "INFP", "ENFP", "ENFJ", "ISTJ", "ISFJ", "ESTJ", "ESFJ", "ISTP", "ISFP", "ESTP", "ESFP"};
+
+		Arrays.stream(traits).forEach(trait -> {
+			books.addAll(recommendCacheService.getTraitBooksLike(trait));
+				});
+
+		return books;
+	}
+
+	public List<String> getAllTraitBooks() {
+
+		List<String> books = new LinkedList<>();
+		List<String> traits = commonCodeConvertService.parentCodeGroupToCodeGroups("0100").stream().map(CommonCodeGroup::getCodeGroup).toList();
+
+		traits.forEach(trait -> {
+			commonCodeConvertService.codeGroupToCommonCodes(trait).stream().map(CommonCode::getCode)
+				.forEach(traitCode -> {
+					books.addAll(recommendCacheService.getTraitBooks(traitCode));
+				});
+		});
+
+		return books;
 	}
 
 }
