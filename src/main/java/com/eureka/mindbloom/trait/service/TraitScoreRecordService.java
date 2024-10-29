@@ -4,6 +4,7 @@ import com.eureka.mindbloom.member.domain.Child;
 import com.eureka.mindbloom.trait.domain.ChildTrait;
 import com.eureka.mindbloom.trait.domain.survey.TraitAnswer;
 import com.eureka.mindbloom.trait.dto.response.TraitPointsResponse;
+import com.eureka.mindbloom.trait.dto.response.UpdateTraitBatchResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,12 @@ public interface TraitScoreRecordService {
 
     String fetchTraitValue(List<TraitPointsResponse> traitScores);
 
-    Map<String, Integer> getChildTraitScores(Child child);
+    Map<String, Integer> getChildTraitResult(Child child);
 
-    void updateTraitPointsBatch(Child child);
+    // ------------ Batch Service Logic
+    Map<String, Integer> calculateDailyTraitPoints(Child child);
+
+   UpdateTraitBatchResponse updateTraitPointsBatch(Child child, Map<String, Integer> dailyTraitTotalPoint);
+
+    void createNewChildTraitValue(Child child, String newChildTraitValue);
 }

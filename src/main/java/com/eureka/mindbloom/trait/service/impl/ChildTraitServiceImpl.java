@@ -51,7 +51,7 @@ public class ChildTraitServiceImpl implements ChildTraitService {
         ChildTrait childTrait = childTraitRepository.findByChildId(childId)
                 .orElseThrow(() -> new BaseException("해당 자녀는 MBTI 검사를 실시하지 않았습니다", HttpStatus.NOT_FOUND));
 
-        Map<String, Integer> childTraitScores = traitScoreRecordService.getChildTraitScores(childTrait.getChild());
+        Map<String, Integer> childTraitScores = traitScoreRecordService.getChildTraitResult(childTrait.getChild());
 
         return TraitValueResultResponse.builder()
                 .traitValue(childTrait.getTraitValue())
