@@ -7,7 +7,7 @@ import com.eureka.mindbloom.trait.dto.request.CreateTraitRequest;
 import java.util.List;
 import java.util.Map;
 
-public interface ChildHistoryRecordService {
+public interface ChildTraitResponseService {
 
     Map<Integer, TraitAnswer> saveChildResponse(Child child, List<CreateTraitRequest> answers);
 

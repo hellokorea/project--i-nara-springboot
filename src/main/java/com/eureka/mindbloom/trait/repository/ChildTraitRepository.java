@@ -1,11 +1,13 @@
 package com.eureka.mindbloom.trait.repository;
 
 import com.eureka.mindbloom.trait.domain.ChildTrait;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ChildTraitRepository extends JpaRepository<ChildTrait, Long> {
@@ -16,6 +18,24 @@ public interface ChildTraitRepository extends JpaRepository<ChildTrait, Long> {
                WHERE ct.child.id = :childId
             """)
     Optional<ChildTrait> findByChildId(@Param("childId") Long childId);
+
+    @Query(value = """
+           SELECT ct.traitValue
+           FROM ChildTrait ct
+           WHERE ct.child.id = :childId
+           AND ct.deletedAt IS NULL
+           ORDER BY ct.createdAt DESC
+           """)
+    List<String> findChildTraitByTraitValueIsBefore(@Param("childId") Long childId, Pageable pageable);
+
+    @Query(value = """
+           SELECT ct
+           FROM ChildTrait ct
+           WHERE ct.child.id = :childId
+           AND ct.deletedAt IS NULL
+           ORDER BY ct.createdAt DESC
+           """)
+    List<ChildTrait> findChildTraitByDeletedAtIsNull(@Param("childId") Long childId, Pageable pageable);
 
     @Modifying
     @Query(nativeQuery = true, value = """

@@ -10,11 +10,14 @@ import java.util.List;
 
 public record MemberDetails(Member member) implements UserDetails {
 
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(member.getRole()));
+        String roleCode = member.getRole();
+        String authority = roleCode.equals("0400_01") ? "ROLE_Admin" : "ROLE_User";
+        return List.of(new SimpleGrantedAuthority(authority));
     }
-
     @Override
     public String getPassword() {
         return member.getPassword();

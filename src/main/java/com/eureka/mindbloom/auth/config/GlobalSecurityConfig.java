@@ -26,63 +26,64 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import java.util.List;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
-    @Configuration
-    @RequiredArgsConstructor
-    public class GlobalSecurityConfig {
+@Configuration
+@EnableMethodSecurity(prePostEnabled = true) // @PreAuthorize를 사용하기 위한 설정
+@RequiredArgsConstructor
+public class GlobalSecurityConfig {
 
-        private final JwtProvider jwtProvider;
-        private final PasswordEncoder passwordEncoder;
-        private final MemberDetailsService memberDetailsService;
+    private final JwtProvider jwtProvider;
+    private final PasswordEncoder passwordEncoder;
+    private final MemberDetailsService memberDetailsService;
 
-        @Bean
-        public AuthenticationProvider memberProvider() {
-            DaoAuthenticationProvider provider = new DaoAuthenticationProvider(passwordEncoder);
-            provider.setUserDetailsService(memberDetailsService);
-            provider.setHideUserNotFoundExceptions(false);
-            return provider;
-        }
-
-        @Bean
-        public AuthenticationManager memberAuthenticationManager() {
-            return new ProviderManager(memberProvider());
-        }
-
-        @Bean
-        public SecurityFilterChain globalSecurityFilterChain(HttpSecurity http) throws Exception {
-            final RequestMatcher ignoredRequests = new OrRequestMatcher(//추가
-                    List.of(new AntPathRequestMatcher("/members/signup", HttpMethod.POST.name()),
-                            new AntPathRequestMatcher("/auth/login", HttpMethod.POST.name()),
-                            new AntPathRequestMatcher("/auth/logout", HttpMethod.POST.name()),
-                            new AntPathRequestMatcher("/health"),
-                            new AntPathRequestMatcher("/error")
-
-                    ));
-
-            http.cors(Customizer.withDefaults())
-                    .csrf(AbstractHttpConfigurer::disable);
-
-
-        http.authorizeHttpRequests(common -> common
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .requestMatchers("/health", "/error").permitAll()
-                .requestMatchers(ignoredRequests).permitAll()
-                .anyRequest().authenticated());
-
-            http.formLogin(AbstractHttpConfigurer::disable)
-                    .httpBasic(AbstractHttpConfigurer::disable);
-
-            http.addFilterBefore(new JwtLoginFilter(jwtProvider, memberAuthenticationManager()), UsernamePasswordAuthenticationFilter.class)
-                    .addFilterAfter(new JwtAuthorizationFilter(jwtProvider, memberDetailsService, ignoredRequests), JwtLoginFilter.class);
-
-            http.logout(
-                    config -> config.logoutUrl("/auth/logout")
-                            .addLogoutHandler(new JwtLogoutHandler())
-                            .logoutSuccessHandler(new JwtLogoutSuccessHandler())
-                            .invalidateHttpSession(true)
-                            .permitAll()
-            );
-
-            return http.build();
-        }
+    @Bean
+    public AuthenticationProvider memberProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(passwordEncoder);
+        provider.setUserDetailsService(memberDetailsService);
+        provider.setHideUserNotFoundExceptions(false);
+        return provider;
     }
+
+    @Bean
+    public AuthenticationManager memberAuthenticationManager() {
+        return new ProviderManager(memberProvider());
+    }
+
+    @Bean
+    public SecurityFilterChain globalSecurityFilterChain(HttpSecurity http) throws Exception {
+        final RequestMatcher ignoredRequests = new OrRequestMatcher(
+                List.of(new AntPathRequestMatcher("/members/signup", HttpMethod.POST.name()),
+                        new AntPathRequestMatcher("/auth/login", HttpMethod.POST.name()),
+                        new AntPathRequestMatcher("/auth/logout", HttpMethod.POST.name()),
+                        new AntPathRequestMatcher("/health"),
+                        new AntPathRequestMatcher("/error")
+                ));
+
+        http.cors(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers("/health", "/error").permitAll()
+                        .requestMatchers(ignoredRequests).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/admin/books/**").hasRole("Admin")  // Admin 접근 설정 추가
+                        .requestMatchers(HttpMethod.PUT, "/admin/books/**").hasRole("Admin")   // Admin 접근 설정 추가
+                        .requestMatchers(HttpMethod.DELETE, "/admin/books/**").hasRole("Admin") // Admin 접근 설정 추가
+                        .anyRequest().authenticated()
+                )
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable);
+
+        http.addFilterBefore(new JwtLoginFilter(jwtProvider, memberAuthenticationManager()), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new JwtAuthorizationFilter(jwtProvider, memberDetailsService, ignoredRequests), JwtLoginFilter.class);
+
+        http.logout(config -> config.logoutUrl("/auth/logout")
+                .addLogoutHandler(new JwtLogoutHandler())
+                .logoutSuccessHandler(new JwtLogoutSuccessHandler())
+                .invalidateHttpSession(true)
+                .permitAll()
+        );
+
+        return http.build();
+    }
+}
