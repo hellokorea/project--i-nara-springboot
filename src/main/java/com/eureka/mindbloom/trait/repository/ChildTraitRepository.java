@@ -16,6 +16,8 @@ public interface ChildTraitRepository extends JpaRepository<ChildTrait, Long> {
                SELECT ct
                FROM ChildTrait ct
                WHERE ct.child.id = :childId
+               order by ct.createdAt desc
+               limit 1
             """)
     Optional<ChildTrait> findByChildId(@Param("childId") Long childId);
 
