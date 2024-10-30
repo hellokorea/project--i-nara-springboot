@@ -30,4 +30,8 @@ public class BookLikeStats extends BaseEntity {
         this.book = book;
         this.count = count;
     }
+
+    public void updateCount(long newCount) {
+        this.count = newCount;
+    }
 }

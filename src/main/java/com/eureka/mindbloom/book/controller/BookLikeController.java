@@ -6,6 +6,7 @@ import com.eureka.mindbloom.book.dto.BookLikeResponse;
 import com.eureka.mindbloom.book.dto.BookLikeStatsResponse;
 import com.eureka.mindbloom.book.service.BookLikeService;
 import com.eureka.mindbloom.common.dto.ApiResponse;
+import com.eureka.mindbloom.trait.service.TraitLikePointService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +20,18 @@ import java.util.List;
 public class BookLikeController {
 
     private final BookLikeService bookLikeService;
+    private final TraitLikePointService traitLikePointService;
 
     @PutMapping("/{bookId}/likes")
     public ResponseEntity<ApiResponse<BookLikeResponse>> updateLike(
-        @PathVariable String bookId,
-        @RequestBody BookLikeRequest request) {
+            @PathVariable String bookId,
+            @RequestBody BookLikeRequest request) {
 
+        // 먼저 좋아요 처리
         BookLike bookLike = bookLikeService.addLike(bookId, request.getChildId(), request.getType());
+
+        // 트레잇 점수 반영
+        traitLikePointService.processLikePoint(bookId, request.getChildId());
 
         BookLikeResponse response = BookLikeResponse.builder()
                 .bookId(bookLike.getBook().getIsbn())
