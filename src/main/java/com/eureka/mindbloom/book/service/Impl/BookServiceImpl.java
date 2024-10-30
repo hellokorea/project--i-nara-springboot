@@ -42,14 +42,15 @@ public class BookServiceImpl implements BookService {
     @Override
     public Slice<BooksResponse> getBooks(String categoryCode, String search, int page, SortOption sortOption) {
         if (sortOption == null) {
-            sortOption = SortOption.VIEWCOUNT; // 기본값 조회수로 설정
+            sortOption = SortOption.RELEVANCE;
         }
 
         // 정렬 기준 설정
         Sort sort = switch (sortOption) {
-            case VIEWCOUNT -> Sort.by("viewCount").descending(); // 조회수 높은순
-            case LIKES -> Sort.by("bls.count").descending(); // 좋아요 많은순(BookLikeCount테이블 필드명)
-            case RECENT -> Sort.by("createdAt").descending(); // 최신순
+            case VIEWCOUNT -> Sort.by("view_count").descending(); // 조회수 높은순
+            case LIKES -> Sort.by("bls.count").descending(); // 좋아요 많은순
+            case RECENT -> Sort.by("created_at").descending(); // 최신순
+            case RELEVANCE -> Sort.unsorted(); // 정확도 기준
         };
 
         int pageSize = 10; // 페이지 당 보여주는 책의 수
@@ -70,12 +71,12 @@ public class BookServiceImpl implements BookService {
             // 검색어만 있는 경우
             books = (sortOption == SortOption.LIKES)
                     ? bookRepository.findByTitleContainingOrAuthorContainingSortedByLikes(search, pageable)
-                    : bookRepository.findByTitleContainingOrAuthorContaining(search, search, pageable);
+                    : bookRepository.findByTitleContainingOrAuthorContaining(search, pageable);
         } else {
             // 아무 조건도 없을 때
             books = (sortOption == SortOption.LIKES)
                     ? bookRepository.findAllBooksSortedByLikes(pageable)
-                    : bookRepository.findAll(pageable);
+                    : bookRepository.findAllBooks(pageable);
         }
 
         // Book -> BooksResponse로 변환
