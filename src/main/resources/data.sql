@@ -1,3 +1,5 @@
+ALTER TABLE book ADD FULLTEXT INDEX ft_index (title, author) WITH PARSER ngram;
+
 -- Inserting CommonCodeGroup data
 INSERT INTO common_code_group (code_group, group_name, description, parent_code_group, disabled)
 VALUES ('0100', '성향', '성향 분류', NULL, FALSE),
