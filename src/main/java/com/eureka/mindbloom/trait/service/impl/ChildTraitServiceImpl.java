@@ -65,6 +65,11 @@ public class ChildTraitServiceImpl implements ChildTraitService {
     }
 
     @Override
+    public Map<String, Integer> getTraitScoreRecords(Child child) {
+        return traitScoreRecordService.getChildTraitScores(child);
+    }
+
+    @Override
     public void softDeleteChildTraits(Member member, Long childId) {
         if (isNotParent(member, childId)) {
             throw new ChildNotFoundException(childId);

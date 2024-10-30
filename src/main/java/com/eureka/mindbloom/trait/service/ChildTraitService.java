@@ -1,5 +1,7 @@
 package com.eureka.mindbloom.trait.service;
 
+import java.util.Map;
+
 import com.eureka.mindbloom.member.domain.Child;
 import com.eureka.mindbloom.member.domain.Member;
 import com.eureka.mindbloom.trait.domain.ChildTrait;
@@ -15,4 +17,6 @@ public interface ChildTraitService {
     void softDeleteChildTraits(Member member, Long childId);
 
     ChildTrait getChildTraitValue(Long childId);
+
+    Map<String,Integer> getTraitScoreRecords(Child child);
 }
