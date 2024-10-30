@@ -66,7 +66,7 @@ public class ChildTraitServiceImpl implements ChildTraitService {
 
     @Override
     public Map<String, Integer> getTraitScoreRecords(Child child) {
-        return traitScoreRecordService.getChildTraitScores(child);
+        return traitScoreRecordService.getChildTraitResult(child);
     }
 
     @Override
