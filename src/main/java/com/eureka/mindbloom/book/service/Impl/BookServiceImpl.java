@@ -109,7 +109,7 @@ public class BookServiceImpl implements BookService {
     public BookDetailResponse getBookDetail(String isbn) {
         Book book = bookRepository.findByIsbn(isbn);
 
-        String categoryCode = bookCategoryRepository.findCategoryCodeByIsbn(isbn);
+        String categoryCode = bookCategoryRepository.findByIsbn(isbn).getCategoryCode();
 
         String categoryName = commonCodeConvertService.codeToCommonCodeName(categoryCode);
 

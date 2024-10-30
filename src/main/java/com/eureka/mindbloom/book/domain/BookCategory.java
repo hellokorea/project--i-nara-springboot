@@ -33,4 +33,12 @@ public class BookCategory {
         this.book = book;
         this.id = new BookCategoryId(categoryTrait.getId(), book.getIsbn());
     }
+
+    public String getCategoryCode() {
+        return id.getCategoryTraitId().getCategoryCode();
+    }
+
+    public String getTraitCode() {
+        return id.getCategoryTraitId().getTraitCode();
+    }
 }

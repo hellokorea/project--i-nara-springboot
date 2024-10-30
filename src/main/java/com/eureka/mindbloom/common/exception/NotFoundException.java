@@ -8,7 +8,7 @@ public class NotFoundException extends BaseException {
     private static final String BOOK_LIKE = "도서 '%s'에 대한 좋아요 정보가 존재하지 않습니다.";
 
 
-    protected NotFoundException(String message) {
+    public NotFoundException(String message) {
         super(message, HttpStatus.NOT_FOUND);
     }
 

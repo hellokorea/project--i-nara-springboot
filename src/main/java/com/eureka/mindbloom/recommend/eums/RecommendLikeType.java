@@ -5,7 +5,17 @@ import java.util.stream.Stream;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum RecommendLikeType {
-	LIKE, LIKE_CANCEL;
+	LIKE("추천좋아요"), LIKE_CANCEL("추천좋아요취소");
+
+	public String actionName;
+
+	RecommendLikeType(String actionName) {
+		this.actionName = actionName;
+	}
+
+	public String getActionName() {
+		return actionName;
+	}
 
 	@JsonCreator
 	public static RecommendLikeType parsing(String inputValue) {
