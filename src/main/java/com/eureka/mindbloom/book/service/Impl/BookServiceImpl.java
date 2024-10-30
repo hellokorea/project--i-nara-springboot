@@ -6,7 +6,7 @@ import com.eureka.mindbloom.book.domain.BookView;
 import com.eureka.mindbloom.book.dto.BookDetailResponse;
 import com.eureka.mindbloom.book.dto.BooksResponse;
 import com.eureka.mindbloom.book.dto.ReadBookResponse;
-import com.eureka.mindbloom.book.dto.RecentlyBookResponse;
+import com.eureka.mindbloom.book.dto.BookListResponse;
 import com.eureka.mindbloom.book.repository.BookCategoryRepository;
 import com.eureka.mindbloom.book.repository.BookLikeStatsRepository;
 import com.eureka.mindbloom.book.repository.BookRepository;
@@ -40,7 +40,7 @@ public class BookServiceImpl implements BookService {
     private final BookViewCacheService bookViewCacheService;
 
     @Override
-    public Slice<BooksResponse> getBooks(String categoryCode, String search, int page, SortOption sortOption) {
+    public BookListResponse getBooks(String categoryCode, String search, int page, SortOption sortOption) {
         if (sortOption == null) {
             sortOption = SortOption.RELEVANCE;
         }
@@ -84,12 +84,11 @@ public class BookServiceImpl implements BookService {
                 .map(book -> new BooksResponse(book.getIsbn(), book.getTitle(), book.getAuthor(), book.getCoverImage()))
                 .collect(Collectors.toList());
 
-        // Slice<BooksResponse> 생성
-        return new SliceImpl<>(bookResponses, pageable, books.hasNext());
+        return new BookListResponse(bookResponses, books.isLast());
     }
 
     @Override
-    public RecentlyBookResponse getRecentlyViewedBooks(int page, Long childId, Member member) {
+    public BookListResponse getRecentlyViewedBooks(int page, Long childId, Member member) {
         if (isNotParent(member, childId)) {
             throw new ChildNotFoundException(childId);
         }
@@ -98,7 +97,7 @@ public class BookServiceImpl implements BookService {
 
         Slice<BooksResponse> books = bookRepository.findRecentlyReadBook(pageable, childId);
 
-        return new RecentlyBookResponse(books.getContent(), books.isLast());
+        return new BookListResponse(books.getContent(), books.isLast());
     }
 
     private boolean isNotParent(Member member, Long childId) {
