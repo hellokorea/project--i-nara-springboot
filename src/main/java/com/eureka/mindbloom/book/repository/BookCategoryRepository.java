@@ -15,8 +15,8 @@ public interface BookCategoryRepository extends JpaRepository<BookCategory, Book
 	@Query("SELECT b.id.isbn FROM BookCategory b WHERE b.id.categoryTraitId.categoryCode = :categoryCode")
 	List<String> findIsbnByCategoryCodes(String categoryCode);
 
-	@Query("SELECT bc.id.categoryTraitId.categoryCode FROM BookCategory bc WHERE bc.id.isbn = :isbn")
-	String findCategoryCodeByIsbn(@Param("isbn") String isbn);
+	@Query("SELECT bc FROM BookCategory bc WHERE bc.id.isbn = :isbn")
+	BookCategory findByIsbn(@Param("isbn") String isbn);
 
 	@Query("SELECT b.id.isbn FROM BookCategory b WHERE b.id.categoryTraitId.traitCode = :traitCodes")
 	List<String> findIsbnByTraitCode(String traitCodes);
