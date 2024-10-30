@@ -5,7 +5,6 @@ import com.eureka.mindbloom.book.repository.BookCategoryRepository;
 import com.eureka.mindbloom.common.exception.NotFoundException;
 import com.eureka.mindbloom.member.domain.Child;
 import com.eureka.mindbloom.member.repository.ChildRepository;
-import com.eureka.mindbloom.trait.dto.response.ActionFeedbackResponse;
 import com.eureka.mindbloom.trait.service.ChildRecordHistoryService;
 import com.eureka.mindbloom.trait.service.TraitLikePointService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,7 @@ public class TraitLikePointServiceImpl implements TraitLikePointService {
     private static final String LIKE_CODE = "0300_02";
     private static final int POINT = 1;
 
-    public ActionFeedbackResponse processLikePoint(String isbn, Long childId) {
+    public void processLikePoint(String isbn, Long childId) {
         log.info("Processing Like Point for book ISBN: {}, child: {}", isbn, childId);
 
         Child child = childRepository.findChildById(childId)
@@ -40,7 +39,7 @@ public class TraitLikePointServiceImpl implements TraitLikePointService {
 
         String traitCode = bookCategory.getCategoryTrait().getId().getTraitCode();
 
-        return childRecordHistoryService.createChildTraitHistory(
+        childRecordHistoryService.createChildTraitHistory(
                 child,
                 LIKE_CODE,
                 traitCode,
