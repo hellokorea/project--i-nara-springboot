@@ -28,7 +28,7 @@ public interface ChildTraitRepository extends JpaRepository<ChildTrait, Long> {
            AND ct.deletedAt IS NULL
            ORDER BY ct.createdAt DESC
            """)
-    List<String> findChildTraitByTraitValueIsBefore(@Param("childId") Long childId, Pageable pageable);
+    List<String> findChildCurrentTraitByTraitValue(@Param("childId") Long childId, Pageable pageable);
 
     @Query(value = """
            SELECT ct
@@ -38,6 +38,15 @@ public interface ChildTraitRepository extends JpaRepository<ChildTrait, Long> {
            ORDER BY ct.createdAt DESC
            """)
     List<ChildTrait> findChildTraitByDeletedAtIsNull(@Param("childId") Long childId, Pageable pageable);
+
+    @Query("""
+           SELECT ct
+           FROM ChildTrait ct
+           WHERE ct.child.id = :childId
+           AND ct.deletedAt IS NULL
+           ORDER BY ct.createdAt DESC
+           """)
+    List<ChildTrait> findChildTraitByDeletedAtIsNull(@Param("childId") Long childId);
 
     @Modifying
     @Query(nativeQuery = true, value = """

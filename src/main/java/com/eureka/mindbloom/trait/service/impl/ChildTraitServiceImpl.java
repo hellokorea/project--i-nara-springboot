@@ -49,7 +49,7 @@ public class ChildTraitServiceImpl implements ChildTraitService {
     public TraitValueResultResponse getTraitValueResult(Long childId) {
         ChildTrait childTrait = getChildTraitValue(childId);
 
-        Map<String, Integer> childTraitScores = traitScoreRecordService.getChildTraitScores(childTrait.getChild());
+        Map<String, Integer> childTraitScores = traitScoreRecordService.getChildTraitResult(childTrait.getChild());
 
         return TraitValueResultResponse.builder()
                 .traitValue(childTrait.getTraitValue())
