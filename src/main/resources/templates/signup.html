@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아이들 나라 회원가입</title>
+    <link rel="stylesheet" href="/css/signup.css">
+</head>
+<body>
+<div class="container">
+    <div class="register-box">
+        <img src="images/풍선.png" alt="풍선 이미지" class="register-image">
+        <h1>흑코더들에 가입하세요!</h1>
+
+        <form id="registerForm" novalidate>
+
+            <div class="input-box">
+                <input type="text"
+                       id="name"
+                       name="name"
+                       required
+                       placeholder="이름을 입력하세요"
+                       autocomplete="name">
+            </div>
+
+            <div class="input-box">
+                <input type="email"
+                       id="email"
+                       name="email"
+                       required
+                       placeholder="이메일 주소를 입력하세요"
+                       autocomplete="email">
+            </div>
+            <div class="input-box">
+                <div class="password-wrapper">
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           required
+                           placeholder="비밀번호를 입력하세요"
+                           autocomplete="current-password">
+                    <button type="button"
+                            class="password-toggle"
+                            onclick="togglePassword()"
+                            aria-label="비밀번호 표시 전환">
+                        <img src="images/눈1.png" class="toggle-icon" alt="비밀번호 보기" id="toggleIcon"/>
+                    </button>
+                </div>
+            </div>
+
+
+            <button type="submit" class="register-button">회원가입</button>
+        </form>
+
+        <div class="login-wrapper">
+            <p class="login-text">이미 아이들 나라 회원이신가요? <a href="/login">로그인</a></p>
+        </div>
+    </div>
+</div>
+
+<!-- register.js 파일 연결 -->
+<script src="/js/signup.js"></script>
+</body>
+</html>
