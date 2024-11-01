@@ -11,11 +11,13 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class ServletResponseUtil {
+    private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+
     public static void servletResponse(HttpServletResponse response,
                                        ApiResponse<?> responseDto,
                                        HttpStatus status) throws IOException {
 
-        String jsonResponse = new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(responseDto);
+        String jsonResponse = objectMapper.writeValueAsString(responseDto);
 
         response.setStatus(status.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
