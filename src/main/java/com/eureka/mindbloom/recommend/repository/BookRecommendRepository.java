@@ -10,7 +10,7 @@ import com.eureka.mindbloom.book.dto.BookRecommendResponse;
 
 public interface BookRecommendRepository extends JpaRepository<BookRecommend, Long> {
 	@Query("SELECT new com.eureka.mindbloom.book.dto.BookRecommendResponse(b.isbn, b.title, b.author, b.coverImage, "
-		+ "CASE WHEN brl.bookRecommend.id IS NOT NULL THEN true ELSE false END )"
+		+ "CASE WHEN brl.bookRecommend.id IS NOT NULL THEN true ELSE false END , br.id) "
 		+ "FROM BookRecommend br "
 		+ "JOIN Book b ON br.book.isbn = b.isbn "
 		+ "left JOIN BookRecommendLike brl ON br.id = brl.bookRecommend.id "

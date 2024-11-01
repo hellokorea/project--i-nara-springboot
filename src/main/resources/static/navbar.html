@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="data:,">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .navbar-logo {
+            width: 40px;
+            height: 40px;
+            background-image: url('userImage.png'); /* 로고 이미지 경로가 올바른지 확인하세요 */
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+        .navbar {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-menu {
+            display: flex;
+            flex: 9; /* 너비 비율 9 */
+            justify-content: space-between; /* 요소 간격 일정하게 */
+            align-items: center;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .navbar-menu a {
+            text-decoration: none;
+            color: #ABABAB;
+            font-size: 25px;
+            padding: 8px 16px;
+            /*border-radius: 20px;*/
+            transition: background-color 0.3s;
+            font-weight: bold;
+            border-bottom: 4px solid transparent;
+        }
+
+        .navbar-menu a:hover {
+            color: #000;
+        }
+        #status-tap {
+            color: black;
+            border-bottom: 4px solid #FFE8F6; /* 밑줄 */
+            padding-bottom: 4px; /* 밑줄과 텍스트 사이 여백 */
+        }
+
+
+
+        /* 반응형 디자인 */
+        @media (max-width: 600px) {
+            .navbar-menu a {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+<!-- 네비게이션 바 -->
+<div class="navbar">
+    <div class="navbar-logo" onclick="location.href='#'"></div>
+    <div class="navbar-menu">
+        <a href="main.html"  >마이홈</a>
+        <a href="learn.html">배우기</a>
+        <a href="nature.html">자연</a>
+        <a href="daily-life.html">일상생활</a>
+        <a href="stories.html">동화</a>
+        <a href="animals.html">동물</a>
+    </div>
+</div>
+
+</body>
+</html>

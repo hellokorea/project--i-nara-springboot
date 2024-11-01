@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+
+    </script>
+    <style>
+
+        /* 반응형 디자인 */
+        @media (max-width: 600px) {
+            .navbar-menu a {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        /* 기본 슬라이더 컨테이너 스타일 */
+        .slider-container {
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            width: 95%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* 슬라이더 내부의 책 리스트 스타일 */
+        .slider {
+            display: flex;
+            gap: 20px;
+            transition: transform 0.4s ease;
+        }
+
+        /* 각 책 아이템 스타일 */
+        .book-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .book-item img {
+            width: 130px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        /* 슬라이더 버튼 스타일 */
+        .slider-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-60%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            padding: 10px 10px 10px 10px;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 20px;
+            z-index: 2; /* 슬라이더 위에 보이도록 설정 */
+            opacity: 0.8; /* 버튼 반투명 효과 */
+        }
+
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 0px;
+        }
+        .recommend {
+            padding: 30px;
+        }
+        #navbar-frame {
+            width: 100%;
+            border: none; /* 테두리 제거 */
+        }
+    </style>
+</head>
+<body>
+<!-- 네비게이션 바 -->
+<div id="navbar"></div>
+
+<div class="recommend">
+    <h1>오늘의 책 추천</h1>
+</div>
+
+<div class="slider-container">
+    <button class="slider-button prev" onclick="slide('recommend', -1)">&#10094;</button>
+    <div class="slider" id="recommendBook-slider">
+
+    </div>
+    <button class="slider-button next" onclick="slide('recommend', 1)">&#10095;</button>
+</div>
+
+<div class="recommend">
+    <h1>최근 읽은 책</h1>
+</div>
+
+<div class="slider-container">
+    <button class="slider-button prev" onclick="slide('recent', -1)">&#10094;</button>
+    <div class="slider" id="recentBook-slider">
+
+    </div>
+    <button class="slider-button next" onclick="slide('recent', 1)">&#10095;</button>
+</div>
+
+
+<script>
+    let currentIndex = {
+        recommend: 0,
+        recent: 0
+    };
+
+    window.onload = function() {
+        loadNavbar()
+        loadBooks();
+        loadRecentBooks();
+    };
+
+    function loadNavbar() {
+        fetch('navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar').innerHTML = data;
+                updateNavbarStatus();
+            })
+            .catch(error => console.error('Error loading navbar:', error));
+        updateNavbarStatus()
+    }
+
+    function updateNavbarStatus() {
+        const currentURL = window.location.pathname;
+        const menuItems = document.querySelectorAll('.navbar-menu a');
+
+        menuItems.forEach(item => {
+            if ('/'+item.getAttribute('href') === currentURL) {
+                item.id = 'status-tap';
+            } else {
+                item.removeAttribute('id');
+            }
+        });
+    }
+
+    async function loadBooks() {
+        try {
+          const childId = localStorage.getItem('childId');
+            if (childId == null) {
+                console.log('로그인이 필요합니다.');
+            } else {
+                const response = await fetch('http://localhost:8080/member/books/recommend/'+childId ,{
+                    method: 'GET',
+                        headers: {
+                        'Content-Type': 'application/json',
+                            'Authorization': localStorage.getItem('Authorization')
+                    }});
+                const books = await response.json();
+
+                const bookSlider = document.getElementById('recommendBook-slider');
+                books.data.forEach(book => {
+                    const bookItem = document.createElement('div');
+                    bookItem.classList.add('book-item');
+                    const heartIcon = book.recommendLike ?
+                        `<span class="heart liked" data-isbn="${book.isbn} " style="color: pink">♥</span>` :
+                        `<span class="heart" data-isbn="${book.isbn}" style="color: pink">♡</span>`;
+                    bookItem.innerHTML = `
+                    <img src="${book.coverImage}" alt="${book.title}">
+                    <p>${book.title}</p>
+
+                    ${heartIcon}
+
+                `;
+                    bookItem.addEventListener('click', () => {
+                        location.href = `book.html`+'?bookId='+book.isbn;
+                    });
+
+                    bookItem.querySelector('.heart').addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        const heart = event.currentTarget;
+
+                        if (heart.classList.contains('liked')) {
+                            heart.classList.remove('liked');
+                            heart.textContent = '♡';
+                            sendLikeRequest(book.recommendId, "LIKE_CANCEL");
+
+                        } else {
+                            heart.classList.add('liked');
+                            heart.textContent = '♥';
+                            sendLikeRequest(book.recommendId, "LIKE");
+                        }
+                    });
+                    bookSlider.appendChild(bookItem);
+                });
+
+            }
+
+        } catch (error) {
+            console.error('Error loading books:', error);
+        }
+    }
+
+    async function loadRecentBooks() {
+
+
+        try {
+            const childId = localStorage.getItem('childId');
+            if (childId == null) {
+            } else {
+                const response = await fetch('http://localhost:8080/members/books/'+childId,{
+                    method: 'GET', // 요청 방식 (GET, POST 등)
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': localStorage.getItem('Authorization')
+                    }
+                }); // 여기에 API URL을 입력하세요
+                const result = await response.json();
+
+                const bookSlider = document.getElementById('recentBook-slider');
+
+                result.data.books.forEach(book => {
+                    const bookItem = document.createElement('div');
+                    bookItem.classList.add('book-item');
+                    bookItem.innerHTML = `
+                    <img src="${book.coverImage}" alt="${book.title}">
+                    <p>${book.title}</p>
+
+
+                `;
+                    bookItem.addEventListener('click', () => {
+                        location.href = `book.html`+'?bookId='+book.isbn;
+                    });
+
+                    bookSlider.appendChild(bookItem);
+                });
+
+            }
+
+        } catch (error) {
+            console.error('Error loading books:', error);
+        }
+    }
+
+    async function sendLikeRequest(recommendId, likeType) {
+        const childId = localStorage.getItem('childId');
+        const response = await fetch('http://localhost:8080/member/books/recommend/like/'+childId,{
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('Authorization')
+            },
+            body: JSON.stringify({
+                likeType: likeType,
+                bookRecommendId: recommendId
+            })
+        });
+        if (response.ok) {
+            console.log('좋아요 상태 변경 성공');
+        } else {
+            console.error('좋아요 상태 변경 실패');
+        }
+
+
+
+    }
+    function slide(type, direction) {
+        const slider = document.getElementById(type === 'recommend' ? 'recommendBook-slider' : 'recentBook-slider');
+        const itemWidth = document.querySelector('.book-item').offsetWidth + 20; // 책 한 개와 gap
+
+        // 슬라이드 이동
+        currentIndex[type] += direction;
+
+        // 처음과 끝을 막는 코드
+        const maxIndex = slider.children.length - 1;
+        if (currentIndex[type] < 0) {
+            currentIndex[type] = 0;
+        } else if (currentIndex[type] > maxIndex - 8) {
+            currentIndex[type] = maxIndex - 8;
+        }
+
+        slider.style.transform = `translateX(-${itemWidth * currentIndex[type]}px)`;
+    }
+</script>
+</body>
+</html>

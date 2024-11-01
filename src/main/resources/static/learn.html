@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- 네비게이션 바 -->
+<div id="navbar"></div>
+
+
+
+
+<script>
+    window.onload = function() {
+        loadNavbar()
+    };
+
+    function loadNavbar() {
+        fetch('navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar').innerHTML = data;
+                updateNavbarStatus();
+            })
+            .catch(error => console.error('Error loading navbar:', error));
+        updateNavbarStatus()
+    }
+
+    function updateNavbarStatus() {
+        const currentURL = window.location.pathname;
+        const menuItems = document.querySelectorAll('.navbar-menu a');
+
+        menuItems.forEach(item => {
+            if ('/'+item.getAttribute('href') === currentURL) {
+                item.id = 'status-tap';
+            } else {
+                item.removeAttribute('id');
+            }
+        });
+    }
+</script>
+</body>
+</html>
