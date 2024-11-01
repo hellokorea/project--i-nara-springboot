@@ -1,6 +1,8 @@
 package com.eureka.mindbloom.trait.service.impl;
 
 import com.eureka.mindbloom.common.exception.BaseException;
+import com.eureka.mindbloom.commoncode.domain.CommonCode;
+import com.eureka.mindbloom.commoncode.service.CommonCodeConvertService;
 import com.eureka.mindbloom.member.domain.Child;
 import com.eureka.mindbloom.member.exception.ChildNotFoundException;
 import com.eureka.mindbloom.trait.domain.ChildTrait;
@@ -8,10 +10,10 @@ import com.eureka.mindbloom.trait.domain.history.TraitScoreRecord;
 import com.eureka.mindbloom.trait.domain.survey.TraitAnswer;
 import com.eureka.mindbloom.trait.dto.response.ActionFeedbackResponse;
 import com.eureka.mindbloom.trait.dto.response.TraitPointsResponse;
+import com.eureka.mindbloom.trait.dto.response.UpdateTraitBatchResponse;
 import com.eureka.mindbloom.trait.repository.ChildTraitRepository;
 import com.eureka.mindbloom.trait.repository.TraitRecordHistoryRepository;
 import com.eureka.mindbloom.trait.repository.TraitScoreRecordRepository;
-import com.eureka.mindbloom.trait.service.TraitScoreDailyRecordService;
 import com.eureka.mindbloom.trait.service.TraitScoreRecordService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,18 +37,19 @@ public class TraitScoreRecordServiceImpl implements TraitScoreRecordService {
 
     private final TraitScoreRecordRepository traitScoreRecordRepository;
     private final TraitRecordHistoryRepository traitRecordHistoryRepository;
-    private final TraitScoreDailyRecordService traitScoreDailyRecordService;
     private final ChildTraitRepository childTraitRepository;
+
+    private final CommonCodeConvertService commonCodeConvertService;
 
     @Override
     public List<TraitPointsResponse> saveTraitScoreRecord(ChildTrait childTrait,
                                                           Map<Integer, TraitAnswer> responseAnswersMap) {
 
-        List<String> allTraitCodes = List.of("0101_01", "0101_02", "0101_03", "0101_04",
-                                             "0101_05", "0101_06", "0101_07", "0101_08"); // 공통 코드 변경
+        List<CommonCode> allTraitCodes = commonCodeConvertService.codeGroupToCommonCodes("0101");
 
         Map<String, Integer> traitScores = allTraitCodes.stream()
-                        .collect(Collectors.toMap(traitCode -> traitCode, traitCode -> 0));
+                .map(CommonCode::getCode)
+                .collect(Collectors.toMap(traitCode -> traitCode, traitCode -> 0));
 
         responseAnswersMap.forEach((id, answer) -> {
             String traitCode = answer.getTraitCode();
@@ -101,7 +104,7 @@ public class TraitScoreRecordServiceImpl implements TraitScoreRecordService {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<String, Integer> getChildTraitScores(Child child) {
+    public Map<String, Integer> getChildTraitResult(Child child) {
 
         Map<String, Integer> result = new HashMap<>();
 
@@ -120,36 +123,54 @@ public class TraitScoreRecordServiceImpl implements TraitScoreRecordService {
         return result;
     }
 
-    @Override
-    public void updateTraitPointsBatch(Child child) {
+    private String fetchTraitNamePiece(String code) {
+        return commonCodeConvertService.codeToCommonCodeName(code);
+    }
 
-        // 자녀의 일일 로그 조회 -> 각 traitCode 별로 누적 점수 계산
-        Map<String, Integer> dailyTraitTotalPoints = traitRecordHistoryRepository.getChildActionHistoryDeletedAtIsNull(child.getId()).stream()
+    // ---------------------------------- Batch Logic
+    @Override
+    public Map<String, Integer> calculateDailyTraitPoints(Child child) {
+
+        return traitRecordHistoryRepository.getChildActionHistoryDeletedAtIsNull(child.getId()).stream()
                 .collect(Collectors.toMap(
                         ActionFeedbackResponse::getTraitCode,
                         ActionFeedbackResponse::getPoint,
                         Integer::sum
                 ));
+    }
+
+    @Override
+    public UpdateTraitBatchResponse updateTraitPointsBatch(Child child, Map<String, Integer> dailyTraitTotalPoints) {
 
         if (dailyTraitTotalPoints.isEmpty()) {
             log.info("자녀의 MBTI 일일 기록 데이터가 없어 스킵되었습니다. 자녀 ID: {}", child.getId());
-            return;
+            return null;
         }
 
         List<TraitScoreRecord> traitScoreRecords = traitScoreRecordRepository.findByChildAndDeletedAtIsNull(child.getId());
 
         if (traitScoreRecords.isEmpty()) {
             log.info("자녀의 MBTI 점수 기록 데이터가 없어 스킵되었습니다. 자녀 ID: {}", child.getId());
-            return;
+            return null;
         }
 
+
         // 그룹별 traitCode 리스트 정의
-        Map<String, List<String>> traitGroups = Map.of(
-                "IE", List.of("0101_01", "0101_02"),
-                "SN", List.of("0101_03", "0101_04"),
-                "TF", List.of("0101_05", "0101_06"),
-                "PJ", List.of("0101_07", "0101_08")
-        );
+        List<CommonCode> allTraitCodes = commonCodeConvertService.codeGroupToCommonCodes("0101");
+
+        Map<String, List<String>> traitGroups = allTraitCodes.stream()
+                .collect(Collectors.groupingBy(
+                        code -> {
+                            switch (code.getCode()) {
+                                case "0101_01", "0101_02" -> { return "IE"; }
+                                case "0101_03", "0101_04" -> { return "SN"; }
+                                case "0101_05", "0101_06" -> { return "TF"; }
+                                case "0101_07", "0101_08" -> { return "PJ"; }
+                                default -> { return "Unknown"; }
+                            }
+                        },
+                        Collectors.mapping(CommonCode::getCode, Collectors.toList())
+                ));
 
         Map<String, Integer> groupScores = new HashMap<>();
         Map<String, List<TraitScoreRecord>> groupedRecords = new HashMap<>();
@@ -197,21 +218,26 @@ public class TraitScoreRecordServiceImpl implements TraitScoreRecordService {
         });
 
         traitScoreRecordRepository.saveAll(traitScoreRecords);
-        traitScoreDailyRecordService.createDailyHistoryRecord(groupedRecords, dailyTraitTotalPoints);
-        createNewChildTraitValue(child, fetchTraitValue(newChildTraitValue));
+
+        return UpdateTraitBatchResponse.builder()
+                .child(child)
+                .groupedCodes(groupedRecords)
+                .dailyTraitTotalPoints(dailyTraitTotalPoints)
+                .newChildTraitValue(fetchTraitValue(newChildTraitValue))
+                .build();
     }
 
-    private void createNewChildTraitValue(Child child, String newChildTraitValue) {
+    @Override
+    public void createNewChildTraitValue(Child child, String newChildTraitValue) {
 
         Pageable pageable = PageRequest.of(0, 1);
-        List<String> beforeChildTrait = childTraitRepository.findChildTraitByTraitValueIsBefore(child.getId(), pageable);
+        List<String> currentChildTrait = childTraitRepository.findChildCurrentTraitByTraitValue(child.getId(), pageable);
 
-        if (beforeChildTrait.isEmpty()) {
+        if (currentChildTrait.isEmpty()) {
             throw new ChildNotFoundException(child.getId());
         }
 
-        if (beforeChildTrait.get(0).equals(newChildTraitValue)) {
-            log.info("자녀의 MBTI 변경이 없습니다. 자녀 ID: {}", child.getId());
+        if (currentChildTrait.get(0).equals(newChildTraitValue)) {
             return;
         }
 
@@ -222,22 +248,5 @@ public class TraitScoreRecordServiceImpl implements TraitScoreRecordService {
                 .build();
 
         childTraitRepository.save(childTrait);
-
-        log.info("자녀의 MBTI 변경이 발생했습니다. 자녀 ID: {}, 기존 자녀 MBTI: {}, 변경 된 자녀 MBTI: {}",
-                child.getId(), beforeChildTrait.get(0), newChildTraitValue);
-    }
-
-    private String fetchTraitNamePiece(String piece) {
-        return switch (piece) {
-            case "0101_01" -> "E";
-            case "0101_02" -> "I";
-            case "0101_03" -> "S";
-            case "0101_04" -> "N";
-            case "0101_05" -> "T";
-            case "0101_06" -> "F";
-            case "0101_07" -> "P";
-            case "0101_08" -> "J";
-            default -> "Unknown";
-        };
     }
 }

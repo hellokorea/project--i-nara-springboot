@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>성향 진단 검사 결과 - ENTP</title>
+    <link rel="stylesheet" href="/css/mbtiResult.css"> <!-- 공통 CSS 파일 -->
+</head>
+<body>
+<div class="result-container">
+    <h1>나의 성향은 ENTP 😊</h1>
+    <p id="trait-description">창의적이고 새로운 아이디어를 즐기는 성향이에요</p>
+
+    <!-- 성향 비율 막대 -->
+    <div class="trait-container">
+        <h2>성향 비율</h2>
+        <div class="trait-bars">
+            <div class="trait-bar">
+                <span>I</span>
+                <div class="progress" id="I-E">
+                    <div class="progress-fill left" id="I-fill">
+                        <span class="progress-percentage" id="I-percent"></span>
+                    </div>
+                    <div class="progress-fill right" id="E-fill">
+                        <span class="progress-percentage" id="E-percent"></span>
+                    </div>
+                </div>
+                <span>E</span>
+            </div>
+            <div class="trait-bar">
+                <span>S</span>
+                <div class="progress" id="S-N">
+                    <div class="progress-fill left" id="S-fill">
+                        <span class="progress-percentage" id="S-percent"></span>
+                    </div>
+                    <div class="progress-fill right" id="N-fill">
+                        <span class="progress-percentage" id="N-percent"></span>
+                    </div>
+                </div>
+                <span>N</span>
+            </div>
+            <div class="trait-bar">
+                <span>T</span>
+                <div class="progress" id="T-F">
+                    <div class="progress-fill left" id="T-fill">
+                        <span class="progress-percentage" id="T-percent"></span>
+                    </div>
+                    <div class="progress-fill right" id="F-fill">
+                        <span class="progress-percentage" id="F-percent"></span>
+                    </div>
+                </div>
+                <span>F</span>
+            </div>
+            <div class="trait-bar">
+                <span>J</span>
+                <div class="progress" id="J-P">
+                    <div class="progress-fill left" id="J-fill">
+                        <span class="progress-percentage" id="J-percent"></span>
+                    </div>
+                    <div class="progress-fill right" id="P-fill">
+                        <span class="progress-percentage" id="P-percent"></span>
+                    </div>
+                </div>
+                <span>P</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 특징 항목 추가 -->
+    <div class="trait-container">
+        <h2>성향적 특징</h2>
+        <ul class="characteristics-list">
+            <li>새로운 아이디어를 탐구해요!
+                <ul>
+                    <li>ENTP는 창의적이고 혁신적인 아이디어를 찾고, 새로운 시도를 좋아해요</li>
+                </ul>
+            </li>
+            <li>논리적이고 분석적인 사고를 해요!
+                <ul>
+                    <li>문제를 다양한 시각에서 분석하며, 창의적 해결책을 제시하는 것을 즐겨요</li>
+                </ul>
+            </li>
+            <li>사람들과의 토론을 좋아해요!
+                <ul>
+                    <li>다양한 의견을 나누고 토론하는 걸 좋아해 다른 사람과의 상호작용에서 아이디어를 얻어요</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 정적 컨텐츠 (연예인, 개발할 점, 추천 직군 등) -->
+    <div class="trait-container">
+        <h2>ENTP 유명인들</h2>
+        <div class="celebs">
+            <div class="celeb">
+                <img src="/images/mbtiResultImages/entp_01.png" alt="박명수">
+                <p>박명수</p>
+            </div>
+            <div class="celeb">
+                <img src="/images/mbtiResultImages/entp_02.png" alt="토머스 에디슨">
+                <p>토머스 에디슨</p>
+            </div>
+            <div class="celeb">
+                <img src="/images/mbtiResultImages/entp_03.png" alt="톰 행크스">
+                <p>톰 행크스</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="trait-container">
+        <h2>개발할 점</h2>
+        <ul class="characteristics-list">
+            <li>지속적으로 집중하는 연습!
+                <ul>
+                    <li>아이디어가 넘치다 보니 중간에 새로운 관심으로 이동하기 쉬워, 꾸준함을 기를 필요가 있어요</li>
+                </ul>
+            </li>
+            <li>세부 사항에 더 주의하기!
+                <ul>
+                    <li>큰 그림을 보느라 작은 부분을 놓칠 수 있어 세부 사항도 챙기려는 노력이 필요해요</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="trait-container">
+        <h2>추천 진로</h2>
+        <ul class="characteristics-list">
+            <li>기업가 또는 발명가
+                <ul>
+                    <li>혁신적인 사고와 도전 정신으로 기업가나 발명가로서 성과를 낼 가능성이 높아요</li>
+                </ul>
+            </li>
+            <li>광고 또는 마케팅 전문가
+                <ul>
+                    <li>사람들의 관심을 끄는 아이디어를 제시하는 능력으로 마케팅이나 광고 분야에 적합해요</li>
+                </ul>
+            </li>
+            <li>컨설턴트 또는 전략 기획자
+                <ul>
+                    <li>다양한 관점에서 문제를 분석하고 창의적인 해결책을 제시하는 역할에 잘 어울려요</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+</div>
+
+<script src="/js/mbtiResultMain.js"></script>
+</body>
+</html>

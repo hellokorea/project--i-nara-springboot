@@ -47,16 +47,26 @@ public class ChildTraitServiceImpl implements ChildTraitService {
 
     @Override
     public TraitValueResultResponse getTraitValueResult(Long childId) {
+        ChildTrait childTrait = getChildTraitValue(childId);
 
-        ChildTrait childTrait = childTraitRepository.findByChildId(childId)
-                .orElseThrow(() -> new BaseException("해당 자녀는 MBTI 검사를 실시하지 않았습니다", HttpStatus.NOT_FOUND));
-
-        Map<String, Integer> childTraitScores = traitScoreRecordService.getChildTraitScores(childTrait.getChild());
+        Map<String, Integer> childTraitScores = traitScoreRecordService.getChildTraitResult(childTrait.getChild());
 
         return TraitValueResultResponse.builder()
                 .traitValue(childTrait.getTraitValue())
                 .valueData(childTraitScores)
                 .build();
+    }
+
+    @Override
+    public ChildTrait getChildTraitValue(Long childId) {
+        ChildTrait childTrait = childTraitRepository.findByChildId(childId)
+                .orElseThrow(() -> new BaseException("해당 자녀는 MBTI 검사를 실시하지 않았습니다", HttpStatus.NOT_FOUND));
+        return childTrait;
+    }
+
+    @Override
+    public Map<String, Integer> getTraitScoreRecords(Child child) {
+        return traitScoreRecordService.getChildTraitResult(child);
     }
 
     @Override

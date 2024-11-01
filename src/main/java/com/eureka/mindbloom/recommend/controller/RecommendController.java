@@ -36,7 +36,6 @@ public class RecommendController {
 	@PutMapping("/like/{childId}")
 	public ResponseEntity<ApiResponse<?>> likeRecommendBook(@PathVariable Long childId , @Valid @RequestBody RecommendBookLikeRequest request) {
 		recommendService.likeRecommendBook(childId, request.bookRecommendId(), request.likeType());
-		// TODO : 자녀 성향 기록에 반영
 		return ResponseEntity
 			.status(HttpStatus.OK)
 			.body(ApiResponse.success("성공적으로 추천 좋아요를 반영했습니다.", null));

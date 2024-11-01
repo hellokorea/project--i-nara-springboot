@@ -3,10 +3,7 @@ package com.eureka.mindbloom.book.service.Impl;
 import com.eureka.mindbloom.book.domain.Book;
 import com.eureka.mindbloom.book.domain.BookLikeStats;
 import com.eureka.mindbloom.book.domain.BookView;
-import com.eureka.mindbloom.book.dto.BookDetailResponse;
-import com.eureka.mindbloom.book.dto.BooksResponse;
-import com.eureka.mindbloom.book.dto.ReadBookResponse;
-import com.eureka.mindbloom.book.dto.RecentlyBookResponse;
+import com.eureka.mindbloom.book.dto.*;
 import com.eureka.mindbloom.book.repository.BookCategoryRepository;
 import com.eureka.mindbloom.book.repository.BookLikeStatsRepository;
 import com.eureka.mindbloom.book.repository.BookRepository;
@@ -24,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,16 +38,17 @@ public class BookServiceImpl implements BookService {
     private final BookViewCacheService bookViewCacheService;
 
     @Override
-    public Slice<BooksResponse> getBooks(String categoryCode, String search, int page, SortOption sortOption) {
+    public BookListResponse getBooks(String categoryCode, String search, int page, SortOption sortOption) {
         if (sortOption == null) {
-            sortOption = SortOption.VIEWCOUNT; // 기본값 조회수로 설정
+            sortOption = SortOption.RELEVANCE;
         }
 
         // 정렬 기준 설정
         Sort sort = switch (sortOption) {
-            case VIEWCOUNT -> Sort.by("viewCount").descending(); // 조회수 높은순
-            case LIKES -> Sort.by("bls.count").descending(); // 좋아요 많은순(BookLikeCount테이블 필드명)
-            case RECENT -> Sort.by("createdAt").descending(); // 최신순
+            case VIEWCOUNT -> Sort.by("view_count").descending(); // 조회수 높은순
+            case LIKES -> Sort.by("bls.count").descending(); // 좋아요 많은순
+            case RECENT -> Sort.by("created_at").descending(); // 최신순
+            case RELEVANCE -> Sort.unsorted(); // 정확도 기준
         };
 
         int pageSize = 10; // 페이지 당 보여주는 책의 수
@@ -70,12 +69,12 @@ public class BookServiceImpl implements BookService {
             // 검색어만 있는 경우
             books = (sortOption == SortOption.LIKES)
                     ? bookRepository.findByTitleContainingOrAuthorContainingSortedByLikes(search, pageable)
-                    : bookRepository.findByTitleContainingOrAuthorContaining(search, search, pageable);
+                    : bookRepository.findByTitleContainingOrAuthorContaining(search, pageable);
         } else {
             // 아무 조건도 없을 때
             books = (sortOption == SortOption.LIKES)
                     ? bookRepository.findAllBooksSortedByLikes(pageable)
-                    : bookRepository.findAll(pageable);
+                    : bookRepository.findAllBooks(pageable);
         }
 
         // Book -> BooksResponse로 변환
@@ -83,12 +82,11 @@ public class BookServiceImpl implements BookService {
                 .map(book -> new BooksResponse(book.getIsbn(), book.getTitle(), book.getAuthor(), book.getCoverImage()))
                 .collect(Collectors.toList());
 
-        // Slice<BooksResponse> 생성
-        return new SliceImpl<>(bookResponses, pageable, books.hasNext());
+        return new BookListResponse(bookResponses, books.isLast());
     }
 
     @Override
-    public RecentlyBookResponse getRecentlyViewedBooks(int page, Long childId, Member member) {
+    public BookListResponse getRecentlyViewedBooks(int page, Long childId, Member member) {
         if (isNotParent(member, childId)) {
             throw new ChildNotFoundException(childId);
         }
@@ -97,7 +95,7 @@ public class BookServiceImpl implements BookService {
 
         Slice<BooksResponse> books = bookRepository.findRecentlyReadBook(pageable, childId);
 
-        return new RecentlyBookResponse(books.getContent(), books.isLast());
+        return new BookListResponse(books.getContent(), books.isLast());
     }
 
     private boolean isNotParent(Member member, Long childId) {
@@ -108,7 +106,7 @@ public class BookServiceImpl implements BookService {
     public BookDetailResponse getBookDetail(String isbn) {
         Book book = bookRepository.findByIsbn(isbn);
 
-        String categoryCode = bookCategoryRepository.findCategoryCodeByIsbn(isbn);
+        String categoryCode = bookCategoryRepository.findByIsbn(isbn).getCategoryCode();
 
         String categoryName = commonCodeConvertService.codeToCommonCodeName(categoryCode);
 
@@ -161,5 +159,15 @@ public class BookServiceImpl implements BookService {
                 book.getIsbn(),
                 book.getTitle()
         );
+    }
+
+    @Override
+    public List<SimilarBookResponse> getBooksByCategory(String isbn, int limit) {
+        String categoryCode = bookRepository.findCategoryCodeByIsbn(isbn);
+        if (categoryCode == null) {
+            return Collections.emptyList();
+        }
+        Pageable pageable = PageRequest.of(0, limit);
+        return bookRepository.findBooksByCategoryCode(categoryCode, isbn, pageable);
     }
 }

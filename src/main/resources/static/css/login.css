@@ -1,0 +1,189 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-size: cover;
+    font-family: 'Cute Font', cursive; /* 귀여운 글꼴 사용 */
+
+    background-color: #f8f8ff; /* 연한 핑크색 배경 */
+
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    background-image: linear-gradient(to bottom, #f8f8ff, #fff); /* 로그인 박스 배경색에 그라데이션 적용 */
+    background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
+    background-position: center; /* 배경 이미지 위치 조정 */
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    text-align: center;
+    max-width: 400px;
+
+
+}
+
+.login-box {
+    width: 350px; /* 로그인 박스 너비 조정 */
+    padding: 30px; /* 로그인 박스 패딩 조정 */
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+    background-color: #fff;
+    background-image: linear-gradient(to bottom, #f8f8ff, #fff); /* 로그인 박스 배경색에 그라데이션 적용 */
+
+}
+
+.login-image {
+    display: block;
+    margin: 20px auto; /* 이미지를 가운데 정렬 */
+    width: 150px; /* 이미지 크기 조정 */
+    height: auto;
+}
+
+h1 {
+    text-align: center;
+    font-size: 24px;
+    color: #ff69b4; /* 핑크색 제목 */
+    font-weight: normal; /* 제목 폰트 굵기 제거 */
+    font-family: 'Cute Font', sans-serif; /* 제목에 귀여운 글꼴 적용 */
+    margin-bottom: 40px; /* 제목 아래 여백 조정 */
+}
+
+.input-box {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+label {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-weight: bold;
+    color: #999; /* 레이블 색상 변경 */
+    transition: top 0.3s ease, font-size 0.3s ease; /* 레이블 애니메이션 효과 */
+    font-family: 'Cute Font', sans-serif; /* 레이블에 귀여운 글꼴 적용 */
+}
+
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 20%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-icon {
+    width: 20px;  /* 이미지 크기 조정 */
+    height: 20px;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.password-toggle:hover .toggle-icon {
+    opacity: 1;
+}
+
+/* 로그인 버튼 스타일 수정 */
+.login-button {
+    width: 100%;
+    padding: 15px 0;
+    background-color: #ff69b4;
+    color: #fff;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px 0;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #ff1493;
+}
+
+/* 회원가입 텍스트 스타일 수정 */
+.signup-wrapper {
+    text-align: left;
+    margin-top: -10px;
+}
+
+.signup-text {
+    color: #666;
+    font-size: 16px;
+    margin: 0;
+}
+
+.signup-text a {
+    color: #ff69b4;
+    text-decoration: none;
+}
+
+.signup-text a:hover {
+    text-decoration: underline;
+}
+
+input {
+    width: 100%;
+    padding: 12px 15px; /* 입력 필드 높이와 패딩 조정 */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px; /* 입력 필드 폰트 크기 조정 */
+    color: #333; /* 입력 필드 글자 색상 변경 */
+    background: #fff; /* 입력 필드 배경 색상 변경 */
+    font-family: 'Cute Font', sans-serif; /* 입력 필드에 귀여운 글꼴 적용 */
+}
+
+input:focus {
+    outline: none;
+    border-color: #ff69b4; /* 입력 필드 포커스 시 테두리 색상 변경 */
+}
+
+input:focus ~ label {
+    top: -5px; /* 입력 필드 포커스 시 레이블 위치 이동 */
+    font-size: 12px; /* 입력 필드 포커스 시 레이블 폰트 크기 변경 */
+    color: #ff69b4; /* 입력 필드 포커스 시 레이블 색상 변경 */
+}
+
+button {
+    background-color: #ff69b4; /* 핑크색 버튼 */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 18px; /* 버튼 폰트 크기 조정 */
+    margin-top: 15px; /* 버튼 아래 여백 조정 */
+    font-family: 'Cute Font', sans-serif; /* 버튼에 귀여운 글꼴 적용 */
+}
+
+button:hover {
+    background-color: #ff1493; /* 더 진한 핑크색 */
+}
+
+a {
+    color: #ff69b4; /* 핑크색 링크 */
+    text-decoration: none;
+    font-family: 'Cute Font', sans-serif; /* 링크에 귀여운 글꼴 적용 */
+}
+
+a:hover {
+    text-decoration: underline;
+}

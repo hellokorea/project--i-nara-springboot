@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>성향 진단 검사 결과 - ISTJ</title>
+    <link rel="stylesheet" href="/css/mbtiResult.css"> <!-- 공통 CSS 파일 -->
+</head>
+<body>
+<div class="result-container">
+    <h1>나의 성향은 ISTJ 🙂</h1>
+    <p id="trait-description">계획을 잘 세우고, 책임감이 매우 강한 성향이에요</p>
+
+    <!-- 성향 비율 막대 -->
+    <div class="trait-container">
+        <h2>성향 비율</h2>
+        <div class="trait-bars">
+            <div class="trait-bar">
+                <span>I</span>
+                <div class="progress" id="I-E">
+                    <div class="progress-fill left" id="I-fill">
+                        <span class="progress-percentage" id="I-percent"></span>
+                    </div>
+                    <div class="progress-fill right" id="E-fill">
+                        <span class="progress-percentage" id="E-percent"></span>
+                    </div>
+                </div>
+                <span>E</span>
+            </div>
+            <div class="trait-bar">
+                <span>S</span>
+                <div class="progress" id="S-N">
+                    <div class="progress-fill left" id="S-fill">
+                        <span class="progress-percentage" id="S-percent"></span>
+                    </div>
+                    <div class="progress-fill right" id="N-fill">
+                        <span class="progress-percentage" id="N-percent"></span>
+                    </div>
+                </div>
+                <span>N</span>
+            </div>
+            <div class="trait-bar">
+                <span>T</span>
+                <div class="progress" id="T-F">
+                    <div class="progress-fill left" id="T-fill">
+                        <span class="progress-percentage" id="T-percent"></span>
+                    </div>
+                    <div class="progress-fill right" id="F-fill">
+                        <span class="progress-percentage" id="F-percent"></span>
+                    </div>
+                </div>
+                <span>F</span>
+            </div>
+            <div class="trait-bar">
+                <span>J</span>
+                <div class="progress" id="J-P">
+                    <div class="progress-fill left" id="J-fill">
+                        <span class="progress-percentage" id="J-percent"></span>
+                    </div>
+                    <div class="progress-fill right" id="P-fill">
+                        <span class="progress-percentage" id="P-percent"></span>
+                    </div>
+                </div>
+                <span>P</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 특징 항목 추가 -->
+    <div class="trait-container">
+        <h2>성향적 특징</h2>
+        <ul class="characteristics-list">
+            <li>책임감이 뛰어나요!
+                <ul>
+                    <li>맡은 일에 최선을 다하고, 규칙을 잘 따르며 신중하게 계획을 잘 세워요</li>
+                </ul>
+            </li>
+            <li>논리적인 생각을 굉장히 잘해요!
+                <ul>
+                    <li>객관적이고 분석적인 사고를 중요시해요</li>
+                </ul>
+            </li>
+            <li>체계적이고 계획적이예요!
+                <ul>
+                    <li>철저한 계획을 통해 맡은 것을 반드시 잘 완수해요</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 정적 컨텐츠 (연예인, 개발할 점, 추천 직군 등) -->
+    <div class="trait-container">
+        <h2>ISTJ 유명인들</h2>
+        <div class="celebs">
+            <div class="celeb">
+                <img src="/images/mbtiResultImages/istj_01.png" alt="차태현">
+                <p>차태현</p>
+            </div>
+            <div class="celeb">
+                <img src="/images/mbtiResultImages/istj_02.png" alt="워렌 버핏">
+                <p>워렌 버핏</p>
+            </div>
+            <div class="celeb">
+                <img src="/images/mbtiResultImages/istj_03.png" alt="엘리자베스 2세">
+                <p>엘리자베스 2세</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="trait-container">
+        <h2>개발할 점</h2>
+        <ul class="characteristics-list">
+            <li>유연성을 높여봐요!
+                <ul>
+                    <li>지나치게 계획을 고집하는 것보다는 유연하게 대처 하면 더 좋아요</li>
+                </ul>
+            </li>
+            <li>감정을 더 표현 해봐요!
+                <ul>
+                    <li>친구의 감정을 더 깊이 이해하고 공감 할 수 있으면 더 좋을거 같아요</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="trait-container">
+        <h2>추천 진로</h2>
+        <ul class="characteristics-list">
+            <li>관리직 및 공무원
+                <ul>
+                    <li>체계적이고 계획 수립을 통해 사람 및 업무를 관리하거나 공무원 같은 직업에서 두각을 낼 수 있어요</li>
+                </ul>
+            </li>
+            <li>군인
+                <ul>
+                    <li>조직의 체계를 선호하고 책임감이 강하고 반드시 완수 해내는 군인의 멋진 모습을 보여줄 수 있어요</li>
+                </ul>
+            </li>
+            <li>회계사
+                <ul>
+                    <li>세밀한 분석과 규칙을 통해 수학적 사고가 높기 때문에 회계사 직업에서 성과를 잘 내는 성취적인 사람이 될 수 있어요</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script src="/js/mbtiResultMain.js"></script>
+</body>
+</html>

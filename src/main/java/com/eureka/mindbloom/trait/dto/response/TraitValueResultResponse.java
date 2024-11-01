@@ -10,7 +10,7 @@ import java.util.Map;
 public class TraitValueResultResponse {
 
     private String traitValue;
-    Map<String, Integer> valueData;
+    private Map<String, Integer> valueData;
 
     public TraitValueResultResponse(String traitValue, Map<String, Integer> valueData) {
         this.traitValue = traitValue;

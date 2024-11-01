@@ -3,7 +3,8 @@ package com.eureka.mindbloom.book.type;
 public enum SortOption {
     VIEWCOUNT("viewCount"),
     LIKES("likes"),
-    RECENT("recent");
+    RECENT("recent"),
+    RELEVANCE("relevance");
 
     private final String value;
 

@@ -63,7 +63,7 @@ public class RecommendJobConfiguration {
 	@Bean
 	public Step generateRecommendBooksStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
 		return new StepBuilder("generateRecommendBooksStep", jobRepository)
-			.<Long, ChildBooks>chunk(10, transactionManager)
+			.<Long, ChildBooks>chunk(100, transactionManager)
 			.reader(childReader())
 			.processor(compositeProcessor())
 			.writer(bookRecommendItemWriter())
