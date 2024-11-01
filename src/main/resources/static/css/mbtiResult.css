@@ -1,0 +1,189 @@
+/* 전체 레이아웃 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f4f8;
+    color: #333;
+    text-align: center;
+}
+
+/* 결과 컨테이너 스타일 */
+.result-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 제목 스타일 */
+.result-container h1 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* 성향 설명 텍스트 */
+#trait-description {
+    font-size: 1.2em;
+    color: #555;
+    background-color: #ffe6f0;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+/* 막대그래프 스타일 */
+.trait-bars {
+    margin: 20px 0;
+}
+
+.trait-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.trait-bar span {
+    font-weight: bold;
+}
+
+.progress {
+    flex: 1;
+    height: 30px;
+    background-color: #ddd;
+    border-radius: 20px;
+    margin: 0 10px;
+    overflow: hidden;
+    display: flex;
+}
+
+.progress-fill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.progress-percentage {
+    padding: 0 5px;
+    color: #383636;
+    font-weight: bold;
+    font-size: 0.9em;
+    font-family: 'Arial', sans-serif;
+    line-height: 1;
+}
+
+/* 성향적 특징, 연예인, 개발할 점, 추천 진로 컨테이너 스타일 */
+.trait-container {
+    background-color: #f9f9f9; /* 밝은 회색 배경 */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    margin-bottom: 20px;
+}
+
+/* 성향적 특징 제목 스타일 */
+.trait-container h2 {
+    font-size: 1.5em;
+    color: #444;
+    font-weight: bold;
+    margin-top: 5px; /* 기존보다 상단 여백 줄임 */
+    margin-bottom: 10px; /* 하단 여백도 조정 */
+    padding-top: 5px; /* 제목 상단 패딩 추가 */
+    line-height: 1.2; /* 제목 텍스트 높이 조정 */
+}
+
+.trait-container ul {
+    padding-left: 20px;
+    text-align: left;
+}
+
+
+
+.trait-container li {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+/* 연예인들 스타일 */
+.celebs {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.celeb {
+    text-align: center;
+    width: 120px; /* 이미지 크기 조정 */
+}
+
+.celeb img {
+    width: 120px; /* 원하는 크기로 고정 */
+    height: 120px; /* 높이도 동일하게 */
+    object-fit: cover; /* 이미지 비율 유지하며 자르기 */
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.celeb p {
+    margin-top: 15px; /* 텍스트와 이미지 간격을 늘리기 */
+    font-size: 0.9em;
+    color: #333;
+}
+
+
+/* 리스트 스타일 */
+ul {
+    text-align: left;
+    padding-left: 20px;
+}
+
+ul li {
+    margin-bottom: 8px;
+    color: #555;
+}
+
+/* 추천 진로 스타일 */
+.recommendation {
+    font-size: 1em;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 메인 리스트 스타일 */
+.characteristics-list {
+    padding-left: 20px; /* 왼쪽에 여백 추가 */
+    margin-top: 10px;
+    list-style-type: none; /* 메인 리스트에서 기본 점 제거 */
+    color: #333; /* 메인 리스트 글자 색상 */
+}
+
+.characteristics-list > li {
+    font-weight: bold; /* 메인 리스트 항목을 굵게 */
+    margin-bottom: 15px; /* 각 특징 항목 간의 간격 */
+    font-size: 1.1em; /* 폰트 크기 조정 */
+}
+
+/* 하위 리스트 스타일 */
+.characteristics-list ul {
+    padding-left: 20px; /* 하위 리스트의 들여쓰기 */
+    list-style-type: disc; /* 하위 리스트 점 스타일 */
+}
+
+.characteristics-list ul li {
+    font-weight: normal; /* 하위 리스트 항목은 기본 굵기 */
+    font-size: 1em; /* 하위 리스트 폰트 크기 */
+    color: #555; /* 하위 리스트 글자 색상 */
+    margin-top: 5px; /* 하위 항목 간의 간격 */
+    margin-left: 10px; /* 점과 텍스트 간격 */
+}
+
+

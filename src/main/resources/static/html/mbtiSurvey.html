@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 검사</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .question-container {
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 500px;
+            background-color: #f8f4f9;
+            border-radius: 10px;
+        }
+        .question-title {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+         .choice {
+             display: block;
+             padding: 10px;
+             margin: 10px 0;
+             background-color: #ffe6f0;
+             border-radius: 20px;
+             cursor: pointer;
+             transition: background-color 0.3s;
+         }
+        .choice:hover {
+            background-color: #ffccd4;; /* 마우스 오버 시 색상 */
+        }
+        .choice.selected {
+            background-color: #ffccd4; /* 선택된 상태의 색상 */
+        }
+    .progress-container {
+            margin: 20px auto 0; /* 중앙 정렬을 위해 상하 좌우 여백 조정 */
+            width: 100%;
+            max-width: 500px;
+            height: 10px;
+            background-color: #ddd;
+            border-radius: 5px;
+        }
+        .progress-bar {
+            width: 0;
+            height: 100%;
+            background-color: #ffb6c1;
+            border-radius: 5px;
+        }
+        .previous-btn {
+            font-size: 0.9em;
+            cursor: pointer;
+            color: #555;
+            text-decoration: underline;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<h1>성향 진단 검사</h1>
+<div id="question-container" class="question-container">
+    <span class="previous-btn" onclick="goToPrevious()">이전 질문</span>
+    <div class="question-title" id="question-title">Q1. 질문 로딩 중...</div> <!-- 기본 표시 메시지 -->
+    <div id="choices-container"></div>
+</div>
+<div class="progress-container">
+    <div id="progress-bar" class="progress-bar"></div>
+</div>
+
+<script src="/js/mbtiSurvey.js"></script> <!-- JavaScript 파일 분리 -->
+</body>
+</html>
