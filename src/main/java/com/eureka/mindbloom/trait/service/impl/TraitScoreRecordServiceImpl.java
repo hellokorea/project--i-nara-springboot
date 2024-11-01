@@ -238,7 +238,6 @@ public class TraitScoreRecordServiceImpl implements TraitScoreRecordService {
         }
 
         if (currentChildTrait.get(0).equals(newChildTraitValue)) {
-            log.info("자녀의 MBTI 변경이 없습니다. 자녀 ID: {}", child.getId());
             return;
         }
 
@@ -249,8 +248,5 @@ public class TraitScoreRecordServiceImpl implements TraitScoreRecordService {
                 .build();
 
         childTraitRepository.save(childTrait);
-
-        log.info("자녀의 MBTI 변경이 발생했습니다. 자녀 ID: {}, 기존 자녀 MBTI: {}, 변경 된 자녀 MBTI: {}",
-                child.getId(), currentChildTrait.get(0), newChildTraitValue);
     }
 }

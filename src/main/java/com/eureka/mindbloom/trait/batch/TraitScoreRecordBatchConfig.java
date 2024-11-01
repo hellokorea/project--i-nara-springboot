@@ -80,9 +80,7 @@ public class TraitScoreRecordBatchConfig {
     public ItemProcessor<Child, UpdateTraitBatchResponse> traitScoreProcessor() {
         return child -> {
             Map<String, Integer> dailyTraitTotalPoints = traitScoreRecordService.calculateDailyTraitPoints(child);
-            UpdateTraitBatchResponse response = traitScoreRecordService.updateTraitPointsBatch(child, dailyTraitTotalPoints);
-            log.info("일일 집계 배치 로직 시작 ->, Processed child ID: {}, response: {}", child.getId(), response);
-            return response;
+            return traitScoreRecordService.updateTraitPointsBatch(child, dailyTraitTotalPoints);
         };
     }
 
@@ -92,7 +90,6 @@ public class TraitScoreRecordBatchConfig {
             for (UpdateTraitBatchResponse response : responses) {
                 traitScoreDailyRecordService.createDailyHistoryRecord(response.getGroupedCodes(), response.getDailyTraitTotalPoints());
                 traitScoreRecordService.createNewChildTraitValue(response.getChild(), response.getNewChildTraitValue());
-                log.info("유저 MBTI 일일 집계 배치 성공 !! ->, child ID: {}", response.getChild().getId());
             }
         };
     }
