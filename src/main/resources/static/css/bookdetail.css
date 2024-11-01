@@ -1,0 +1,159 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-arrow {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    color: black;
+    font-size: 24px;
+    background-color: #F8E0E6;
+    border-radius: 50%;
+    padding: 12px 15px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+}
+
+.back-arrow:hover {
+    background-color: #CED8F6;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+.left-section {
+    flex: 4;
+    background-color: #FFE8F6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.book-image {
+    width: 50%;
+    height: auto;
+}
+
+.book-info {
+    margin-top: 20px;
+    text-align: center;
+    color: black;
+}
+
+#book-author {
+    margin-top: 10px;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.button {
+    padding: 10px 15px;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: #F8E0E6;
+}
+
+.button:hover {
+    background-color: #CED8F6;
+}
+
+.material-icons {
+    margin-top: 5px;
+}
+
+.right-section {
+    flex: 6;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.book-plot, .book-keywords {
+    margin-bottom: 80px;
+}
+
+.right-section h3 {
+    padding-bottom: 5px;
+}
+
+.keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    border-radius: 10px;
+}
+
+.keyword-tag {
+    background-color: #FFE8F6;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 18px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-right: 5px;
+}
+
+.similar-books-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 5px;
+}
+
+.similar-books-title {
+    margin: 0;
+}
+
+.similar-books {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.similar-book-item {
+    flex: 0 0 calc(25% - 15px);
+    text-align: center;
+}
+
+.similar-book-image {
+    width: 100%;
+    height: auto;
+    max-width: 150px;
+    margin-bottom: 5px;
+}
+
+.more-link {
+    font-size: 18px;
+    color: gray;
+    cursor: pointer;
+}

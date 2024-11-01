@@ -3,6 +3,7 @@ package com.eureka.mindbloom.common.page.controller;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class PageController {
@@ -21,5 +22,10 @@ public class PageController {
     @PreAuthorize("isAuthenticated()")  // 인증된 사용자만 접근 가능
     public String mainPage() {
         return "main";
+    }
+
+    @GetMapping("/detail/{isbn}")
+    public String bookDetailPage(@PathVariable String isbn) {
+        return "bookdetail";
     }
 }

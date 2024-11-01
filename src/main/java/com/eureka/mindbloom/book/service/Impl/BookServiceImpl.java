@@ -3,10 +3,7 @@ package com.eureka.mindbloom.book.service.Impl;
 import com.eureka.mindbloom.book.domain.Book;
 import com.eureka.mindbloom.book.domain.BookLikeStats;
 import com.eureka.mindbloom.book.domain.BookView;
-import com.eureka.mindbloom.book.dto.BookDetailResponse;
-import com.eureka.mindbloom.book.dto.BooksResponse;
-import com.eureka.mindbloom.book.dto.ReadBookResponse;
-import com.eureka.mindbloom.book.dto.BookListResponse;
+import com.eureka.mindbloom.book.dto.*;
 import com.eureka.mindbloom.book.repository.BookCategoryRepository;
 import com.eureka.mindbloom.book.repository.BookLikeStatsRepository;
 import com.eureka.mindbloom.book.repository.BookRepository;
@@ -24,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -161,5 +159,15 @@ public class BookServiceImpl implements BookService {
                 book.getIsbn(),
                 book.getTitle()
         );
+    }
+
+    @Override
+    public List<SimilarBookResponse> getBooksByCategory(String isbn, int limit) {
+        String categoryCode = bookRepository.findCategoryCodeByIsbn(isbn);
+        if (categoryCode == null) {
+            return Collections.emptyList();
+        }
+        Pageable pageable = PageRequest.of(0, limit);
+        return bookRepository.findBooksByCategoryCode(categoryCode, isbn, pageable);
     }
 }

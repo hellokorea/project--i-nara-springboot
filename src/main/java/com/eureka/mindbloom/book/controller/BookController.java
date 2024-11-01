@@ -3,6 +3,7 @@ package com.eureka.mindbloom.book.controller;
 import com.eureka.mindbloom.book.dto.BookDetailResponse;
 import com.eureka.mindbloom.book.dto.ReadBookResponse;
 import com.eureka.mindbloom.book.dto.BookListResponse;
+import com.eureka.mindbloom.book.dto.SimilarBookResponse;
 import com.eureka.mindbloom.book.service.BookService;
 import com.eureka.mindbloom.book.type.SortOption;
 import com.eureka.mindbloom.common.dto.ApiResponse;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/members/books")
@@ -28,6 +31,14 @@ public class BookController {
     ) {
         BookListResponse books = bookService.getBooks(categoryCode, search, page, sortOption);
         return ResponseEntity.ok(ApiResponse.success("OK", books));
+    }
+
+    @GetMapping("/similar")
+    public ResponseEntity<ApiResponse<List<SimilarBookResponse>>> getSimilarBooks(
+            @RequestParam String isbn,
+            @RequestParam(defaultValue = "8") int limit) { // 기본값 5
+        List<SimilarBookResponse> similarBooks = bookService.getBooksByCategory(isbn, limit);
+        return ResponseEntity.ok(ApiResponse.success("OK", similarBooks));
     }
 
     @GetMapping("/{childId}")

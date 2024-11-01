@@ -2,6 +2,7 @@ package com.eureka.mindbloom.book.repository;
 
 import com.eureka.mindbloom.book.domain.Book;
 import com.eureka.mindbloom.book.dto.BooksResponse;
+import com.eureka.mindbloom.book.dto.SimilarBookResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -97,4 +98,18 @@ public interface BookRepository extends JpaRepository<Book, String> {
             ORDER BY bv.id DESC
             """)
     Slice<BooksResponse> findRecentlyReadBook(Pageable pageable, Long childId);
+
+    @Query("SELECT bc.categoryTrait.id.categoryCode " +
+            "FROM BookCategory bc " +
+            "WHERE bc.book.isbn = :isbn")
+    String findCategoryCodeByIsbn(@Param("isbn") String isbn);
+
+    @Query(value = """
+            SELECT new com.eureka.mindbloom.book.dto.SimilarBookResponse(b.isbn, b.title, b.coverImage)
+            FROM BookCategory bc JOIN bc.book b
+            WHERE bc.categoryTrait.id.categoryCode = :categoryCode AND b.isbn != :isbn
+            """)
+    List<SimilarBookResponse> findBooksByCategoryCode(@Param("categoryCode") String categoryCode,
+                                                      @Param("isbn") String isbn,
+                                                      Pageable pageable);
 }
