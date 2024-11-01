@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>책 상세 정보</title>
+    <link rel="stylesheet" href="/css/bookdetail.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+<div class="back-arrow" onclick="window.history.back();">
+    <span class="material-icons">arrow_back</span>
+</div>
+<div class="container">
+    <!-- 왼쪽 부분 -->
+    <div class="left-section">
+        <img class="book-image" src="" alt="도서 이미지">
+        <div class="book-info">
+            <h2 id="book-title">책 제목</h2>
+            <h4 id="book-author">저자</h4>
+        </div>
+        <div class="buttons">
+            <button class="button" id="read-button"><span class="material-icons">play_arrow</span></button>
+            <button class="button" id="like-button"><span class="material-icons">thumb_up</span></button>
+        </div>
+    </div>
+
+    <!-- 오른쪽 부분 -->
+    <div class="right-section">
+        <div class="book-plot">
+            <h3>줄거리</h3><hr style="margin-bottom: 15px;">
+            <p id="book-plot">줄거리 내용이 여기에 표시됩니다.</p>
+        </div>
+
+        <div class="book-keywords">
+            <h3>키워드</h3><hr style="margin-bottom: 15px;">
+            <div id="book-keywords" class="keywords"></div>
+        </div>
+
+        <div class="similar-books-container">
+            <h3>유사한 책 추천</h3>
+            <!--TODO: 도서 검색기능 추가 후 기능 구현 예정-->
+            <div class="more-link" onclick="alert('더 많은 책 보기')">더보기</div>
+        </div>
+        <hr style="margin-bottom: 15px;">
+        <div id="similar-books" class="similar-books"></div>
+    </div>
+</div>
+
+<script src="/js/bookdetail.js"></script>
+</body>
+</html>

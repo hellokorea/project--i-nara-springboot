@@ -19,8 +19,6 @@ public class TraitScoreRecordScheduler {
     private final JobLauncher jobLauncher;
     private final Job traitScoreRecordJob;
 
-    // -- 동작 테스트 완료,, ( 5만건 테스트 해야함 )
-//    @Scheduled(cron = "*/10 * * * * ?")
     @Scheduled(cron = "0 0 1 * * ?")
     public void runBatchJob() {
         try {

@@ -18,6 +18,7 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -65,6 +66,7 @@ public class GlobalSecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/health", "/error").permitAll()
+                        .requestMatchers("/signup", "/login").permitAll()  // signup & login 페이지 접근 권한 허용
                         .requestMatchers(ignoredRequests).permitAll()
                         .requestMatchers(HttpMethod.POST, "/admin/books/**").hasRole("Admin")  // Admin 접근 설정 추가
                         .requestMatchers(HttpMethod.PUT, "/admin/books/**").hasRole("Admin")   // Admin 접근 설정 추가
@@ -85,5 +87,11 @@ public class GlobalSecurityConfig {
         );
 
         return http.build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+                .requestMatchers("/css/**", "/js/**", "/images/**", "/html/**", "/favicon.ico", "/index.html");
     }
 }

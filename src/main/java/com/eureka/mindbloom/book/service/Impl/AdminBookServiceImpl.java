@@ -8,6 +8,7 @@ import com.eureka.mindbloom.book.dto.AdminBookResponse;
 import com.eureka.mindbloom.book.repository.BookCategoryRepository;
 import com.eureka.mindbloom.book.repository.BookRepository;
 import com.eureka.mindbloom.book.service.AdminBookService;
+import com.eureka.mindbloom.book.service.ChatGPTService;
 import com.eureka.mindbloom.category.domain.CategoryTrait;
 import com.eureka.mindbloom.category.repository.CategoryTraitRepository;
 import com.eureka.mindbloom.commoncode.domain.CommonCode;
@@ -27,13 +28,19 @@ public class AdminBookServiceImpl implements AdminBookService {
     private final BookRepository bookRepository;
     private final BookCategoryRepository bookCategoryRepository;
     private final CategoryTraitRepository categoryTraitRepository;
-    private final CommonCodeRepository commonCodeRepository; // CommonCodeRepository 추가
+    private final CommonCodeRepository commonCodeRepository;
+    private final ChatGPTService chatGPTService;
 
     @Override
     @Transactional
     public AdminBookResponse registerBook(AdminBookRequest dto) {
         // 도서 등록
         Book book = dto.toEntity();
+
+        // plot 기반 MBTI 예측 및 설정
+        String predictedMBTI = chatGPTService.predictMBTI(book.getPlot());
+        book.setKeywords(predictedMBTI);
+
         bookRepository.save(book);
 
         // 카테고리와 관련된 정보 등록
@@ -64,9 +71,12 @@ public class AdminBookServiceImpl implements AdminBookService {
             CommonCode commonCode = commonCodeRepository.findByName(categoryDto.getCategory())
                     .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 카테고리 이름입니다."));
 
-            // CategoryTrait 찾기
-            CategoryTrait categoryTrait = categoryTraitRepository.findByIdCategoryCode(commonCode.getCode())
-                    .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 카테고리 코드입니다."));
+            // CategoryTrait 찾기 (List로 반환됨)
+            List<CategoryTrait> categoryTraits = categoryTraitRepository.findByIdCategoryCode(commonCode.getCode());
+            if (categoryTraits.isEmpty()) {
+                throw new IllegalArgumentException("유효하지 않은 카테고리 코드입니다.");
+            }
+            CategoryTrait categoryTrait = categoryTraits.get(0); // 첫 번째 결과만 사용
 
             // 카테고리 이름과 trait 저장
             categoryNames.add(categoryDto.getCategory());
@@ -93,6 +103,10 @@ public class AdminBookServiceImpl implements AdminBookService {
             // 도서 정보 업데이트
             existingBook.updateDetails(dto.toEntity());
 
+            // plot 기반 MBTI 예측 및 설정
+            String predictedMBTI = chatGPTService.predictMBTI(existingBook.getPlot());
+            existingBook.setKeywords(predictedMBTI);
+
             // 기존 카테고리 삭제 후 다시 추가
             bookCategoryRepository.deleteByBook(existingBook); // 기존 카테고리 삭제
             List<String> categoryNames = new ArrayList<>();
@@ -107,7 +121,10 @@ public class AdminBookServiceImpl implements AdminBookService {
     @Override
     @Transactional
     public void deleteBook(String isbn) {
-        bookRepository.deleteById(isbn);
+        // 관련된 book_category 레코드 먼저 삭제
         bookCategoryRepository.deleteByBookIsbn(isbn);
+
+        // 그 후 book 레코드 삭제
+        bookRepository.deleteById(isbn);
     }
 }
