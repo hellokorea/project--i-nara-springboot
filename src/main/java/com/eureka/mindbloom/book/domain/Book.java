@@ -4,10 +4,7 @@ import com.eureka.mindbloom.common.domain.SoftDeleteEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
@@ -29,6 +26,7 @@ public class Book extends SoftDeleteEntity {
 
 	private String coverImage;
 
+    @Setter
 	private String keywords;
 
 	private Long viewCount;
