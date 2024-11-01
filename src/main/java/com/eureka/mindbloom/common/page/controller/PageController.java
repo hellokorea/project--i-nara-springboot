@@ -1,6 +1,5 @@
 package com.eureka.mindbloom.common.page.controller;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,12 +17,15 @@ public class PageController {
         return "signup"; // signup.html 파일을 렌더링 (추후 구현)
     }
 
+    @GetMapping("/learn")
+    public String learnPage() {
+        return "learn";
+    }
+
     @GetMapping("/main")
-    @PreAuthorize("isAuthenticated()")  // 인증된 사용자만 접근 가능
     public String mainPage() {
         return "main";
     }
-
     @GetMapping("/detail/{isbn}")
     public String bookDetailPage(@PathVariable String isbn) {
         return "bookdetail";
