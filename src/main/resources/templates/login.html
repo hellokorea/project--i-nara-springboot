@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아이들 나라 로그인</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+<div class="container">
+    <div class="login-box">
+        <img src="images/풍선.png" alt="풍선 이미지" class="login-image">
+        <h1>흑코더들에<br>오신 것을 환영합니다!</h1>
+        <form id="loginForm" novalidate>
+            <div class="input-box">
+                <input type="email"
+                       id="email"
+                       name="email"
+                       required
+                       placeholder="이메일 주소를 입력하세요"
+                       autocomplete="email">
+            </div>
+            <div class="input-box">
+                <div class="password-wrapper">
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           required
+                           placeholder="비밀번호를 입력하세요"
+                           autocomplete="current-password">
+                    <button type="button"
+                            class="password-toggle"
+                            onclick="togglePassword()"
+                            aria-label="비밀번호 표시 전환">
+                        <img src="images/눈1.png" class="toggle-icon" alt="비밀번호 보기" id="toggleIcon"/>
+                    </button>
+                </div>
+            </div>
+            <button type="submit" class="login-button">로그인</button>
+            <div class="signup-wrapper">
+                <p class="signup-text">아직 아이들 나라 회원이 아니신가요? <a href="/signup">회원가입</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- login.js 파일 연결 -->
+<script src="/js/login.js"></script>
+</body>
+</html>
