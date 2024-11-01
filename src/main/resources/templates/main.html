@@ -124,7 +124,7 @@
     };
 
     function loadNavbar() {
-        fetch('navbar.html')
+        fetch('/html/navbar.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('navbar').innerHTML = data;
@@ -139,7 +139,7 @@
         const menuItems = document.querySelectorAll('.navbar-menu a');
 
         menuItems.forEach(item => {
-            if ('/'+item.getAttribute('href') === currentURL) {
+            if (item.getAttribute('href') === currentURL) {
                 item.id = 'status-tap';
             } else {
                 item.removeAttribute('id');
@@ -169,14 +169,13 @@
                         `<span class="heart liked" data-isbn="${book.isbn} " style="color: pink">♥</span>` :
                         `<span class="heart" data-isbn="${book.isbn}" style="color: pink">♡</span>`;
                     bookItem.innerHTML = `
-                    <img src="${book.coverImage}" alt="${book.title}">
+                    <img src="/images/${book.coverImage}" alt="${book.title}">
                     <p>${book.title}</p>
 
                     ${heartIcon}
-
                 `;
                     bookItem.addEventListener('click', () => {
-                        location.href = `book.html`+'?bookId='+book.isbn;
+                        location.href = `/detail/`+book.isbn;
                     });
 
                     bookItem.querySelector('.heart').addEventListener('click', (event) => {
@@ -226,7 +225,7 @@
                     const bookItem = document.createElement('div');
                     bookItem.classList.add('book-item');
                     bookItem.innerHTML = `
-                    <img src="${book.coverImage}" alt="${book.title}">
+                    <img src="/images/${book.coverImage}" alt="${book.title}">
                     <p>${book.title}</p>
 
 

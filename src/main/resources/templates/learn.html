@@ -17,7 +17,7 @@
     };
 
     function loadNavbar() {
-        fetch('navbar.html')
+        fetch('/html/navbar.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('navbar').innerHTML = data;
@@ -32,13 +32,14 @@
         const menuItems = document.querySelectorAll('.navbar-menu a');
 
         menuItems.forEach(item => {
-            if ('/'+item.getAttribute('href') === currentURL) {
+            if (item.getAttribute('href') === currentURL) {
                 item.id = 'status-tap';
             } else {
                 item.removeAttribute('id');
             }
         });
     }
+
 </script>
 </body>
 </html>

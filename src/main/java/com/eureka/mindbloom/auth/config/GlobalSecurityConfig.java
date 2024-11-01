@@ -58,7 +58,9 @@ public class GlobalSecurityConfig {
                         new AntPathRequestMatcher("/auth/login", HttpMethod.POST.name()),
                         new AntPathRequestMatcher("/auth/logout", HttpMethod.POST.name()),
                         new AntPathRequestMatcher("/health"),
-                        new AntPathRequestMatcher("/error")
+                        new AntPathRequestMatcher("/error"),
+                        new AntPathRequestMatcher("/learn"),
+                        new AntPathRequestMatcher("/main")
                 ));
 
         http.cors(Customizer.withDefaults())
