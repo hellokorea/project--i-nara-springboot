@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>성향 진단 검사 결과 - ISTP</title>
+    <link rel="stylesheet" href="/css/mbtiResult.css"> <!-- 공통 CSS 파일 -->
+</head>
+<body>
+<div class="result-container">
+    <h1>나의 성향은 ISTP 😊</h1>
+    <p id="trait-description">실용적이고 독립적이며 문제 해결을 잘하는 성향이에요</p>
+
+    <!-- 성향 비율 막대 -->
+    <div class="trait-container">
+        <h2>성향 비율</h2>
+        <div class="trait-bars">
+            <div class="trait-bar">
+                <span>I</span>
+                <div class="progress" id="I-E">
+                    <div class="progress-fill left" id="I-fill">
+                        <span class="progress-percentage" id="I-percent"></span>
+                    </div>
+                    <div class="progress-fill right" id="E-fill">
+                        <span class="progress-percentage" id="E-percent"></span>
+                    </div>
+                </div>
+                <span>E</span>
+            </div>
+            <div class="trait-bar">
+                <span>S</span>
+                <div class="progress" id="S-N">
+                    <div class="progress-fill left" id="S-fill">
+                        <span class="progress-percentage" id="S-percent"></span>
+                    </div>
+                    <div class="progress-fill right" id="N-fill">
+                        <span class="progress-percentage" id="N-percent"></span>
+                    </div>
+                </div>
+                <span>N</span>
+            </div>
+            <div class="trait-bar">
+                <span>T</span>
+                <div class="progress" id="T-F">
+                    <div class="progress-fill left" id="T-fill">
+                        <span class="progress-percentage" id="T-percent"></span>
+                    </div>
+                    <div class="progress-fill right" id="F-fill">
+                        <span class="progress-percentage" id="F-percent"></span>
+                    </div>
+                </div>
+                <span>F</span>
+            </div>
+            <div class="trait-bar">
+                <span>J</span>
+                <div class="progress" id="J-P">
+                    <div class="progress-fill left" id="J-fill">
+                        <span class="progress-percentage" id="J-percent"></span>
+                    </div>
+                    <div class="progress-fill right" id="P-fill">
+                        <span class="progress-percentage" id="P-percent"></span>
+                    </div>
+                </div>
+                <span>P</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 특징 항목 추가 -->
+    <div class="trait-container">
+        <h2>성향적 특징</h2>
+        <ul class="characteristics-list">
+            <li>현실적이고 실용적이에요!
+                <ul>
+                    <li>ISTP는 실용적인 접근을 선호하며, 효율적으로 일을 해결하는 데 강점이 있어요</li>
+                </ul>
+            </li>
+            <li>독립적이고 자유로워요!
+                <ul>
+                    <li>스스로 일을 처리하는 것을 좋아하며, 즉흥적이고 자유로운 환경에서 성과를 낼 수 있어요</li>
+                </ul>
+            </li>
+            <li>분석적이고 문제 해결 능력이 뛰어나요!
+                <ul>
+                    <li>논리적인 사고로 문제를 분석하고, 다양한 상황에서 해결책을 찾는 데 능해요</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 정적 컨텐츠 (연예인, 개발할 점, 추천 직군 등) -->
+    <div class="trait-container">
+        <h2>ISTP 유명인들</h2>
+        <div class="celebs">
+            <div class="celeb">
+                <img src="/images/mbtiResultImages/istp_01.png" alt="고윤정">
+                <p>고윤정</p>
+            </div>
+            <div class="celeb">
+                <img src="/images/mbtiResultImages/istp_02.png" alt="마이클 조던">
+                <p>마이클 조던</p>
+            </div>
+            <div class="celeb">
+                <img src="/images/mbtiResultImages/istp_03.png" alt="톰 크루즈">
+                <p>톰 크루즈</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="trait-container">
+        <h2>개발할 점</h2>
+        <ul class="characteristics-list">
+            <li>장기적인 계획도 고려해 보기!
+                <ul>
+                    <li>즉각적인 행동을 선호하지만, 장기적인 계획을 세우는 연습이 필요할 수 있어요</li>
+                </ul>
+            </li>
+            <li>감정을 표현하고 타인과 소통하기!
+                <ul>
+                    <li>감정을 잘 드러내지 않는 편이어서, 주변 사람들과 더 원활하게 소통하려는 노력이 필요해요</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="trait-container">
+        <h2>추천 진로</h2>
+        <ul class="characteristics-list">
+            <li>엔지니어 또는 기술직
+                <ul>
+                    <li>분석적이고 손으로 작업하는 것을 좋아하여, 엔지니어나 기술직에서 성과를 낼 수 있어요</li>
+                </ul>
+            </li>
+            <li>응급 구조사 또는 소방관
+                <ul>
+                    <li>즉각적인 판단과 행동력이 필요한 응급 구조사나 소방관 역할에 적합해요</li>
+                </ul>
+            </li>
+            <li>정비사 또는 목수
+                <ul>
+                    <li>손으로 작업하며 문제를 해결하는 일에서 만족감을 느끼며, 정비사나 목수로서 두각을 나타낼 수 있어요</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script src="/js/mbtiResultMain.js"></script>
+</body>
+</html>
