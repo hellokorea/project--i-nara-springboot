@@ -1,7 +1,7 @@
 package com.eureka.mindbloom.member.domain;
 
 
-import com.eureka.mindbloom.event.domain.EventResponse;
+import com.eureka.mindbloom.event.domain.EventParticipant;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,6 +16,9 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "member", indexes = {
+        @Index(name = "idx_member_email", columnList = "email")
+})
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +40,7 @@ public class Member {
     private List<Child> children = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
-    private List<EventResponse> eventResponses = new ArrayList<>();
+    private List<EventParticipant> eventRespons = new ArrayList<>();
 
     @Builder
     public Member(String name, String email, String password, String phone, String role) {
