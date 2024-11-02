@@ -226,7 +226,7 @@
                     <h3>${book.title}</h3>
                 `;
                 bookElement.addEventListener('click', () => {
-                    window.location.href = `/detail/${book.isbn}`;
+                    location.href = `/html/bookdetail.html?bookIsbn=`+book.isbn;
                 });
                 document.getElementById("bookContainer").appendChild(bookElement);
             });

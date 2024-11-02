@@ -58,7 +58,7 @@ function initializeCategoryButtons(categoryCode) {
                     <p><strong>${book.title}</strong></p>
                 `;
                 bookElement.addEventListener('click', () => {
-                    window.location.href = `/detail/${book.isbn}`;
+                    location.href = `/html/bookdetail.html?bookIsbn=`+book.isbn;
                 });
                 bookContainer.appendChild(bookElement);
             });
