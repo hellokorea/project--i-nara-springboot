@@ -38,8 +38,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         if (response.ok) {
             const token = response.headers.get('Authorization');
             if (token) {
-                localStorage.setItem('jwt', token);
-                window.location.href = '/main';
+                localStorage.setItem('Authorization', token);
+                checkChildProfile(); // 자녀 프로필 존재 여부 확인 함수 호출
             } else {
                 throw new Error('토큰이 없습니다');
             }
@@ -52,3 +52,35 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         alert('로그인 처리 중 오류가 발생했습니다.');
     }
 });
+
+async function checkChildProfile() {
+    try {
+        const token = localStorage.getItem('Authorization');
+        const response = await fetch('http://localhost:8080/members/children', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const profiles = data.data;
+
+            if (profiles.length === 0) {
+                window.location.href = '/profile'; // 자녀 프로필이 없으면 프로필 생성 페이지로 이동
+            } else {
+                const childId = profiles[0].childId;
+                localStorage.setItem('childId', childId);
+                window.location.href = '/main'; // 자녀 프로필이 있으면 main 페이지로 이동
+            }
+        } else {
+            const error = await response.json();
+            alert(error.message || '자녀 정보를 가져오는데 실패했습니다.');
+        }
+    } catch (error) {
+        console.error('Error loading profile:', error);
+        // 에러 처리 로직 추가 (예: 사용자에게 알림 표시)
+    }
+}
