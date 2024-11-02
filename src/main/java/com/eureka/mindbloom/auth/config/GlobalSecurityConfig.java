@@ -58,7 +58,10 @@ public class GlobalSecurityConfig {
                 List.of(new AntPathRequestMatcher("/members/signup", HttpMethod.POST.name()),
                         new AntPathRequestMatcher("/auth/login", HttpMethod.POST.name()),
                         new AntPathRequestMatcher("/auth/logout", HttpMethod.POST.name()),
+                        new AntPathRequestMatcher("/health"),
                         new AntPathRequestMatcher("/error"),
+                        new AntPathRequestMatcher("/learn"),
+                        new AntPathRequestMatcher("/main"),
                         new AntPathRequestMatcher("/actuator/**"),
                         PathRequest.toStaticResources().atCommonLocations()
                 ));
