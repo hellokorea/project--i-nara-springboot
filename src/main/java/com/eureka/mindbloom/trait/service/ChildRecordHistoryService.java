@@ -8,7 +8,7 @@ public interface ChildRecordHistoryService {
     TraitHistoryResponse getHistory(Long childId);
 
     ActionFeedbackResponse createChildTraitHistory(Child child, String actionCode,
-                                                   String traitCode, Integer point);
+                                                   String traitCode, Integer point, String bookName);
 
     ActionFeedbackResponse testPost(Long childId);
 }
