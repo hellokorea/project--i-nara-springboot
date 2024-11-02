@@ -62,8 +62,10 @@ public class ChildRecordHistoryServiceImpl implements ChildRecordHistoryService 
         List<FeedbackHistory> feedbackHistories = traitRecordHistoryRepository.getChildHistoryDeletedAtIsNull(childId);
 
         List<ActionHistory> actionHistories = feedbackHistories.stream()
+                .filter(data -> !data.getActionCode().equals("0300_03"))
                 .map(data -> ActionHistory.builder()
                         .historyActionId(data.getId())
+                        .bookName(data.getBookName())
                         .actionCodeName(commonCodeConvertService.codeToCommonCodeName(data.getActionCode()))
                         .traitCodeName(commonCodeConvertService.codeToCommonCodeName(data.getTraitCode()))
                         .point(data.getPoint())
@@ -85,7 +87,9 @@ public class ChildRecordHistoryServiceImpl implements ChildRecordHistoryService 
             }
 
             return TraitHistoryResponse.builder()
+                    .childTraitId(childTraits.get(0).getId())
                     .currentTraitValue(childTraits.get(0).getTraitValue())
+                    .currentTraitValueCreatedAt(childTraits.get(0).getCreatedAt())
                     .traitRecords(traitRecordData)
                     .actionHistory(actionHistories)
                     .changeTraitHistory(Collections.emptyList())
@@ -105,7 +109,9 @@ public class ChildRecordHistoryServiceImpl implements ChildRecordHistoryService 
         String currentTraitValue = childTraits.get(0).getTraitValue();
 
         return TraitHistoryResponse.builder()
+                .childTraitId(childTraits.get(0).getId())
                 .currentTraitValue(currentTraitValue)
+                .currentTraitValueCreatedAt(childTraits.get(0).getCreatedAt())
                 .traitRecords(traitRecordData)
                 .actionHistory(actionHistories)
                 .changeTraitHistory(traitHistories)
@@ -113,12 +119,13 @@ public class ChildRecordHistoryServiceImpl implements ChildRecordHistoryService 
     }
 
     @Override
-    public ActionFeedbackResponse createChildTraitHistory(Child child, String actionCode, String traitCode, Integer point) {
+    public ActionFeedbackResponse createChildTraitHistory(Child child, String actionCode, String traitCode, Integer point, String bookName) {
 
         TraitRecordHistory traitRecordHistory = TraitRecordHistory.builder()
                 .child(child)
                 .actionCode(actionCode)
                 .traitCode(traitCode)
+                .bookName(bookName)
                 .point(point)
                 .build();
 
@@ -141,7 +148,8 @@ public class ChildRecordHistoryServiceImpl implements ChildRecordHistoryService 
         String actionCode = "0300_02";
         String traitCode = "0101_03";
         Integer point = 5;
+        String book = "어린왕자";
 
-        return createChildTraitHistory(child.get(), actionCode, traitCode, point);
+        return createChildTraitHistory(child.get(), actionCode, traitCode, point, book);
     }
 }
