@@ -103,7 +103,7 @@ function initializeFormSubmission(selectedCategories) {
         };
 
         try {
-            const token = localStorage.getItem('jwt');
+            const token = localStorage.getItem('Authorization');
             if (!token) {
                 window.location.href = '/login';
                 return;
@@ -127,7 +127,7 @@ function initializeFormSubmission(selectedCategories) {
                 const result = await response.json();
                 console.log('Profile created:', result);
                 alert('자녀 프로필이 생성되었습니다!');
-                window.location.href = '/main';
+                window.location.href = '/profile';
             } else {
                 const error = await response.json();
                 alert(error.message || '프로필 생성에 실패했습니다.');
