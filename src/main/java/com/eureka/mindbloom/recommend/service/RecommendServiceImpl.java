@@ -68,7 +68,8 @@ public class RecommendServiceImpl implements RecommendService {
 		String isbn = bookRecommend.getBook().getIsbn();
 		BookCategory bookCategory = bookCategoryRepository.findByIsbn(isbn);
 		int point = bookCategory.getCategoryTrait().getWeight();
-		childRecordHistoryService.createChildTraitHistory(child, code, bookCategory.getTraitCode(), point);
+		// 임시로 해놨습니다. 책 이름 필요
+		childRecordHistoryService.createChildTraitHistory(child, code, bookCategory.getTraitCode(), point, "input bookName");
 	}
 
 	private void saveRecommendBookLike(Long childId, Child child, BookRecommend bookRecommend) {
