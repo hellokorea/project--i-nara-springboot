@@ -71,7 +71,7 @@ public class GlobalSecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/health", "/error").permitAll()
-                        .requestMatchers("/signup", "/login").permitAll()  // signup & login 페이지 접근 권한 허용
+                        .requestMatchers("/signup", "/login", "profile", "/profile/create").permitAll()  // signup & login 페이지 접근 권한 허용
                         .requestMatchers(ignoredRequests).permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/admin/books/**").hasRole("Admin")  // Admin 접근 설정 추가
@@ -100,6 +100,6 @@ public class GlobalSecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers("/css/**", "/js/**", "/images/**", "/html/**", "/favicon.ico", "/index.html", "/login.html","/adminmain.html");
+                .requestMatchers("/css/**", "/js/**", "/images/**", "/html/**", "/favicon.ico", "/index.html");
     }
 }
