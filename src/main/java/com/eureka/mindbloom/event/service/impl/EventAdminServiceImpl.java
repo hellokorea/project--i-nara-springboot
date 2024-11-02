@@ -5,6 +5,7 @@ import com.eureka.mindbloom.event.domain.Event;
 import com.eureka.mindbloom.event.dto.EventTriggerRequest;
 import com.eureka.mindbloom.event.repository.EventRepository;
 import com.eureka.mindbloom.event.scheduler.EventEndJob;
+import com.eureka.mindbloom.event.scheduler.EventEndJobListener;
 import com.eureka.mindbloom.event.scheduler.EventStartJob;
 import com.eureka.mindbloom.event.scheduler.EventStartJobListener;
 import com.eureka.mindbloom.event.service.EventAdminService;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +52,7 @@ public class EventAdminServiceImpl implements EventAdminService {
             throw new BadRequestException("이벤트가 이미 스케줄러에 등록되어 있습니다.");
         }
 
-        eventRedisTemplate.getConnectionFactory().getConnection().serverCommands().flushDb();
+        Objects.requireNonNull(eventRedisTemplate.getConnectionFactory()).getConnection().serverCommands().flushDb();
         eventRedisTemplate.opsForValue().set(maxParticipantsKey, String.valueOf(maxParticipants));
 
         Trigger startTrigger = TriggerBuilder.newTrigger()
@@ -74,6 +76,11 @@ public class EventAdminServiceImpl implements EventAdminService {
         scheduler.getListenerManager().addJobListener(
                 new EventStartJobListener(),
                 KeyMatcher.keyEquals(new JobKey("eventStartJob"))
+        );
+
+        scheduler.getListenerManager().addJobListener(
+                new EventEndJobListener(),
+                KeyMatcher.keyEquals(new JobKey("eventEndJob"))
         );
 
         scheduler.scheduleJob(startJobDetail, startTrigger);
