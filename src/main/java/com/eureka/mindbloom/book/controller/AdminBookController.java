@@ -23,15 +23,15 @@ public class AdminBookController {
 
     // 도서 등록
     @PostMapping("/")
-    @PreAuthorize("hasRole('ROLE_Admin')")
+    // @PreAuthorize("hasRole('ROLE_Admin')")
     public ResponseEntity<ApiResponse<AdminBookResponse>> registerBook(@RequestBody AdminBookRequest adminBookRequestDto) {
         AdminBookResponse savedBook = adminBookService.registerBook(adminBookRequestDto);
         return ResponseEntity.ok(ApiResponse.success("도서가 성공적으로 등록되었습니다.", savedBook));
     }
 
     // 서버 경로에 있는 CSV 파일을 사용하여 도서 벌크 등록
-    @PostMapping("/csv")//post로
-    @PreAuthorize("hasRole('ROLE_Admin')")
+    @PostMapping("/csv")
+    // @PreAuthorize("hasRole('ROLE_Admin')")
     public ResponseEntity<ApiResponse<String>> processCsvFile(@RequestParam String filePath) {
         try {
             bookFileProcessor.processCsvFileFromPath(filePath);
@@ -43,7 +43,7 @@ public class AdminBookController {
 
     // 도서 수정
     @PutMapping("/{isbn}")
-    @PreAuthorize("hasRole('ROLE_Admin')")
+    // @PreAuthorize("hasRole('ROLE_Admin')")
     public ResponseEntity<ApiResponse<AdminBookResponse>> updateBook(@PathVariable String isbn, @RequestBody AdminBookRequest adminBookRequestDto) {
         Optional<AdminBookResponse> updatedBook = adminBookService.updateBook(isbn, adminBookRequestDto);
         return updatedBook.map(book -> ResponseEntity.ok(ApiResponse.success("도서가 성공적으로 수정되었습니다.", book)))
@@ -52,7 +52,7 @@ public class AdminBookController {
 
     // 도서 삭제
     @DeleteMapping("/{isbn}")
-    @PreAuthorize("hasRole('ROLE_Admin')")
+    // @PreAuthorize("hasRole('ROLE_Admin')")
     public ResponseEntity<ApiResponse<Void>> deleteBook(@PathVariable String isbn) {
         adminBookService.deleteBook(isbn);
         return ResponseEntity.ok(ApiResponse.success("도서가 성공적으로 삭제되었습니다."));
