@@ -25,7 +25,7 @@ public class EventInterruptJob implements Job {
         Long currentParticipants = eventRedisTemplate.opsForHash().size(eventKey);
 
         try {
-            if (scheduler.checkExists(new JobKey("eventEndJob"))) {
+            if (!scheduler.checkExists(new JobKey("eventEndJob"))) {
                 log.info("EventEndJob has already been executed. EventInterruptJob will be terminated.");
                 scheduler.deleteJob(context.getJobDetail().getKey());
                 return;
@@ -35,7 +35,6 @@ public class EventInterruptJob implements Job {
                 log.info("스케줄러를 종료합니다. 이벤트 참가자 수가 충분합니다.");
                 scheduler.triggerJob(new JobKey("eventEndJob"));
                 scheduler.deleteJob(context.getJobDetail().getKey());
-                scheduler.deleteJob(new JobKey("eventEndJob"));
             }
         } catch (SchedulerException e) {
             throw new BaseException("스케줄러 종료 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
