@@ -1,0 +1,117 @@
+/* 전체 레이아웃 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* 필터 영역 스타일 */
+.filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0px 0px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 카테고리 버튼 컨테이너 스타일 */
+.category {
+    display: flex;
+    gap: 60px; /* 버튼 간격 */
+    margin-bottom: 20px; /* 아래 요소와 간격 추가 */
+}
+
+/* 카테고리 버튼 스타일 */
+.category-button {
+    padding: 8px 15px;
+    border: none;
+    background-color: white;
+    color: #ABABAB;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+/* 버튼에 마우스를 올렸을 때 */
+.category-button:hover {
+    color: black;
+}
+
+/* 선택된 카테고리 버튼 강조 */
+.category-button.active {
+    color: black; /* 활성화된 버튼은 검정색으로 */
+    font-weight: bold; /* 활성화된 버튼은 글씨를 굵게 */
+    border-bottom: 4px solid #FFE8F6; /* 밑줄 */
+}
+
+/* 선택된 버튼을 나타내는 클래스 */
+.category-button.active {
+    color: black;
+}
+
+/* 정렬 옵션 스타일 */
+.sort-options label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.sort-options select {
+    padding: 5px 30px;
+    font-size: 16px;
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-right: 20px;
+}
+
+.sort-options select:hover {
+    border-color: #888;
+}
+
+.sort-options select:focus {
+    outline: none;
+    border-color: #666;
+    box-shadow: 0 0 5px rgba(100, 100, 100, 0.5);
+}
+
+.sort-options select::after {
+    content: '▼';
+    font-size: 12px;
+    color: #666;
+    padding-left: 8px;
+}
+
+/* 책 목록 그리드 */
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 한 줄에 5개 */
+    gap: 20px;
+    padding: 20px;
+}
+
+.book {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: transform 0.3s;
+}
+
+.book img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.book p {
+    margin: 10px 0 0;
+}
+
+.book:hover {
+    transform: scale(1.05);
+}

@@ -50,7 +50,70 @@
             padding-bottom: 4px; /* 밑줄과 텍스트 사이 여백 */
         }
 
+        /* Overlay Styles */
+        .overlay {
+            height: 100%;
+            width: 100%;
+            display: none;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0, 0.9); /* Black with a little bit see-through */
+        }
 
+        /* The content */
+        .overlay-content {
+            position: relative;
+            top: 46%;
+            width: 80%;
+            text-align: center;
+            margin-top: 30px;
+            margin: auto;
+        }
+
+        /* Close button */
+        .overlay .closebtn {
+            position: absolute;
+            top: 20px;
+            right: 45px;
+            font-size: 60px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .overlay .closebtn:hover {
+            color: #ccc;
+        }
+
+        /* Style the search field */
+        .overlay input[type=text] {
+            padding: 15px;
+            font-size: 17px;
+            border: none;
+            float: left;
+            width: 60%;
+            margin-left: 20%;
+            background: white;
+        }
+
+        .overlay input[type=text]:hover {
+            background: #f1f1f1;
+        }
+
+        /* Style the submit button */
+        .overlay button {
+            float: left;
+            padding: 10.75px;
+            background: #ddd;
+            border: none;
+            cursor: pointer;
+        }
+
+        .overlay button:hover {
+            background: #bbb;
+        }
 
         /* 반응형 디자인 */
         @media (max-width: 600px) {
@@ -59,21 +122,32 @@
                 gap: 10px;
             }
         }
-
-
     </style>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
 <!-- 네비게이션 바 -->
 <div class="navbar">
     <div class="navbar-logo" onclick="location.href='#'"></div>
     <div class="navbar-menu">
-        <a href="/main"  >마이홈</a>
+        <a href="/main">마이홈</a>
         <a href="/learn">배우기</a>
         <a href="/nature">자연</a>
         <a href="/daily-life">일상생활</a>
         <a href="/stories">동화</a>
         <a href="/animals">동물</a>
+        <a href="#" onclick="openSearch()"><span class="material-icons">search</span></a>
+    </div>
+</div>
+
+<!-- Search Overlay -->
+<div id="myOverlay" class="overlay">
+    <span class="closebtn" onclick="closeSearch()" title="Close Overlay">x</span>
+    <div class="overlay-content">
+        <form action="search" method="get">
+            <input type="text" placeholder="검색어을 입력해주세요!" name="search">
+            <button type="submit"><span class="material-icons">search</span></button>
+        </form>
     </div>
 </div>
 
