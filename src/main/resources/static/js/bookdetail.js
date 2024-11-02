@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const isbn = window.location.pathname.split('/').pop();
-    const token = localStorage.getItem('jwt');
+    const currentUrl = window.location.href;
+    const url = new URL(currentUrl);
+    const isbn = url.searchParams.get('bookIsbn');
+    const token = localStorage.getItem('Authorization');
     try {
         // 책 상세 정보 요청
         const response = await fetch(`/members/books/detail/${isbn}`, {
