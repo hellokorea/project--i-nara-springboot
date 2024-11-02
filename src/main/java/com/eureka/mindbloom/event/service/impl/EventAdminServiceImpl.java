@@ -6,9 +6,12 @@ import com.eureka.mindbloom.event.dto.EventTriggerRequest;
 import com.eureka.mindbloom.event.repository.EventRepository;
 import com.eureka.mindbloom.event.scheduler.EventEndJob;
 import com.eureka.mindbloom.event.scheduler.EventStartJob;
+import com.eureka.mindbloom.event.scheduler.EventStartJobListener;
 import com.eureka.mindbloom.event.service.EventAdminService;
 import lombok.RequiredArgsConstructor;
 import org.quartz.*;
+import org.quartz.impl.matchers.KeyMatcher;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +24,10 @@ import java.util.Date;
 @Transactional
 public class EventAdminServiceImpl implements EventAdminService {
 
+    private static final int MULTIPLY_PARTICIPANT = 3;
     private final Scheduler scheduler;
     private final EventRepository eventRepository;
+    private final StringRedisTemplate eventRedisTemplate;
 
     @Override
     public void scheduleEvent(EventTriggerRequest request) throws SchedulerException {
@@ -31,27 +36,45 @@ public class EventAdminServiceImpl implements EventAdminService {
         }
         Event event = eventRepository.save(request.toEventEntity());
 
+        int maxParticipants = request.winnerCount() * MULTIPLY_PARTICIPANT;
+        String maxParticipantsKey = "event:maxParticipants";
+
         JobDetail startJobDetail = JobBuilder.newJob(EventStartJob.class)
-                .withIdentity("eventStartJob_" + event.getId())
+                .withIdentity("eventStartJob")
                 .usingJobData("eventId", event.getId())
+                .usingJobData("maxParticipants", maxParticipants)
+                .storeDurably(false)
                 .build();
+
+        if (scheduler.checkExists(startJobDetail.getKey())) {
+            throw new BadRequestException("이벤트가 이미 스케줄러에 등록되어 있습니다.");
+        }
+
+        eventRedisTemplate.getConnectionFactory().getConnection().serverCommands().flushDb();
+        eventRedisTemplate.opsForValue().set(maxParticipantsKey, String.valueOf(maxParticipants));
 
         Trigger startTrigger = TriggerBuilder.newTrigger()
                 .forJob(startJobDetail)
-                .withIdentity("eventStartTrigger_" + event.getId())
+                .withIdentity("eventStartTrigger")
                 .startAt(convertToDate(event.getStartTime()))
                 .build();
 
         JobDetail endJobDetail = JobBuilder.newJob(EventEndJob.class)
-                .withIdentity("eventEndJob_" + event.getId())
+                .withIdentity("eventEndJob")
                 .usingJobData("eventId", event.getId())
+                .storeDurably(false)
                 .build();
 
         Trigger endTrigger = TriggerBuilder.newTrigger()
                 .forJob(endJobDetail)
-                .withIdentity("eventEndTrigger_" + event.getId())
+                .withIdentity("eventEndTrigger")
                 .startAt(convertToDate(event.getEndTime()))
                 .build();
+
+        scheduler.getListenerManager().addJobListener(
+                new EventStartJobListener(),
+                KeyMatcher.keyEquals(new JobKey("eventStartJob"))
+        );
 
         scheduler.scheduleJob(startJobDetail, startTrigger);
         scheduler.scheduleJob(endJobDetail, endTrigger);
