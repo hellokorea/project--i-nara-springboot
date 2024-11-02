@@ -250,28 +250,34 @@ body {
     margin-top: 20px;
 }
 
-.submit-btn, .cancel-btn {
+/* 모달 내부 버튼 스타일 */
+.modal .modal-btn {
     width: 100%;
+    max-width: 150px;
     padding: 12px;
-    background-color: var(--primary-color);
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 14px;
     color: white;
     border: none;
     border-radius: var(--border-radius);
-    font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    max-width: 150px;
 }
 
-.cancel-btn {
+.modal .save-btn {
+    background-color: var(--primary-color);
+}
+
+.modal .cancel-btn {
     background-color: var(--error-color);
 }
 
-.submit-btn:hover {
+.modal .save-btn:hover {
     background-color: #FF6B40;
 }
 
-.cancel-btn:hover {
+.modal .cancel-btn:hover {
     background-color: #FF3B3B;
 }
 

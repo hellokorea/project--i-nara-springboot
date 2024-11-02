@@ -29,6 +29,7 @@
             <!-- 도서 목록이 여기에 표시됩니다 -->
         </div>
 
+        <!-- 페이지네이션 영역 -->
         <div class="pagination" id="pagination">
             <!-- 페이지 버튼이 여기에 추가됩니다 -->
         </div>
@@ -38,7 +39,6 @@
     <div class="modal" id="addBookModal" style="display: none;">
         <div class="modal-content">
             <h2>도서 등록</h2>
-            <!-- 입력 필드들 -->
             <label>ISBN</label><input type="text" id="addIsbn" placeholder="ISBN 입력"><br>
             <label>제목</label><input type="text" id="addTitle" placeholder="제목 입력"><br>
             <label>내용</label><textarea id="addPlot" placeholder="내용 입력"></textarea><br>
@@ -47,10 +47,8 @@
             <label>권장 연령</label><input type="text" id="addAge" placeholder="연령 입력"><br>
             <label>카테고리</label><input type="text" id="addCategory" placeholder="카테고리 입력"><br>
             <label>커버 이미지</label><input type="text" id="addCoverImage" placeholder="이미지 URL 입력"><br>
-            <div class="button-group">
-                <button class="submit-btn" onclick="addBook()">저장</button>
-                <button class="cancel-btn" onclick="closeAddModal()">취소</button>
-            </div>
+            <button onclick="addBook()" class="modal-btn save-btn">저장</button>
+            <button onclick="closeAddModal()" class="modal-btn cancel-btn">취소</button>
         </div>
     </div>
 
@@ -58,7 +56,6 @@
     <div class="modal" id="editBookModal" style="display: none;">
         <div class="modal-content">
             <h2>도서 수정</h2>
-            <!-- 입력 필드들 -->
             <label>ISBN</label><input type="text" id="editIsbn" disabled><br>
             <label>제목</label><input type="text" id="editTitle"><br>
             <label>내용</label><textarea id="editPlot"></textarea><br>
@@ -67,10 +64,8 @@
             <label>권장 연령</label><input type="text" id="editAge"><br>
             <label>카테고리</label><input type="text" id="editCategory"><br>
             <label>커버 이미지</label><input type="text" id="editCoverImage"><br>
-            <div class="button-group">
-                <button class="submit-btn" onclick="saveBook()">저장</button>
-                <button class="cancel-btn" onclick="closeEditModal()">취소</button>
-            </div>
+            <button onclick="saveBook()" class="modal-btn save-btn">저장</button>
+            <button onclick="closeEditModal()" class="modal-btn cancel-btn">취소</button>
         </div>
     </div>
 </div>
@@ -91,35 +86,44 @@
     });
 
     async function loadBookList(page = 0, searchQuery = null) {
-        const params = { page };
-        if (searchQuery) {
-            params.search = searchQuery;
-        }
+        try {
+            const params = { page };
+            if (searchQuery) {
+                params.search = searchQuery;
+            }
 
-        const response = await axios.get(`http://localhost:8080/members/books`, { params });
-        const books = response.data.data.books;
-        const isLastPage = response.data.data.isLast;
+            const response = await axios.get(`http://localhost:8080/members/books`, { params });
+            const books = response.data.data.books;
+            const isLastPage = response.data.data.isLast;
 
-        const booksGrid = document.getElementById("booksGrid");
-        booksGrid.innerHTML = "";
-        books.forEach(book => {
-            const bookCard = document.createElement("div");
-            bookCard.classList.add("book-card");
-            bookCard.innerHTML = `
-                <div class="book-info">
-                    <h3>${book.title}</h3>
-                    <p>ISBN: ${book.isbn}</p>
-                    <p>출판사: ${book.publisher || "N/A"}</p>
-                    <div class="book-actions">
-                        <button class="edit-btn" onclick="openEditModal('${book.isbn}')">수정</button>
-                        <button class="delete-btn" onclick="confirmDelete('${book.isbn}')">삭제</button>
+            const booksGrid = document.getElementById("booksGrid");
+            booksGrid.innerHTML = "";
+            books.forEach(book => {
+                const bookCard = document.createElement("div");
+                bookCard.classList.add("book-card");
+                bookCard.innerHTML = `
+                    <div class="book-info">
+                        <h3>${book.title}</h3>
+                        <p>ISBN: ${book.isbn}</p>
+                        <p>저자: ${book.author || "N/A"}</p>
+                        <div class="book-actions">
+                            <button class="edit-btn" onclick="openEditModal('${book.isbn}')">수정</button>
+                            <button class="delete-btn" onclick="confirmDelete('${book.isbn}')">삭제</button>
+                        </div>
                     </div>
-                </div>
-            `;
-            booksGrid.appendChild(bookCard);
-        });
+                `;
+                booksGrid.appendChild(bookCard);
+            });
 
-        setupPagination(page, isLastPage);
+            setupPagination(page, isLastPage);
+        } catch (error) {
+            if (error.response && error.response.status === 403) {
+                alert("접근 권한이 없습니다. 다시 로그인해주세요.");
+                window.location.href = "/login.html";
+            } else {
+                console.error("도서 목록을 불러오는 중 오류 발생:", error);
+            }
+        }
     }
 
     function setupPagination(currentPage, isLastPage) {
@@ -157,7 +161,7 @@
     }
 
     function openAddModal() {
-        document.getElementById("addBookModal").style.display = "block";
+        document.getElementById("addBookModal").style.display = "flex";
     }
 
     function closeAddModal() {
@@ -165,7 +169,7 @@
     }
 
     function openEditModal(isbn) {
-        document.getElementById("editBookModal").style.display = "block";
+        document.getElementById("editBookModal").style.display = "flex";
         fetchBookDetails(isbn);
     }
 
@@ -185,9 +189,13 @@
             keywords: "",
             categories: [{ category: document.getElementById("addCategory").value }]
         };
-        await axios.post("http://localhost:8080/admin/books/", book);
-        closeAddModal();
-        loadBookList(currentPage);
+        try {
+            await axios.post("http://localhost:8080/admin/books/", book);
+            closeAddModal();
+            loadBookList(currentPage);
+        } catch (error) {
+            console.error("도서 등록 중 오류 발생:", error);
+        }
     }
 
     async function saveBook() {
@@ -201,29 +209,41 @@
             coverImage: document.getElementById("editCoverImage").value,
             categories: [{ category: document.getElementById("editCategory").value }]
         };
-        await axios.put(`http://localhost:8080/admin/books/${isbn}`, book);
-        closeEditModal();
-        loadBookList(currentPage);
+        try {
+            await axios.put(`http://localhost:8080/admin/books/${isbn}`, book);
+            closeEditModal();
+            loadBookList(currentPage);
+        } catch (error) {
+            console.error("도서 수정 중 오류 발생:", error);
+        }
     }
 
     async function deleteBook(isbn) {
-        await axios.delete(`http://localhost:8080/admin/books/${isbn}`);
-        alert("도서가 삭제되었습니다.");
-        loadBookList(currentPage);
+        try {
+            await axios.delete(`http://localhost:8080/admin/books/${isbn}`);
+            alert("도서가 삭제되었습니다.");
+            loadBookList(currentPage);
+        } catch (error) {
+            console.error("도서 삭제 중 오류 발생:", error);
+        }
     }
 
     async function fetchBookDetails(isbn) {
-        const response = await axios.get(`http://localhost:8080/members/books/detail/${isbn}`);
-        const book = response.data.data;
+        try {
+            const response = await axios.get(`http://localhost:8080/members/books/detail/${isbn}`);
+            const book = response.data.data;
 
-        document.getElementById("editIsbn").value = book.isbn;
-        document.getElementById("editTitle").value = book.title;
-        document.getElementById("editPlot").value = book.plot;
-        document.getElementById("editAuthor").value = book.author;
-        document.getElementById("editPublisher").value = book.publisher;
-        document.getElementById("editAge").value = book.recommendedAge;
-        document.getElementById("editCategory").value = book.category;
-        document.getElementById("editCoverImage").value = book.coverImage;
+            document.getElementById("editIsbn").value = book.isbn;
+            document.getElementById("editTitle").value = book.title;
+            document.getElementById("editPlot").value = book.plot;
+            document.getElementById("editAuthor").value = book.author;
+            document.getElementById("editPublisher").value = book.publisher;
+            document.getElementById("editAge").value = book.recommendedAge;
+            document.getElementById("editCategory").value = book.category;
+            document.getElementById("editCoverImage").value = book.coverImage;
+        } catch (error) {
+            console.error("도서 세부 정보를 불러오는 중 오류 발생:", error);
+        }
     }
 
     function confirmDelete(isbn) {
