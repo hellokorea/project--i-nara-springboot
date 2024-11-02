@@ -7,10 +7,11 @@ import java.time.LocalDateTime;
 
 public record EventTriggerRequest(
         @NotNull LocalDateTime startTime,
-        @NotNull LocalDateTime endTime
+        @NotNull LocalDateTime endTime,
+        @NotNull Integer winnerCount
 ) {
 
-    public Event toEventEntity(){
-        return new Event(startTime, endTime);
+    public Event toEventEntity() {
+        return new Event(startTime, endTime, winnerCount);
     }
 }

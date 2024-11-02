@@ -1,20 +1,25 @@
 package com.eureka.mindbloom.common.page.controller;
 
+import com.eureka.mindbloom.member.service.ChildService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
+@RequiredArgsConstructor
 public class PageController {
 
-    @GetMapping("/login")
-    public String loginPage() {
-        return "login"; // login.html 파일을 렌더링
+    private final ChildService childService;
+
+    @GetMapping("/signup")  // 회원가입 페이지
+    public String signupPage() {
+        return "signup";
     }
 
-    @GetMapping("/signup")
-    public String signupPage() {
-        return "signup"; // signup.html 파일을 렌더링 (추후 구현)
+    @GetMapping("/login")   // 로그인 페이지
+    public String loginPage() {
+        return "login";
     }
 
     @GetMapping("/learn")
@@ -47,11 +52,26 @@ public class PageController {
         return "main";
     }
 
+    @GetMapping("/profile") // 프로필 선택 페이지
+    public String profilePage() {
+        return "profile"; // 프로필 선택 페이지 템플릿 이름
+    }
+
+    @GetMapping("/profile/create") // 프로필 생성 페이지
+    public String createProfilePage() {
+        return "child-profile";
+    }
+
     @GetMapping("/search")
     public String searchPage() { return "search"; }
 
     @GetMapping("/detail/{isbn}")
     public String bookDetailPage(@PathVariable String isbn) {
         return "bookdetail";
+    }
+
+    @GetMapping("/admin")
+    public String adminPage() {
+        return "admin";
     }
 }

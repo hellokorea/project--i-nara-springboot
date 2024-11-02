@@ -24,8 +24,11 @@ public class Event extends BaseEntity {
 
     private LocalDateTime endTime;
 
-    public Event(LocalDateTime startTime, LocalDateTime endTime) {
+    private Integer winnersCount;
+
+    public Event(LocalDateTime startTime, LocalDateTime endTime, Integer winnersCount) {
         this.startTime = startTime;
         this.endTime = endTime;
+        this.winnersCount = winnersCount;
     }
 }

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 히스토리</title>
+    <link rel="stylesheet" href="/css/mbtiHistory.css">
+</head>
+<body>
+
+<div class="result-container">
+    <h1>나의 MBTI 히스토리</h1>
+    <h2>지금 나의 MBTI는 <span id="current-mbti"></span> 😮</h2>
+
+    <!-- 성향 막대그래프 -->
+    <div class="trait-bars">
+        <div class="trait-bar">
+            <span>I</span>
+            <div class="progress" id="I-E">
+                <div class="progress-fill left" id="I-fill"><span class="progress-percentage" id="I-percent"></span></div>
+                <div class="progress-fill right" id="E-fill"><span class="progress-percentage" id="E-percent"></span></div>
+            </div>
+            <span>E</span>
+        </div>
+        <div class="trait-bar">
+            <span>S</span>
+            <div class="progress" id="S-N">
+                <div class="progress-fill left" id="S-fill"><span class="progress-percentage" id="S-percent"></span></div>
+                <div class="progress-fill right" id="N-fill"><span class="progress-percentage" id="N-percent"></span></div>
+            </div>
+            <span>N</span>
+        </div>
+        <div class="trait-bar">
+            <span>T</span>
+            <div class="progress" id="T-F">
+                <div class="progress-fill left" id="T-fill"><span class="progress-percentage" id="T-percent"></span></div>
+                <div class="progress-fill right" id="F-fill"><span class="progress-percentage" id="F-percent"></span></div>
+            </div>
+            <span>F</span>
+        </div>
+        <div class="trait-bar">
+            <span>J</span>
+            <div class="progress" id="J-P">
+                <div class="progress-fill left" id="J-fill"><span class="progress-percentage" id="J-percent"></span></div>
+                <div class="progress-fill right" id="P-fill"><span class="progress-percentage" id="P-percent"></span></div>
+            </div>
+            <span>P</span>
+        </div>
+    </div>
+
+    <!-- 활동 기록 및 MBTI 변경 기록 -->
+    <div id="history-section">
+        <h2>활동 및 MBTI 변경 히스토리</h2>
+        <div id="action-history">
+            <h4>활동 기록</h4>
+            <!-- 활동 기록이 여기에 추가됩니다 -->
+        </div>
+    </div>
+</div>
+
+<script src="/js/mbtiHistory.js"></script>
+</body>
+</html>

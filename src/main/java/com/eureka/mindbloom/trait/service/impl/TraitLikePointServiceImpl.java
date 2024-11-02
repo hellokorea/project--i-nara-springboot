@@ -43,7 +43,8 @@ public class TraitLikePointServiceImpl implements TraitLikePointService {
                 child,
                 LIKE_CODE,
                 traitCode,
-                POINT
+                POINT,
+                "input bookName" // 임시로 해놨습니다.
         );
     }
 }

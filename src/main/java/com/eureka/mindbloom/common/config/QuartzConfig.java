@@ -1,4 +1,4 @@
-package com.eureka.mindbloom.event.scheduler;
+package com.eureka.mindbloom.common.config;
 
 import org.quartz.Scheduler;
 import org.springframework.context.annotation.Bean;

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>도서 관리</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+<div class="admin-container">
+    <header class="admin-header">
+        <h1>📚 도서 관리</h1>
+        <div class="admin-profile">
+            <span class="admin-name">관리자님</span>
+            <button class="logout-btn" onclick="logout()">로그아웃</button>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <div class="admin-actions">
+            <div class="search-bar">
+                <input type="text" placeholder="도서명 또는 저자 검색" id="searchInput">
+                <button class="search-btn" onclick="searchBooks()">검색</button>
+            </div>
+            <button class="add-book-btn" onclick="openAddModal()">도서 등록</button>
+        </div>
+
+        <div class="books-grid" id="booksGrid">
+            <!-- 도서 목록이 여기에 표시됩니다 -->
+        </div>
+
+        <!-- 페이지네이션 영역 -->
+        <div class="pagination" id="pagination">
+            <!-- 페이지 버튼이 여기에 추가됩니다 -->
+        </div>
+    </main>
+
+    <!-- 도서 등록 모달 -->
+    <div class="modal" id="addBookModal" style="display: none;">
+        <div class="modal-content">
+            <h2>도서 등록</h2>
+            <label>ISBN</label><input type="text" id="addIsbn" placeholder="ISBN 입력"><br>
+            <label>제목</label><input type="text" id="addTitle" placeholder="제목 입력"><br>
+            <label>내용</label><textarea id="addPlot" placeholder="내용 입력"></textarea><br>
+            <label>저자</label><input type="text" id="addAuthor" placeholder="저자 입력"><br>
+            <label>출판사</label><input type="text" id="addPublisher" placeholder="출판사 입력"><br>
+            <label>권장 연령</label><input type="text" id="addAge" placeholder="연령 입력"><br>
+            <label>카테고리</label><input type="text" id="addCategory" placeholder="카테고리 입력"><br>
+            <label>커버 이미지</label><input type="text" id="addCoverImage" placeholder="이미지 URL 입력"><br>
+            <button onclick="addBook()" class="modal-btn save-btn">저장</button>
+            <button onclick="closeAddModal()" class="modal-btn cancel-btn">취소</button>
+        </div>
+    </div>
+
+    <!-- 도서 수정 모달 -->
+    <div class="modal" id="editBookModal" style="display: none;">
+        <div class="modal-content">
+            <h2>도서 수정</h2>
+            <label>ISBN</label><input type="text" id="editIsbn" disabled><br>
+            <label>제목</label><input type="text" id="editTitle"><br>
+            <label>내용</label><textarea id="editPlot"></textarea><br>
+            <label>저자</label><input type="text" id="editAuthor"><br>
+            <label>출판사</label><input type="text" id="editPublisher"><br>
+            <label>권장 연령</label><input type="text" id="editAge"><br>
+            <label>카테고리</label><input type="text" id="editCategory"><br>
+            <label>커버 이미지</label><input type="text" id="editCoverImage"><br>
+            <button onclick="saveBook()" class="modal-btn save-btn">저장</button>
+            <button onclick="closeEditModal()" class="modal-btn cancel-btn">취소</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    let currentPage = 0;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem("jwtToken");
+        if (!token) {
+            window.location.href = "/login.html";
+            return;
+        }
+
+        axios.defaults.headers.common["Authorization"] = token;
+        loadBookList(currentPage);
+    });
+
+    async function loadBookList(page = 0, searchQuery = null) {
+        try {
+            const params = { page };
+            if (searchQuery) {
+                params.search = searchQuery;
+            }
+
+            const response = await axios.get(`http://localhost:8080/members/books`, { params });
+            const books = response.data.data.books;
+            const isLastPage = response.data.data.isLast;
+
+            const booksGrid = document.getElementById("booksGrid");
+            booksGrid.innerHTML = "";
+            books.forEach(book => {
+                const bookCard = document.createElement("div");
+                bookCard.classList.add("book-card");
+                bookCard.innerHTML = `
+                    <div class="book-info">
+                        <h3>${book.title}</h3>
+                        <p>ISBN: ${book.isbn}</p>
+                        <p>저자: ${book.author || "N/A"}</p>
+                        <div class="book-actions">
+                            <button class="edit-btn" onclick="openEditModal('${book.isbn}')">수정</button>
+                            <button class="delete-btn" onclick="confirmDelete('${book.isbn}')">삭제</button>
+                        </div>
+                    </div>
+                `;
+                booksGrid.appendChild(bookCard);
+            });
+
+            setupPagination(page, isLastPage);
+        } catch (error) {
+            if (error.response && error.response.status === 403) {
+                alert("접근 권한이 없습니다. 다시 로그인해주세요.");
+                window.location.href = "/login.html";
+            } else {
+                console.error("도서 목록을 불러오는 중 오류 발생:", error);
+            }
+        }
+    }
+
+    function setupPagination(currentPage, isLastPage) {
+        const pagination = document.getElementById("pagination");
+        pagination.innerHTML = "";
+
+        if (currentPage > 0) {
+            const prevButton = document.createElement("button");
+            prevButton.innerText = "이전";
+            prevButton.onclick = () => loadBookList(currentPage - 1);
+            pagination.appendChild(prevButton);
+        }
+
+        const currentPageButton = document.createElement("button");
+        currentPageButton.innerText = `Page ${currentPage + 1}`;
+        currentPageButton.disabled = true;
+        pagination.appendChild(currentPageButton);
+
+        if (!isLastPage) {
+            const nextButton = document.createElement("button");
+            nextButton.innerText = "다음";
+            nextButton.onclick = () => loadBookList(currentPage + 1);
+            pagination.appendChild(nextButton);
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem("jwtToken");
+        window.location.href = "/login.html";
+    }
+
+    function searchBooks() {
+        const searchQuery = document.getElementById("searchInput").value.trim();
+        loadBookList(0, searchQuery || null);
+    }
+
+    function openAddModal() {
+        document.getElementById("addBookModal").style.display = "flex";
+    }
+
+    function closeAddModal() {
+        document.getElementById("addBookModal").style.display = "none";
+    }
+
+    function openEditModal(isbn) {
+        document.getElementById("editBookModal").style.display = "flex";
+        fetchBookDetails(isbn);
+    }
+
+    function closeEditModal() {
+        document.getElementById("editBookModal").style.display = "none";
+    }
+
+    async function addBook() {
+        const book = {
+            isbn: document.getElementById("addIsbn").value,
+            title: document.getElementById("addTitle").value,
+            plot: document.getElementById("addPlot").value,
+            author: document.getElementById("addAuthor").value,
+            publisher: document.getElementById("addPublisher").value,
+            recommendedAge: document.getElementById("addAge").value,
+            coverImage: document.getElementById("addCoverImage").value,
+            keywords: "",
+            categories: [{ category: document.getElementById("addCategory").value }]
+        };
+        try {
+            await axios.post("http://localhost:8080/admin/books/", book);
+            closeAddModal();
+            loadBookList(currentPage);
+        } catch (error) {
+            console.error("도서 등록 중 오류 발생:", error);
+        }
+    }
+
+    async function saveBook() {
+        const isbn = document.getElementById("editIsbn").value;
+        const book = {
+            title: document.getElementById("editTitle").value,
+            plot: document.getElementById("editPlot").value,
+            author: document.getElementById("editAuthor").value,
+            publisher: document.getElementById("editPublisher").value,
+            recommendedAge: document.getElementById("editAge").value,
+            coverImage: document.getElementById("editCoverImage").value,
+            categories: [{ category: document.getElementById("editCategory").value }]
+        };
+        try {
+            await axios.put(`http://localhost:8080/admin/books/${isbn}`, book);
+            closeEditModal();
+            loadBookList(currentPage);
+        } catch (error) {
+            console.error("도서 수정 중 오류 발생:", error);
+        }
+    }
+
+    async function deleteBook(isbn) {
+        try {
+            await axios.delete(`http://localhost:8080/admin/books/${isbn}`);
+            alert("도서가 삭제되었습니다.");
+            loadBookList(currentPage);
+        } catch (error) {
+            console.error("도서 삭제 중 오류 발생:", error);
+        }
+    }
+
+    async function fetchBookDetails(isbn) {
+        try {
+            const response = await axios.get(`http://localhost:8080/members/books/detail/${isbn}`);
+            const book = response.data.data;
+
+            document.getElementById("editIsbn").value = book.isbn;
+            document.getElementById("editTitle").value = book.title;
+            document.getElementById("editPlot").value = book.plot;
+            document.getElementById("editAuthor").value = book.author;
+            document.getElementById("editPublisher").value = book.publisher;
+            document.getElementById("editAge").value = book.recommendedAge;
+            document.getElementById("editCategory").value = book.category;
+            document.getElementById("editCoverImage").value = book.coverImage;
+        } catch (error) {
+            console.error("도서 세부 정보를 불러오는 중 오류 발생:", error);
+        }
+    }
+
+    function confirmDelete(isbn) {
+        if (confirm("이 도서를 삭제하시겠습니까?")) {
+            deleteBook(isbn);
+        }
+    }
+</script>
+</body>
+</html>

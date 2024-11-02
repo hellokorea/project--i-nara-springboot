@@ -1,0 +1,83 @@
+/* profile.css */
+.profile-wrapper {
+    width: 50%;
+    margin: 50px auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.container {
+    width: 100%; /* 컨테이너 너비 전체 */
+    display: flex; /* flexbox 사용 */
+    flex-direction: column; /* 세로 방향 정렬 */
+    align-items: center; /* 가로 중앙 정렬 */
+    justify-content: center; /* 세로 중앙 정렬 */
+    height: 100vh; /* 화면 높이를 사용 */
+    color: white; /* 넷플릭스 글자색 */
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #ff69b4; /* 핑크색 제목 */
+    font-family: 'Cute Font', sans-serif;
+    font-size: 28px; /* 제목 크기 조정 */
+    font-weight: bold;
+}
+
+.profile-list {
+    display: flex;
+    flex-direction: row; /* 가로 방향 배치 */
+    gap: 20px;
+    justify-content: space-around; /* 프로필 버튼 간격 조정 */
+}
+
+.profile-button {
+    padding: 10px 20px;
+    background-color: #ff69b4; /* 핑크색 배경 */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+    font-family: 'Cute Font', sans-serif;
+    width: 100%;
+}
+
+.profile-button:hover {
+    background-color: #ff1493;
+}
+
+.add-profile-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 70px;
+    background-color: #333;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: 20px;
+    /* + 기호 스타일 */
+    font-size: 30px;
+    color: white;
+    font-weight: bold;
+    /* 가운데 정렬 */
+    margin: 0 auto;
+    /* 여백 조정 */
+    margin-bottom: 20px;
+}
+
+.add-profile-button:hover {
+    background-color: #555;
+}
+
+.profile-add-text {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}

@@ -14,7 +14,7 @@ public class ChildPreferred {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "CHAR(4)")
+    @Column(columnDefinition = "CHAR(7)")
     private String categoryCode;
 
     @ManyToOne

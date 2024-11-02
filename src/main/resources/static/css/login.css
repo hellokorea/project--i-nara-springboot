@@ -4,7 +4,7 @@ body {
     align-items: center;
     min-height: 100vh;
     background-size: cover;
-    font-family: 'Cute Font', cursive; /* 귀여운 글꼴 사용 */
+    font-family: 'Cute Font', cursive;
 
     background-color: #f8f8ff; /* 연한 핑크색 배경 */
 
@@ -50,7 +50,7 @@ h1 {
     font-size: 24px;
     color: #ff69b4; /* 핑크색 제목 */
     font-weight: normal; /* 제목 폰트 굵기 제거 */
-    font-family: 'Cute Font', sans-serif; /* 제목에 귀여운 글꼴 적용 */
+    font-family: 'Cute Font', sans-serif;
     margin-bottom: 40px; /* 제목 아래 여백 조정 */
 }
 
@@ -66,7 +66,7 @@ label {
     font-weight: bold;
     color: #999; /* 레이블 색상 변경 */
     transition: top 0.3s ease, font-size 0.3s ease; /* 레이블 애니메이션 효과 */
-    font-family: 'Cute Font', sans-serif; /* 레이블에 귀여운 글꼴 적용 */
+    font-family: 'Cute Font', sans-serif;
 }
 
 .password-wrapper {
@@ -147,7 +147,7 @@ input {
     font-size: 16px; /* 입력 필드 폰트 크기 조정 */
     color: #333; /* 입력 필드 글자 색상 변경 */
     background: #fff; /* 입력 필드 배경 색상 변경 */
-    font-family: 'Cute Font', sans-serif; /* 입력 필드에 귀여운 글꼴 적용 */
+    font-family: 'Cute Font', sans-serif;
 }
 
 input:focus {
@@ -171,7 +171,7 @@ button {
     transition: background-color 0.3s ease;
     font-size: 18px; /* 버튼 폰트 크기 조정 */
     margin-top: 15px; /* 버튼 아래 여백 조정 */
-    font-family: 'Cute Font', sans-serif; /* 버튼에 귀여운 글꼴 적용 */
+    font-family: 'Cute Font', sans-serif;
 }
 
 button:hover {
@@ -181,7 +181,7 @@ button:hover {
 a {
     color: #ff69b4; /* 핑크색 링크 */
     text-decoration: none;
-    font-family: 'Cute Font', sans-serif; /* 링크에 귀여운 글꼴 적용 */
+    font-family: 'Cute Font', sans-serif;
 }
 
 a:hover {
