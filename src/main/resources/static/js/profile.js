@@ -32,25 +32,23 @@ async function loadProfile() {
             const profileList = document.querySelector('#profile-list');
             const createProfileButton = document.getElementById('createProfileButton');
 
-            if (profiles.length === 0) {
-                // 프로필이 없으면 + 버튼 표시
-                createProfileButton.style.display = 'block';
-            } else {
-                // 프로필이 있으면 + 버튼 숨김
-                createProfileButton.style.display = 'none';
+            // + 버튼은 항상 표시되도록 합니다.
+            createProfileButton.style.display = 'block';
 
-                profiles.forEach(profile => {
-                    const profileButton = document.createElement('button');
-                    profileButton.textContent = `${profile.name} 프로필`;
-                    profileButton.classList.add('profile-button');
-                    profileButton.addEventListener('click', () => {
-                        localStorage.setItem('childId', profile.childId);
-                        window.location.href = '/main';
-                    });
-                    profileList.appendChild(profileButton);
+            profiles.forEach(profile => {
+                const profileButton = document.createElement('button');
+                profileButton.classList.add('profile-button');
+                profileButton.innerHTML = `
+                    <img src="/images/userImage.png" alt="프로필 이미지">
+                    <span>${profile.childName} 프로필</span>
+                `;
+                profileButton.addEventListener('click', () => {
+                    localStorage.setItem('childId', profile.childId);
+                    window.location.href = '/main';
                 });
+                profileList.appendChild(profileButton);
+            });
 
-            }
         } catch (error) {
             console.error('Error loading profile:', error);
             // 에러 처리 로직 추가 (예: 사용자에게 알림 표시)
