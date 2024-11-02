@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>검색</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-logo {
+            width: 40px;
+            height: 40px;
+            background-image: url('/images/userImage.png');
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+        nav {
+            margin-top: 10px;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-left a {
+            text-decoration: none;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+
+        .nav-left form {
+            display: flex;
+            align-items: center;
+        }
+
+        #searchInput {
+            padding: 10px;
+            font-size: 15px;
+            width: 500px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+
+        button {
+            color: #333;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #bbb;
+        }
+
+        .sort-options label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .sort-options select {
+            padding: 5px 30px;
+            font-size: 16px;
+            color: #333;
+            border: none;
+            border-radius: 8px;
+            background-color: #fff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-right: 20px;
+        }
+
+        .sort-options select:hover {
+            border-color: #888;
+        }
+
+        .sort-options select:focus {
+            outline: none;
+            border-color: #666;
+            box-shadow: 0 0 5px rgba(100, 100, 100, 0.5);
+        }
+
+        .sort-options select::after {
+            content: '▼';
+            font-size: 12px;
+            color: #666;
+            padding-left: 8px;
+        }
+
+        .nav-right select {
+            padding: 5px;
+            border-radius: 4px;
+            border: none;
+            color: #333;
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .book {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: transform 0.3s;
+        }
+
+        .book img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .book p {
+            margin: 10px 0 0;
+        }
+
+        .book:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+<!-- 네비게이션 바 -->
+<nav>
+    <div class="nav-left">
+        <div class="navbar-logo" onclick="location.href='/main'"></div>
+        <form id="searchForm" action="search" method="get">
+            <input type="text" id="searchInput" placeholder="검색어를 입력해주세요!" name="search">
+            <button type="submit"><span class="material-icons">search</span></button>
+        </form>
+    </div>
+    <div class="sort-options">
+        <label for="sortSelect"></label>
+        <select id="sortSelect">
+            <option value="RELEVANCE">관련순</option>
+            <option value="VIEWCOUNT">조회수</option>
+            <option value="RECENT">최신순</option>
+            <option value="LIKES">좋아요</option>
+        </select>
+    </div>
+</nav>
+
+<!-- 책 목록을 보여줄 영역 -->
+<div id="bookContainer" class="book-grid"></div>
+
+<script>
+    // JavaScript 코드
+    let page = 0;
+    let isLoading = false;
+    const token = localStorage.getItem('Authorization');
+    let sortOption = "RELEVANCE"; // 기본 정렬 옵션
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // URL에서 검색어 파라미터 추출
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchQuery = urlParams.get('search');
+        document.getElementById('searchInput').value = searchQuery || '';
+
+        loadBooks(searchQuery, sortOption);
+
+        // 무한 스크롤 구현
+        window.addEventListener("scroll", function() {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+                loadBooks(searchQuery, sortOption);
+            }
+        });
+
+        // 정렬 옵션 변경 시 책 목록 로드
+        document.getElementById('sortSelect').addEventListener('change', function() {
+            sortOption = this.value; // 선택된 정렬 옵션
+            page = 0; // 페이지 초기화
+            document.getElementById("bookContainer").innerHTML = ''; // 기존 책 목록 초기화
+            loadBooks(searchQuery, sortOption); // 책 목록 로드
+        });
+    });
+
+    async function loadBooks(searchQuery, sortOption) {
+        if (isLoading) return;
+        isLoading = true;
+        const url = `/members/books?search=${encodeURIComponent(searchQuery || '')}&page=${page}&sortOption=${sortOption}`;
+        console.log(url);
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': token
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('책 로드 실패');
+            }
+            const result = await response.json();
+            const data = result.data.books;
+
+            data.forEach(book => {
+                const bookElement = document.createElement("div");
+                bookElement.classList.add("book");
+                bookElement.innerHTML = `
+                    <img src="../images/coverImage.jpg" alt="${book.title}">
+                    <h3>${book.title}</h3>
+                `;
+                bookElement.addEventListener('click', () => {
+                    location.href = `/html/bookdetail.html?bookIsbn=`+book.isbn;
+                });
+                document.getElementById("bookContainer").appendChild(bookElement);
+            });
+
+            page++;
+            isLoading = false;
+        } catch (error) {
+            console.error("책 로드 실패:", error);
+            isLoading = false;
+        }
+    }
+</script>
+</body>
+</html>

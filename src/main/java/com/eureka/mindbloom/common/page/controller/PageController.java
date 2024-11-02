@@ -27,6 +27,26 @@ public class PageController {
         return "learn";
     }
 
+    @GetMapping("/nature")
+    public String naturePage() {
+        return "nature";
+    }
+
+    @GetMapping("/daily-life")
+    public String dailylifePage() {
+        return "daily-life";
+    }
+
+    @GetMapping("/stories")
+    public String storiesePage() {
+        return "stories";
+    }
+
+    @GetMapping("/animals")
+    public String animalsPage() {
+        return "animals";
+    }
+
     @GetMapping("/main")
     public String mainPage() {
         return "main";
@@ -41,6 +61,9 @@ public class PageController {
     public String createProfilePage() {
         return "child-profile";
     }
+
+    @GetMapping("/search")
+    public String searchPage() { return "search"; }
 
     @GetMapping("/detail/{isbn}")
     public String bookDetailPage(@PathVariable String isbn) {
