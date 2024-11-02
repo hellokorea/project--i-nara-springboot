@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const isbn = window.location.pathname.split('/').pop();
+    const currentUrl = window.location.href;
+    const url = new URL(currentUrl);
+    const isbn = url.searchParams.get('bookIsbn');
     const token = localStorage.getItem('Authorization');
     try {
         // 책 상세 정보 요청
@@ -16,7 +18,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const data = await response.json();
         const bookDetail = data.data;
-        // document.querySelector('.book-image').src = bookDetail.coverImage;
         document.querySelector('.book-image').src = "../images/coverImage.jpg";
         document.getElementById('book-title').innerText = bookDetail.title;
         document.getElementById('book-author').innerText = bookDetail.author;
