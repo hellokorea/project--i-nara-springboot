@@ -17,6 +17,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -26,11 +27,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+
 import java.util.List;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
 @Configuration
-@EnableMethodSecurity(prePostEnabled = true) // @PreAuthorize를 사용하기 위한 설정
+@EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class GlobalSecurityConfig {
 
@@ -58,7 +59,11 @@ public class GlobalSecurityConfig {
                         new AntPathRequestMatcher("/auth/login", HttpMethod.POST.name()),
                         new AntPathRequestMatcher("/auth/logout", HttpMethod.POST.name()),
                         new AntPathRequestMatcher("/health"),
-                        new AntPathRequestMatcher("/error")
+                        new AntPathRequestMatcher("/error"),
+                        new AntPathRequestMatcher("/learn"),
+                        new AntPathRequestMatcher("/main"),
+                        new AntPathRequestMatcher("/actuator/**"),
+                        PathRequest.toStaticResources().atCommonLocations()
                 ));
 
         http.cors(Customizer.withDefaults())
@@ -68,10 +73,12 @@ public class GlobalSecurityConfig {
                         .requestMatchers("/health", "/error").permitAll()
                         .requestMatchers("/signup", "/login").permitAll()  // signup & login 페이지 접근 권한 허용
                         .requestMatchers(ignoredRequests).permitAll()
+
                         .requestMatchers(HttpMethod.POST, "/admin/books/**").hasRole("Admin")  // Admin 접근 설정 추가
                         .requestMatchers(HttpMethod.PUT, "/admin/books/**").hasRole("Admin")   // Admin 접근 설정 추가
                         .requestMatchers(HttpMethod.DELETE, "/admin/books/**").hasRole("Admin") // Admin 접근 설정 추가
                         .requestMatchers("/adminmain.html").authenticated() // /adminmain.html 인증된 사용자 허용
+                        .requestMatchers("/admin/**").hasRole("Admin")
                         .anyRequest().authenticated()
                 )
                 .formLogin(AbstractHttpConfigurer::disable)

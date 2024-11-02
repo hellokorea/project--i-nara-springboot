@@ -15,6 +15,9 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "child", indexes = {
+        @Index(name = "idx_child_parent_id", columnList = "parent_id")
+})
 public class Child extends SoftDeleteEntity {
 
     @Id
