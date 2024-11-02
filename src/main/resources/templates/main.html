@@ -42,8 +42,8 @@
         }
 
         .book-item img {
-            width: 130px;
-            height: 180px;
+            width: 248px;
+            height: 290px;
             object-fit: cover;
             border-radius: 8px;
             margin-bottom: 8px;
@@ -268,7 +268,7 @@
     }
     function slide(type, direction) {
         const slider = document.getElementById(type === 'recommend' ? 'recommendBook-slider' : 'recentBook-slider');
-        const itemWidth = document.querySelector('.book-item').offsetWidth + 20; // 책 한 개와 gap
+        const itemWidth = document.querySelector('.book-item').offsetWidth + 180; // 책 한 개와 gap
 
         // 슬라이드 이동
         currentIndex[type] += direction;
@@ -277,8 +277,8 @@
         const maxIndex = slider.children.length - 1;
         if (currentIndex[type] < 0) {
             currentIndex[type] = 0;
-        } else if (currentIndex[type] > maxIndex - 8) {
-            currentIndex[type] = maxIndex - 8;
+        } else if (currentIndex[type] > maxIndex - 6) {
+            currentIndex[type] = maxIndex - 6;
         }
 
         slider.style.transform = `translateX(-${itemWidth * currentIndex[type]}px)`;
