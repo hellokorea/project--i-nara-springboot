@@ -69,6 +69,7 @@ public class EventAdminServiceImpl implements EventAdminService {
         JobDetail endJobDetail = JobBuilder.newJob(EventEndJob.class)
                 .withIdentity("eventEndJob")
                 .usingJobData("eventId", event.getId())
+                .usingJobData("maxParticipants", maxParticipants)
                 .storeDurably(false)
                 .build();
 
