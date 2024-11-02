@@ -73,6 +73,11 @@ public class GlobalSecurityConfig {
                         .requestMatchers("/health", "/error").permitAll()
                         .requestMatchers("/signup", "/login").permitAll()  // signup & login 페이지 접근 권한 허용
                         .requestMatchers(ignoredRequests).permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/admin/books/**").hasRole("Admin")  // Admin 접근 설정 추가
+                        .requestMatchers(HttpMethod.PUT, "/admin/books/**").hasRole("Admin")   // Admin 접근 설정 추가
+                        .requestMatchers(HttpMethod.DELETE, "/admin/books/**").hasRole("Admin") // Admin 접근 설정 추가
+                        .requestMatchers("/adminmain.html").authenticated() // /adminmain.html 인증된 사용자 허용
                         .requestMatchers("/admin/**").hasRole("Admin")
                         .anyRequest().authenticated()
                 )
@@ -95,6 +100,6 @@ public class GlobalSecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers("/css/**", "/js/**", "/images/**", "/html/**", "/favicon.ico", "/index.html");
+                .requestMatchers("/css/**", "/js/**", "/images/**", "/html/**", "/favicon.ico", "/index.html", "/login.html","/adminmain.html");
     }
 }
