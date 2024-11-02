@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자녀 프로필 만들기 - 아이들 나라</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/child-profile.css">
+</head>
+<body>
+<div class="container">
+    <div class="profile-box">
+        <h1>우리 아이의 프로필을 만들어주세요!</h1>
+
+        <form id="profileForm" novalidate>
+            <div class="input-group">
+                <label for="childName">아이의 이름</label>
+                <input type="text" id="childName" required placeholder="이름을 입력해주세요">
+            </div>
+
+            <div class="input-group">
+                <label>생년월일</label>
+                <div class="date-select">
+                    <select id="birthYear" required>
+                        <option value="">년도</option>
+                    </select>
+                    <select id="birthMonth" required>
+                        <option value="">월</option>
+                    </select>
+                    <select id="birthDay" required>
+                        <option value="">일</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>성별</label>
+                <div class="gender-options">
+                    <label class="gender-label">
+                        <input type="radio" name="gender" value="0500_01" required>
+                        <span>남자아이</span>
+                    </label>
+                    <label class="gender-label">
+                        <input type="radio" name="gender" value="0500_02" required>
+                        <span>여자아이</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="category-section">
+                <h2>관심 있는 주제를 선택해주세요 (최대 3개)</h2>
+
+                <!-- 배우기 카테고리 -->
+                <div class="category-group">
+                    <h3>배우기</h3>
+                    <div class="category-items" data-group="0201">
+                        <div class="category-item" data-code="0201_01">
+                            <span>한글</span>
+                        </div>
+                        <div class="category-item" data-code="0201_02">
+                            <span>수학</span>
+                        </div>
+                        <div class="category-item" data-code="0201_03">
+                            <span>과학</span>
+                        </div>
+                        <div class="category-item" data-code="0201_04">
+                            <span>역사</span>
+                        </div>
+                        <div class="category-item" data-code="0201_05">
+                            <span>문화</span>
+                        </div>
+                        <div class="category-item" data-code="0201_06">
+                            <span>퀴즈</span>
+                        </div>
+                        <div class="category-item" data-code="0201_07">
+                            <span>생활</span>
+                        </div>
+                        <div class="category-item" data-code="0201_08">
+                            <span>안전</span>
+                        </div>
+                        <div class="category-item" data-code="0201_09">
+                            <span>성교육</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 자연 카테고리 -->
+                <div class="category-group">
+                    <h3>자연</h3>
+                    <div class="category-items" data-group="0202">
+                        <div class="category-item" data-code="0202_01">
+                            <span>계절</span>
+                        </div>
+                        <div class="category-item" data-code="0202_02">
+                            <span>산</span>
+                        </div>
+                        <div class="category-item" data-code="0202_03">
+                            <span>바다</span>
+                        </div>
+                        <div class="category-item" data-code="0202_04">
+                            <span>하늘</span>
+                        </div>
+                        <div class="category-item" data-code="0202_05">
+                            <span>우주</span>
+                        </div>
+                        <div class="category-item" data-code="0202_06">
+                            <span>식물</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 일상생활 카테고리 -->
+                <div class="category-group">
+                    <h3>일상생활</h3>
+                    <div class="category-items" data-group="0203">
+                        <div class="category-item" data-code="0203_01">
+                            <span>가족</span>
+                        </div>
+                        <div class="category-item" data-code="0203_02">
+                            <span>친구</span>
+                        </div>
+                        <div class="category-item" data-code="0203_03">
+                            <span>똥-방귀</span>
+                        </div>
+                        <div class="category-item" data-code="0203_04">
+                            <span>잠자기</span>
+                        </div>
+                        <div class="category-item" data-code="0203_05">
+                            <span>탈것</span>
+                        </div>
+                        <div class="category-item" data-code="0203_06">
+                            <span>음식</span>
+                        </div>
+                        <div class="category-item" data-code="0203_07">
+                            <span>놀이</span>
+                        </div>
+                        <div class="category-item" data-code="0203_08">
+                            <span>그림</span>
+                        </div>
+                        <div class="category-item" data-code="0203_09">
+                            <span>음악</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 동화 카테고리 -->
+                <div class="category-group">
+                    <h3>동화</h3>
+                    <div class="category-items" data-group="0204">
+                        <div class="category-item" data-code="0204_01">
+                            <span>명작동화</span>
+                        </div>
+                        <div class="category-item" data-code="0204_02">
+                            <span>전래동화</span>
+                        </div>
+                        <div class="category-item" data-code="0204_03">
+                            <span>창작동화</span>
+                        </div>
+                        <div class="category-item" data-code="0204_04">
+                            <span>위인전</span>
+                        </div>
+                        <div class="category-item" data-code="0204_05">
+                            <span>공주-왕자</span>
+                        </div>
+                        <div class="category-item" data-code="0204_06">
+                            <span>모험</span>
+                        </div>
+                        <div class="category-item" data-code="0204_07">
+                            <span>유명작가</span>
+                        </div>
+                        <div class="category-item" data-code="0204_08">
+                            <span>브랜드전집</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="create-button">프로필 만들기</button>
+        </form>
+    </div>
+</div>
+
+<script src="/js/child-profile.js"></script>
+</body>
+</html>

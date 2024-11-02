@@ -1,5 +1,6 @@
 package com.eureka.mindbloom.event.batch;
 
+import com.eureka.mindbloom.event.listener.WinnerJobListener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -25,6 +26,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class EventParticipantBatchConfig {
 
+    private final WinnerJobListener winnerJobListener;
     private final StringRedisTemplate eventRedisTemplate;
     private final JdbcTemplate jdbcTemplate;
 
@@ -97,6 +99,7 @@ public class EventParticipantBatchConfig {
     public Job eventParticipantJob(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
         return new JobBuilder("eventParticipantJob", jobRepository)
                 .start(eventParticipantStep(jobRepository, transactionManager))
+                .listener(winnerJobListener)
                 .on("FAILED").to(backupToCsvStep(jobRepository, transactionManager))
                 .from(eventParticipantStep(jobRepository, transactionManager)).on("*").end()
                 .end()

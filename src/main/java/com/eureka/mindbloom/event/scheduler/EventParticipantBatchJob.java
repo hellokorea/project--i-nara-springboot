@@ -28,9 +28,11 @@ public class EventParticipantBatchJob implements Job {
         try {
             log.info("Starting event participant job");
             int eventId = context.getJobDetail().getJobDataMap().getInt("eventId");
+            int maxParticipant = context.getJobDetail().getJobDataMap().getInt("maxParticipants");
 
             JobParameters jobParameters = new JobParametersBuilder()
                     .addLong("eventId", (long) eventId)
+                    .addLong("maxParticipants", (long) maxParticipant)
                     .toJobParameters();
 
             jobLauncher.run(eventParticipantJob, jobParameters);
