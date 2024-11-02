@@ -63,6 +63,7 @@ public class GlobalSecurityConfig {
                         new AntPathRequestMatcher("/learn"),
                         new AntPathRequestMatcher("/main"),
                         new AntPathRequestMatcher("/actuator/**"),
+                        new AntPathRequestMatcher("/winners", HttpMethod.GET.name()),
                         PathRequest.toStaticResources().atCommonLocations()
                 ));
 
@@ -100,6 +101,6 @@ public class GlobalSecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers("/css/**", "/js/**", "/images/**", "/html/**", "/favicon.ico", "/index.html");
+                .requestMatchers("/css/**", "/js/**", "/images/**", "/html/**", "/favicon.ico", "/index.html", "/login.html", "/adminmain.html");
     }
 }

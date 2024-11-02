@@ -30,10 +30,12 @@ public class EventEndJobListener implements JobListener {
             Scheduler scheduler = context.getScheduler();
 
             int eventId = context.getJobDetail().getJobDataMap().getInt("eventId");
+            int maxParticipants = context.getJobDetail().getJobDataMap().getInt("maxParticipants");
 
             JobDetail participantBatchJob = JobBuilder.newJob(EventParticipantBatchJob.class)
                     .withIdentity("eventParticipantBatchJobDetail")
                     .usingJobData("eventId", eventId)
+                    .usingJobData("maxParticipants", maxParticipants)
                     .build();
 
             Trigger batchJobTrigger = TriggerBuilder.newTrigger()
