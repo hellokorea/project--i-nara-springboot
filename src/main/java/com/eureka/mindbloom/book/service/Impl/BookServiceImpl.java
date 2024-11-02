@@ -51,7 +51,7 @@ public class BookServiceImpl implements BookService {
             case RELEVANCE -> Sort.unsorted(); // 정확도 기준
         };
 
-        int pageSize = 10; // 페이지 당 보여주는 책의 수
+        int pageSize = 20; // 페이지 당 보여주는 책의 수
         Pageable pageable = PageRequest.of(page, pageSize, sort);
 
         Slice<Book> books;
