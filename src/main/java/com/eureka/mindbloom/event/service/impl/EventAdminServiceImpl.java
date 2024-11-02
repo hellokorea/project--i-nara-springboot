@@ -36,6 +36,11 @@ public class EventAdminServiceImpl implements EventAdminService {
         if (request.endTime().isBefore(request.startTime())) {
             throw new BadRequestException("시작 시간은 종료 시간보다 빨라야 합니다.");
         }
+
+        if (request.startTime().isBefore(LocalDateTime.now().plusMinutes(1))) {
+            throw new BadRequestException("시작 시간은 최소 1분 후여야 합니다.");
+        }
+
         Event event = eventRepository.save(request.toEventEntity());
 
         int maxParticipants = request.winnerCount() * MULTIPLY_PARTICIPANT;
