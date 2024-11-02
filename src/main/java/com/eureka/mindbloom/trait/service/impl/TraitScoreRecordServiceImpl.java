@@ -23,6 +23,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -130,13 +132,15 @@ public class TraitScoreRecordServiceImpl implements TraitScoreRecordService {
     // ---------------------------------- Batch Logic
     @Override
     public Map<String, Integer> calculateDailyTraitPoints(Child child) {
+            LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+            LocalDateTime endOfDay = startOfDay.plusDays(1);
 
-        return traitRecordHistoryRepository.getChildActionHistoryDeletedAtIsNull(child.getId()).stream()
-                .collect(Collectors.toMap(
-                        ActionFeedbackResponse::getTraitCode,
-                        ActionFeedbackResponse::getPoint,
-                        Integer::sum
-                ));
+            return traitRecordHistoryRepository.getChildActionHistoryDeletedAtIsNull(child.getId(), startOfDay, endOfDay).stream()
+                    .collect(Collectors.toMap(
+                            ActionFeedbackResponse::getTraitCode,
+                            ActionFeedbackResponse::getPoint,
+                            Integer::sum
+                    ));
     }
 
     @Override

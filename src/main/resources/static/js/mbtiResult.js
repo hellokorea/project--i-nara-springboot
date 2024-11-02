@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function fetchResult() {
-    const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ3amRlaGRkazEyM0BuYXZlci5jb20iLCJpYXQiOjE3MzA0NDU3MDgsImV4cCI6MTczMDUzMjEwOH0.oU7UOMk4A1y0NztNI9bdt76xJmG9I3muTe30LNkiqpo';
+    const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ3amRlaGRkazEyM0BuYXZlci5jb20iLCJpYXQiOjE3MzA1MjczOTAsImV4cCI6MTczMDYxMzc5MH0.IWmfOt3HgvV7rKdEOqW2OBBcLgw_sNzRkROxQW4uMdg';
     const childId = 3; // test
 
     fetch(`/traits/mbti/result/${childId}`, {

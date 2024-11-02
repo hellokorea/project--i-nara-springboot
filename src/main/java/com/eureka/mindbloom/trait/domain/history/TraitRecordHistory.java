@@ -26,11 +26,15 @@ public class TraitRecordHistory extends SoftDeleteEntity {
 
     private Integer point;
 
+    private String bookName;
+
     @Builder
-    public TraitRecordHistory(Child child, String traitCode, String actionCode, Integer point) {
+    public TraitRecordHistory(Long id, Child child, String traitCode, String actionCode, Integer point, String bookName) {
+        this.id = id;
         this.child = child;
         this.traitCode = traitCode;
         this.actionCode = actionCode;
         this.point = point;
+        this.bookName = bookName;
     }
 }
