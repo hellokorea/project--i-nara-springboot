@@ -4,6 +4,7 @@ import com.eureka.mindbloom.common.exception.BaseException;
 import com.eureka.mindbloom.member.domain.Child;
 import com.eureka.mindbloom.member.exception.ChildNotFoundException;
 import com.eureka.mindbloom.member.repository.ChildRepository;
+import com.eureka.mindbloom.recommend.service.RecommendService;
 import com.eureka.mindbloom.trait.domain.ChildTrait;
 import com.eureka.mindbloom.trait.domain.survey.TraitAnswer;
 import com.eureka.mindbloom.trait.domain.survey.TraitQuestion;
@@ -43,6 +44,7 @@ public class TraitSurveyServiceImpl implements TraitSurveyService {
     private final TraitScoreRecordService traitScoreRecordService;
     private final ChildTraitResponseService childTraitResponseService;
     private final ChildTraitService childTraitService;
+    private final RecommendService recommendService;
 
     @Override
     @Transactional(readOnly = true)
@@ -104,5 +106,7 @@ public class TraitSurveyServiceImpl implements TraitSurveyService {
 
         // 4. child trait 데이터 저장 마무리
         childTraitService.finishSaveChildTrait(childTrait, traitValue);
+        recommendService.createRecommendBooks(childId);
+
     }
 }

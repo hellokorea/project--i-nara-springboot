@@ -5,6 +5,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.eureka.mindbloom.recommend.repository.RecommendCacheService;
+import com.eureka.mindbloom.recommend.service.RecommendService;
 import com.eureka.mindbloom.recommend.service.RecommendServiceImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RedisRefreshScheduler {
 	private final RecommendCacheService recommendCacheService;
-	private final RecommendServiceImpl recommendServiceImpl;
+	private final RecommendService recommendService;
 
 	@Scheduled(cron = "0 0 1 * * ?")
 	public void refreshRedis() {
@@ -23,10 +24,10 @@ public class RedisRefreshScheduler {
 	}
 
 	private void fetchCache() {
-		recommendServiceImpl.getAllPreferencesBooks();
-		recommendServiceImpl.getAllTraitBooks();
-		recommendServiceImpl.getTopViewedBooks();
-		recommendServiceImpl.getAllSimilarTraitLikeBooks();
+		recommendService.getAllPreferencesBooks();
+		recommendService.getAllTraitBooks();
+		recommendService.getTopViewedBooks();
+		recommendService.getAllSimilarTraitLikeBooks();
 	}
 
 	private void deleteCache() {

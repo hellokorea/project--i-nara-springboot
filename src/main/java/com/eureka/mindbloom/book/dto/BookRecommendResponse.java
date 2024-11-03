@@ -19,5 +19,13 @@ public class BookRecommendResponse {
 		this.recommendLike = recommendLike;
 		this.recommendId = recommendId;
 	}
+	public BookRecommendResponse(String isbn, String title, String author, String coverImage, boolean recommendLike) {
+		this.isbn = isbn;
+		this.title = title;
+		this.author = author;
+		this.coverImage = coverImage;
+		this.recommendLike = recommendLike;
+		this.recommendId = null;
+	}
 
 }
