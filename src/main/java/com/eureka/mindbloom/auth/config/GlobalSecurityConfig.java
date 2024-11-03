@@ -79,7 +79,7 @@ public class GlobalSecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/health", "/error").permitAll()
-                        .requestMatchers("/signup", "/login", "profile", "/profile/create").permitAll()
+                        .requestMatchers("/signup", "/login", "profile", "/profile/create", "childdetail").permitAll()
                         .requestMatchers(ignoredRequests).permitAll()
 
                         // Admin 접근 제한

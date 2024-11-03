@@ -74,4 +74,7 @@ public class PageController {
     public String adminPage() {
         return "adminmain";
     }
+
+    @GetMapping("/childdetail")
+    public String childDetailPage() { return "detail-profile"; }
 }
