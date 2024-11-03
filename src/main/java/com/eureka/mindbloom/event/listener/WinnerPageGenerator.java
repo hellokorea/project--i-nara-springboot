@@ -31,11 +31,11 @@ public class WinnerPageGenerator {
             writer.write("<html lang=\"ko\">\n");
             writer.write("<head>\n");
             writer.write("    <meta charset=\"UTF-8\">\n");
-            writer.write("    <title>"+ eventId + "회 이벤트 당첨자 발표</title>\n");
+            writer.write("    <title>" + eventId + "회 이벤트 당첨자 발표</title>\n");
             writer.write("    <link rel=\"stylesheet\" href=\"/css/getWinner.css\">\n");
             writer.write("</head>\n");
             writer.write("<body>\n");
-            writer.write("<h1>"+ eventId + "회 이벤트 당첨자 발표</h1>\n");
+            writer.write("<h1>" + eventId + "회 이벤트 당첨자 발표</h1>\n");
             writer.write("<table>\n");
             writer.write("    <thead>\n");
             writer.write("    <tr>\n");

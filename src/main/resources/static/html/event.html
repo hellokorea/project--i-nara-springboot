@@ -43,7 +43,7 @@
     async function checkResult() {
         try {
             // 결과 확인 API 호출
-            const response = await fetch("/winners", {
+            const response = await fetch("/event/winners", {
                 method: "GET",
                 headers: {
                     "Content-Type": "text/html",
