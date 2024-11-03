@@ -25,13 +25,16 @@ public class EventServiceImpl implements EventService {
     private final AtomicBoolean eventActive = new AtomicBoolean(false);
 
     private static final String EVENT_KEY = "event";
+    private static final String PARTICIPANT_COUNT_KEY = "event:participantCount";
     private static final String SCRIPT =
             "local user_id = ARGV[1] " +
                     "local local_date_time = ARGV[2] " +
                     "local max_participants = tonumber(redis.call('get', 'event:maxParticipants')) " +
                     "local event_key = KEYS[1] " +
+                    "local participant_count_key = KEYS[2] " +
 
-                    "if redis.call('hlen', event_key) >= max_participants then " +
+                    "local participant_count = tonumber(redis.call('get', participant_count_key) or '0') " +
+                    "if participant_count >= max_participants then " +
                     "    return 'event_full' " +
                     "end " +
 
@@ -40,6 +43,7 @@ public class EventServiceImpl implements EventService {
                     "end " +
 
                     "redis.call('hset', event_key, user_id, local_date_time) " +
+                    "redis.call('incr', participant_count_key) " +
                     "return 'issued'";
 
 
@@ -57,7 +61,7 @@ public class EventServiceImpl implements EventService {
         RedisScript<String> redisScript = RedisScript.of(SCRIPT, String.class);
 
         String result = eventRedisTemplate.execute(redisScript,
-                List.of(EVENT_KEY),
+                List.of(EVENT_KEY, PARTICIPANT_COUNT_KEY),
                 memberId, localDateTime);
 
         return switch (Objects.requireNonNull(result)) {
