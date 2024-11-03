@@ -6,15 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchQuestions();
 });
 
-const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ3amRlaGRkazEyM0BuYXZlci5jb20iLCJpYXQiOjE3MzA1MjczOTAsImV4cCI6MTczMDYxMzc5MH0.IWmfOt3HgvV7rKdEOqW2OBBcLgw_sNzRkROxQW4uMdg';
-const childId = 3; // test
+const token = localStorage.getItem('Authorization');
+const childId = localStorage.getItem('childId');
 
 function fetchQuestions() {
 
     fetch(`/traits/mbti/${childId}`, {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`, // Authorization 헤더에 토큰 추가
+            'Authorization': token, // Authorization 헤더에 토큰 추가
             'Content-Type': 'application/json'
         }
     })
@@ -114,7 +114,7 @@ function submitResponses() {
     fetch(`/traits/mbti/${childId}`, {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': token,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(responses)

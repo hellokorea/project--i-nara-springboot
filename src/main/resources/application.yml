@@ -39,3 +39,7 @@ spring:
 jwt:
   token:
     secretKey: "aclkLc48O1xMi4eurekaCJJ426phEa1Wc4mindbloom"
+
+openai:
+  api:
+    key: ${OPEN_AI_KEY}
