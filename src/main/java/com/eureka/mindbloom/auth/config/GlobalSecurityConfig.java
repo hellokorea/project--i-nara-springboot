@@ -34,7 +34,6 @@ import java.util.List;
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
-@EnableWebSecurity(debug = true)
 public class GlobalSecurityConfig {
 
     private final JwtProvider jwtProvider;
