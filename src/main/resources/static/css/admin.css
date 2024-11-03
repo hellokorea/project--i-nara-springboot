@@ -72,8 +72,8 @@ body {
 
 .admin-actions {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between; /* 왼쪽과 오른쪽으로 요소들을 배치 */
     margin-bottom: 30px;
 }
 
@@ -84,25 +84,32 @@ body {
     max-width: 400px;
 }
 
-.search-bar input {
-    flex: 1;
-    padding: 12px;
-    border: 2px solid #E0E0E0;
-    border-radius: var(--border-radius);
+.action-buttons {
+    display: flex;
+    gap: 20px; /* 버튼 사이에 20px 간격 추가 */
 }
 
 .search-btn {
-    padding: 0 20px;
+    display: block; /* 블록 요소로 변경 */
+    padding: 12px 20px; /* 위아래와 양옆의 패딩 설정 */
     background-color: var(--secondary-color);
     border: none;
     border-radius: var(--border-radius);
     color: white;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px; /* 글자 크기 */
+    text-align: center; /* 텍스트를 가운데 정렬 */
+    line-height: 1; /* 줄 간격을 조정 */
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 }
 
-.add-book-btn {
+.search-btn:hover {
+    background-color: #FF9A50; /* 호버 시 색상 변경 */
+}
+
+.add-book-btn, .add-event-btn {
     padding: 12px 24px;
-    background-color: var(--primary-color);
     color: white;
     border: none;
     border-radius: var(--border-radius);
@@ -110,8 +117,20 @@ body {
     transition: background-color 0.3s ease;
 }
 
+.add-book-btn {
+    background-color: var(--primary-color);
+}
+
 .add-book-btn:hover {
     background-color: #FF6B40;
+}
+
+.add-event-btn {
+    background-color: var(--secondary-color);
+}
+
+.add-event-btn:hover {
+    background-color: #FF9955;
 }
 
 .books-grid {

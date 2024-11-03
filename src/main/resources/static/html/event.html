@@ -1,10 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>이벤트 응모 페이지</title>
+    <link rel="stylesheet" href="/css/eventPage.css"> <!-- 외부 CSS 파일 연결 -->
 </head>
 <body>
+<div class="container">
+    <h1>이벤트에 참여하세요!</h1>
+    <div class="button-group">
+        <button class="apply-btn" onclick="applyForEvent()">응모하기</button>
+        <button class="result-btn" onclick="checkResult()">결과 확인하기</button>
+    </div>
+</div>
 
+<script>
+    // 응모 버튼 클릭 이벤트
+    async function applyForEvent() {
+        try {
+            // 응모 API 호출
+            const response = await fetch("/event/issue-ticket", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": localStorage.getItem("Authorization")
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                alert(data.message);
+            } else {
+                // 응모 실패 시 /html/error 페이지로 리디렉션
+                window.location.href = "/html/error.html";
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("오류가 발생했습니다. 나중에 다시 시도해주세요.");
+        }
+    }
+
+    async function checkResult() {
+        try {
+            // 결과 확인 API 호출
+            const response = await fetch("/winners", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "text/html",
+                    "Authorization": localStorage.getItem("Authorization")
+                }
+            });
+
+            if (response.ok) {
+                const content = await response.text();
+                // 결과 페이지의 내용을 새로운 창에 표시
+                const resultWindow = window.open("", "_blank");
+                resultWindow.document.write(content);
+                resultWindow.document.close();
+            } else {
+                alert("결과를 불러오는 데 실패했습니다. 다시 시도해주세요.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("오류가 발생했습니다. 나중에 다시 시도해주세요.");
+        }
+    }
+</script>
 </body>
 </html>
