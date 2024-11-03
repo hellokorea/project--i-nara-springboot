@@ -9,7 +9,7 @@
 <body>
 <div class="admin-container">
     <header class="admin-header">
-        <h1>📚 도서 관리</h1>
+        <h1>📚 관리자 페이지</h1>
         <div class="admin-profile">
             <span class="admin-name">관리자님</span>
             <button class="logout-btn" onclick="logout()">로그아웃</button>
@@ -22,7 +22,10 @@
                 <input type="text" placeholder="도서명 또는 저자 검색" id="searchInput">
                 <button class="search-btn" onclick="searchBooks()">검색</button>
             </div>
-            <button class="add-book-btn" onclick="openAddModal()">도서 등록</button>
+            <div class="action-buttons">
+                <button class="add-book-btn" onclick="openAddModal()">도서 등록</button>
+                <button class="add-event-btn" onclick="openAddEventModal()">이벤트 등록</button>
+            </div>
         </div>
 
         <div class="books-grid" id="booksGrid">
@@ -52,6 +55,21 @@
         </div>
     </div>
 
+    <!-- 이벤트 등록 모달 -->
+    <div class="modal" id="addEventModal" style="display: none;">
+        <div class="modal-content">
+            <h2>이벤트 등록</h2>
+            <label>이벤트 시작 시간</label>
+            <input type="text" id="eventStartTime" placeholder="예: 2024-11-03T10:00:00"><br>
+            <label>이벤트 종료 시간</label>
+            <input type="text" id="eventEndTime" placeholder="예: 2024-11-03T18:00:00"><br>
+            <label>당첨자 수</label>
+            <input type="number" id="eventWinnerCount" placeholder="숫자 입력"><br>
+            <button onclick="addEvent()" class="modal-btn save-btn">저장</button>
+            <button onclick="closeAddEventModal()" class="modal-btn cancel-btn">취소</button>
+        </div>
+    </div>
+
     <!-- 도서 수정 모달 -->
     <div class="modal" id="editBookModal" style="display: none;">
         <div class="modal-content">
@@ -77,8 +95,6 @@
     document.addEventListener("DOMContentLoaded", function () {
         const token = localStorage.getItem("Authorization");
 
-        console.log("adminmain : " + token);
-
         if (!token) {
             window.location.href = "/login";
             return;
@@ -86,6 +102,9 @@
 
         axios.defaults.headers.common["Authorization"] = token;
         loadBookList(currentPage);
+
+        // 이벤트 등록 버튼에 클릭 이벤트 추가
+        document.querySelector(".add-event-btn").addEventListener("click", openAddEventModal);
     });
 
     async function loadBookList(page = 0, searchQuery = null) {
@@ -178,6 +197,43 @@
 
     function closeEditModal() {
         document.getElementById("editBookModal").style.display = "none";
+    }
+
+    // 이벤트 등록 모달 열기
+    function openAddEventModal() {
+        document.getElementById("addEventModal").style.display = "flex";
+    }
+
+    // 이벤트 등록 모달 닫기
+    function closeAddEventModal() {
+        document.getElementById("addEventModal").style.display = "none";
+    }
+
+    // 이벤트 등록 함수
+    async function addEvent() {
+        const startTime = document.getElementById("eventStartTime").value;
+        const endTime = document.getElementById("eventEndTime").value;
+        const winnerCount = document.getElementById("eventWinnerCount").value;
+
+        if (!startTime || !endTime || !winnerCount) {
+            alert("모든 값을 입력해야 합니다.");
+            return;
+        }
+
+        const eventRequest = {
+            startTime: startTime,
+            endTime: endTime,
+            winnerCount: parseInt(winnerCount, 10)
+        };
+
+        try {
+            const response = await axios.post("http://localhost:8080/admin/event", eventRequest);
+            alert("이벤트가 성공적으로 등록되었습니다.");
+            closeAddEventModal(); // 모달 닫기
+        } catch (error) {
+            console.error("이벤트 등록 중 오류 발생:", error);
+            alert("이벤트 등록에 실패했습니다.");
+        }
     }
 
     async function addBook() {
