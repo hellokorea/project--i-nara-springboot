@@ -151,9 +151,3 @@ body {
     max-width: 150px;
     margin-bottom: 5px;
 }
-
-.more-link {
-    font-size: 18px;
-    color: gray;
-    cursor: pointer;
-}

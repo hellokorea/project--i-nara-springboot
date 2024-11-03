@@ -2,6 +2,7 @@ package com.eureka.mindbloom.trait.service.impl;
 
 import com.eureka.mindbloom.book.domain.BookCategory;
 import com.eureka.mindbloom.book.repository.BookCategoryRepository;
+import com.eureka.mindbloom.book.repository.BookRepository;
 import com.eureka.mindbloom.common.exception.NotFoundException;
 import com.eureka.mindbloom.member.domain.Child;
 import com.eureka.mindbloom.member.repository.ChildRepository;
@@ -21,6 +22,7 @@ public class TraitLikePointServiceImpl implements TraitLikePointService {
     private final BookCategoryRepository bookCategoryRepository;
     private final ChildRepository childRepository;
     private final ChildRecordHistoryService childRecordHistoryService;
+    private final BookRepository bookRepository; // BookRepository 주입
 
     private static final String LIKE_CODE = "0300_02";
     private static final int POINT = 1;
@@ -31,7 +33,6 @@ public class TraitLikePointServiceImpl implements TraitLikePointService {
         Child child = childRepository.findChildById(childId)
                 .orElseThrow(() -> new NotFoundException("Child not found with ID: " + childId));
 
-        // Optional.orElseThrow() 제거하고 직접 null 체크
         BookCategory bookCategory = bookCategoryRepository.findByIsbn(isbn);
         if (bookCategory == null) {
             throw new NotFoundException("BookCategory not found with ISBN: " + isbn);
@@ -39,12 +40,18 @@ public class TraitLikePointServiceImpl implements TraitLikePointService {
 
         String traitCode = bookCategory.getCategoryTrait().getId().getTraitCode();
 
+        // BookRepository를 사용하여 책 제목 조회
+        String bookTitle = bookRepository.findBookByIsbn(isbn)
+                .orElseThrow(() -> new NotFoundException("Book not found with ISBN: " + isbn))
+                .getTitle();
+
+
         childRecordHistoryService.createChildTraitHistory(
                 child,
                 LIKE_CODE,
                 traitCode,
                 POINT,
-                "input bookName" // 임시로 해놨습니다.
+                bookTitle
         );
     }
 }

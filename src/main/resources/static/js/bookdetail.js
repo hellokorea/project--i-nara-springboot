@@ -18,8 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const data = await response.json();
         const bookDetail = data.data;
-        // document.querySelector('.book-image').src = bookDetail.coverImage;
-        document.querySelector('.book-image').src = "https://image.yes24.com/Goods/135817946/L";
+        document.querySelector('.book-image').src = "../images/coverImage.jpg";
         document.getElementById('book-title').innerText = bookDetail.title;
         document.getElementById('book-author').innerText = bookDetail.author;
         document.getElementById('book-plot').innerText = bookDetail.plot;
@@ -66,13 +65,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             bookDiv.classList.add('similar-book-item');
 
             const bookImage = document.createElement('img');
-            bookImage.src = book.coverImage;
-            bookImage.src = "https://image.yes24.com/Goods/135864405/L";
+            bookImage.src = "../images/coverImage.jpg";
             bookImage.alt = book.title;
             bookImage.classList.add('similar-book-image');
 
             bookImage.addEventListener('click', () => {
-                window.location.href = `/detail/${book.isbn}`;
+                location.href = `/html/bookdetail.html?bookIsbn=`+book.isbn;
             });
 
             const bookTitle = document.createElement('p');
@@ -89,10 +87,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 document.getElementById('read-button').addEventListener('click', async () => {
-    const isbn = window.location.pathname.split('/').pop();
-    const token = localStorage.getItem('jwt');
+    const currentUrl = window.location.href;
+    const url = new URL(currentUrl);
+    const isbn = url.searchParams.get('bookIsbn');
+    const token = localStorage.getItem('Authorization');
     const childId = localStorage.getItem('childId');
-
     try {
         const response = await fetch(`/members/books/read/${isbn}?childId=${childId}`, {
             method: 'GET',
@@ -114,8 +113,10 @@ document.getElementById('read-button').addEventListener('click', async () => {
 });
 
 document.getElementById('like-button').addEventListener('click', async () => {
-    const isbn = window.location.pathname.split('/').pop();
-    const token = localStorage.getItem('jwt');
+    const currentUrl = window.location.href;
+    const url = new URL(currentUrl);
+    const isbn = url.searchParams.get('bookIsbn');
+    const token = localStorage.getItem('Authorization');
     const childId = localStorage.getItem('childId');
 
     const request = { childId: childId, type: '0300_02' };

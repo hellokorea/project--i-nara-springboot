@@ -16,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -64,6 +65,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         String token = jwtProvider.createToken(username, ACCESS_TOKEN_EXPIRATION_TIME);
 
         response.addHeader(HttpHeaders.AUTHORIZATION, token);
+        if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Admin"))) { response.addHeader("Role", "Admin");}
 
         ApiResponse<?> successResponse = ApiResponse.success("로그인 성공");
         ServletResponseUtil.servletResponse(response, successResponse, HttpStatus.OK);
