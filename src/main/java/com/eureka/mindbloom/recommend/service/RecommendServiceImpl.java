@@ -4,14 +4,24 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 
+import javax.sql.DataSource;
+
+import org.springframework.batch.item.ItemProcessor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eureka.mindbloom.book.domain.BookCategory;
 import com.eureka.mindbloom.book.dto.BookRecommendResponse;
 import com.eureka.mindbloom.book.repository.BookCategoryRepository;
+import com.eureka.mindbloom.book.repository.BookRepository;
+import com.eureka.mindbloom.book.repository.BookViewRepository;
+import com.eureka.mindbloom.book.repository.jdbc.BookRecommendBulkRepository;
 import com.eureka.mindbloom.category.repository.ChildPreferredRepository;
+import com.eureka.mindbloom.common.dto.Pair;
 import com.eureka.mindbloom.commoncode.domain.CommonCode;
 import com.eureka.mindbloom.commoncode.domain.CommonCodeGroup;
 import com.eureka.mindbloom.commoncode.service.CommonCodeConvertService;
@@ -20,6 +30,7 @@ import com.eureka.mindbloom.member.exception.ChildNotFoundException;
 import com.eureka.mindbloom.member.repository.ChildRepository;
 import com.eureka.mindbloom.recommend.domain.BookRecommend;
 import com.eureka.mindbloom.recommend.domain.BookRecommendLike;
+import com.eureka.mindbloom.recommend.dto.ChildBooks;
 import com.eureka.mindbloom.recommend.eums.RecommendLikeType;
 import com.eureka.mindbloom.recommend.repository.BookRecommendLikeRepository;
 import com.eureka.mindbloom.recommend.repository.BookRecommendRepository;
@@ -43,10 +54,24 @@ public class RecommendServiceImpl implements RecommendService {
 	private final ChildRecordHistoryService childRecordHistoryService;
 	private final BookCategoryRepository bookCategoryRepository;
 	private final ChildTraitService childTraitService;
+	private final BookRepository bookRepository;
+
+	private final BookRecommendBulkRepository bookRecommendBulkRepository;
+	private final BookViewRepository bookViewRepository;
+
+
+	private final int needBookCount = 10;
+	private final int preferredWeight = 3;
+	private final int traitWeight = 2;
+	private final int similarTraitLikeWeight = 1;
+
 
 	@Override
 	public List<BookRecommendResponse> getRecommendBooks(Long childId) {
 		List<BookRecommendResponse> books = bookRecommendRepository.findByChildIdAndCurrentDate(childId);
+		if(books.isEmpty()){
+			books = bookRepository.findByIsbns(getTopViewedBooks());
+		}
 		return books;
 	}
 
@@ -120,6 +145,101 @@ public class RecommendServiceImpl implements RecommendService {
 		return recommendCacheService.getTraitBooksLike(traitValue);
 	}
 
+	@Override
+	public void createRecommendBooks(Long childId) {
+		ChildBooks childBooks = findPreferredRecentBooksProcessor(childId);
+		childBooks = findPreferredBooksProcessor(childBooks);
+		childBooks = findTraitBooksProcessor(childBooks);
+		childBooks = findSimilarTraitLikeBooksProcessor(childBooks);
+		childBooks = excludeReadBooksProcessor(childBooks);
+		childBooks = excludeNotReadRecommendBooksProcessor(childBooks);
+		childBooks = extractRecommendBooksProcessor(childBooks);
+		bookRecommendBulkRepository.saveAll(childBooks);
+	}
+
+
+	private ChildBooks findPreferredRecentBooksProcessor(Long childId) {
+		List<String> preferencesGroupCode = childPreferredRepository.findCategoryCodeByChildId(childId);
+		List<String> preferences = new ArrayList<>();
+		preferencesGroupCode.forEach(preference -> {
+			preferences.addAll(commonCodeConvertService.codeGroupToCommonCodes(preference).stream().map(CommonCode::getCode).toList());
+		});
+
+		List<String> booksIsbn;
+		if (preferences.size() > 0) {
+			booksIsbn = bookRepository.findIsbnByCategoryCodeSortRecent(preferences);
+			return new ChildBooks(childId, booksIsbn);
+		}
+		booksIsbn = new ArrayList<>();
+		return new ChildBooks(childId, booksIsbn);
+	}
+
+	public ChildBooks findPreferredBooksProcessor(ChildBooks childBooks) {
+		List<String> preferredBooksIsbn = getPreferencesBooksByChildId(childBooks.childId);
+		if (!preferredBooksIsbn.isEmpty()) {
+			Map<String, Integer> traitBooks = childBooks.getTraitBooksIsbn();
+			preferredBooksIsbn.stream().forEach(isbn -> traitBooks.put(isbn, preferredWeight));
+		}
+		return childBooks;
+	}
+
+	public ChildBooks findTraitBooksProcessor(ChildBooks childBooks) {
+		List<String> traitBooks = getTraitBooksByChildId(childBooks.childId);
+		if (!traitBooks.isEmpty()) {
+			Map<String, Integer> traitBooksIsbn = childBooks.getTraitBooksIsbn();
+			traitBooks.stream().forEach(isbn -> traitBooksIsbn.put(isbn, traitBooksIsbn.getOrDefault(isbn, 0) + traitWeight));
+		}
+		return childBooks;
+	}
+
+	public ChildBooks findSimilarTraitLikeBooksProcessor(ChildBooks childBooks) {
+		List<String> similarTraitBooks = getSimilarTraitLikeBooks(childBooks.childId);
+		if (!similarTraitBooks.isEmpty()) {
+			Map<String, Integer> traitBooksIsbn = childBooks.getTraitBooksIsbn();
+			similarTraitBooks.stream().forEach(isbn -> traitBooksIsbn.put(isbn, traitBooksIsbn.getOrDefault(isbn, 0) + similarTraitLikeWeight));
+		}
+		return childBooks;
+	}
+
+	public ChildBooks excludeReadBooksProcessor(ChildBooks childBooks) {
+		if (childBooks.getTraitBooksIsbn().size() >= needBookCount) {
+			List<String> readBooks = bookViewRepository.findReadIsbnByChildId(childBooks.getChildId());
+			Map<String, Integer> traitBooksIsbn = childBooks.getTraitBooksIsbn();
+			traitBooksIsbn.keySet().removeAll(readBooks);
+		}
+		return childBooks;
+	}
+
+	public ChildBooks excludeNotReadRecommendBooksProcessor(ChildBooks childBooks) {
+		if (childBooks.getTraitBooksIsbn().size() >= needBookCount) {
+			List<String> notReadRecommendBooks = bookRecommendRepository.findByNotReadRecommendBooks(childBooks.getChildId());
+			Map<String, Integer> traitBooksIsbn = childBooks.getTraitBooksIsbn();
+			if (traitBooksIsbn.size() - notReadRecommendBooks.size() >= needBookCount) {
+				traitBooksIsbn.keySet().removeAll(notReadRecommendBooks);
+			}
+
+		}
+		return childBooks;
+	}
+
+
+	public ChildBooks extractRecommendBooksProcessor(ChildBooks childBooks) {
+		if (childBooks.getTraitBooksIsbn().size() >= needBookCount) {
+			List<String> recommendBooks = childBooks.getRecommendBooksIsbn();
+			PriorityQueue<Pair<String, Integer>> priorityQueue = new PriorityQueue<>((first, second) -> second.getB() - first.getB());
+			priorityQueue.addAll(childBooks.getTraitBooksIsbn().entrySet().stream().map(entry -> new Pair<>(entry.getKey(), entry.getValue())).toList());
+			while (recommendBooks.size() < needBookCount) {
+				recommendBooks.add(priorityQueue.poll().getA());
+			}
+			return childBooks;
+		}
+		childBooks.setRecommendBooksIsbn(getTopViewedBooks());
+		return childBooks;
+	}
+
+
+
+	@Override
 	public List<String> getAllPreferencesBooks() {
 
 		List<String> books = new LinkedList<>();

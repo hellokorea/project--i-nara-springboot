@@ -1,6 +1,7 @@
 package com.eureka.mindbloom.book.repository;
 
 import com.eureka.mindbloom.book.domain.Book;
+import com.eureka.mindbloom.book.dto.BookRecommendResponse;
 import com.eureka.mindbloom.book.dto.BooksResponse;
 import com.eureka.mindbloom.book.dto.SimilarBookResponse;
 import org.springframework.data.domain.Pageable;
@@ -112,4 +113,10 @@ public interface BookRepository extends JpaRepository<Book, String> {
     List<SimilarBookResponse> findBooksByCategoryCode(@Param("categoryCode") String categoryCode,
                                                       @Param("isbn") String isbn,
                                                       Pageable pageable);
+
+    @Query("SELECT new com.eureka.mindbloom.book.dto.BookRecommendResponse(b.isbn, b.title, b.author, b.coverImage, "
+        + "false ) "
+        + "FROM Book b "
+        + "where b.isbn IN :Isbns")
+    List<BookRecommendResponse> findByIsbns(List<String> Isbns);
 }
