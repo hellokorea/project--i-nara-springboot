@@ -1,0 +1,65 @@
+:root {
+    --primary-color: #FF7B54;
+    --secondary-color: #FFB26B;
+    --background-color: #FFF5E4;
+    --text-color: #4A4A4A;
+    --border-radius: 12px;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+    background-color: white;
+    padding: 40px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+h1 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.button-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 16px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.apply-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.apply-btn:hover {
+    background-color: #FF6B40;
+}
+
+.result-btn {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.result-btn:hover {
+    background-color: #FFA040;
+}
