@@ -16,7 +16,7 @@ public interface BookRepository extends JpaRepository<Book, String> {
     Optional<Book> findBookByIsbn(String isbn);
 
     // 검색어만 있는 경우
-    @Query(value = "SELECT b.* FROM Book b " +
+    @Query(value = "SELECT b.* FROM book b " +
             "WHERE MATCH(b.title, b.author) AGAINST(:search) > 0",
             nativeQuery = true)
     Slice<Book> findByTitleContainingOrAuthorContaining(
@@ -80,12 +80,12 @@ public interface BookRepository extends JpaRepository<Book, String> {
     );
 
     // 모든 책 조회 with 좋아요수
-    @Query(value = "SELECT b.* FROM Book b " +
+    @Query(value = "SELECT b.* FROM book b " +
             "LEFT JOIN book_like_stats bls ON b.isbn = bls.isbn",
             nativeQuery = true)
     Slice<Book> findAllBooksSortedByLikes(Pageable pageable);
 
-    @Query(value = "SELECT b.* FROM Book b ",
+    @Query(value = "SELECT b.* FROM book b ",
             nativeQuery = true)
     Slice<Book> findAllBooks(Pageable pageable);
 
