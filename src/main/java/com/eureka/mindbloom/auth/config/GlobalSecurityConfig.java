@@ -19,6 +19,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,6 +34,7 @@ import java.util.List;
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
+@EnableWebSecurity(debug = true)
 public class GlobalSecurityConfig {
 
     private final JwtProvider jwtProvider;
@@ -68,7 +70,7 @@ public class GlobalSecurityConfig {
                         new AntPathRequestMatcher("/search"),
                         new AntPathRequestMatcher("/main"),
                         new AntPathRequestMatcher("/actuator/**"),
-                        new AntPathRequestMatcher("/winners", HttpMethod.GET.name()),
+                        new AntPathRequestMatcher("/admin"),
                         PathRequest.toStaticResources().atCommonLocations()
                 ));
 
@@ -77,14 +79,18 @@ public class GlobalSecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/health", "/error").permitAll()
-                        .requestMatchers("/signup", "/login", "profile", "/profile/create").permitAll()  // signup & login 페이지 접근 권한 허용
+                        .requestMatchers("/signup", "/login", "profile", "/profile/create").permitAll()
                         .requestMatchers(ignoredRequests).permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/admin/books/**").hasRole("Admin")  // Admin 접근 설정 추가
-                        .requestMatchers(HttpMethod.PUT, "/admin/books/**").hasRole("Admin")   // Admin 접근 설정 추가
-                        .requestMatchers(HttpMethod.DELETE, "/admin/books/**").hasRole("Admin") // Admin 접근 설정 추가
-                        .requestMatchers("/adminmain.html").authenticated() // /adminmain.html 인증된 사용자 허용
+                        // Admin 접근 제한
+                        .requestMatchers(HttpMethod.POST, "/admin/books/**").hasRole("Admin")
+                        .requestMatchers(HttpMethod.PUT, "/admin/books/**").hasRole("Admin")
+                        .requestMatchers(HttpMethod.DELETE, "/admin/books/**").hasRole("Admin")
                         .requestMatchers("/admin/**").hasRole("Admin")
+
+                        // 모든 인증된 사용자가 접근할 수 있도록 설정
+                        .requestMatchers("/members/children").authenticated()
+
                         .anyRequest().authenticated()
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -103,9 +109,10 @@ public class GlobalSecurityConfig {
         return http.build();
     }
 
+
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers("/css/**", "/js/**", "/images/**", "/html/**", "/favicon.ico", "/index.html", "/login.html", "/adminmain.html");
+                .requestMatchers("/css/**", "/templates/**","/js/**", "/images/**", "/html/**", "/favicon.ico", "/index.html", "/login.html", "/adminmain.html");
     }
 }

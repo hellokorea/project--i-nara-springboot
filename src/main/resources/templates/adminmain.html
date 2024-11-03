@@ -75,9 +75,12 @@
     let currentPage = 0;
 
     document.addEventListener("DOMContentLoaded", function () {
-        const token = localStorage.getItem("jwtToken");
+        const token = localStorage.getItem("Authorization");
+
+        console.log("adminmain : " + token);
+
         if (!token) {
-            window.location.href = "/login.html";
+            window.location.href = "/login";
             return;
         }
 
@@ -119,7 +122,7 @@
         } catch (error) {
             if (error.response && error.response.status === 403) {
                 alert("접근 권한이 없습니다. 다시 로그인해주세요.");
-                window.location.href = "/login.html";
+                window.location.href = "/login";
             } else {
                 console.error("도서 목록을 불러오는 중 오류 발생:", error);
             }
@@ -151,8 +154,8 @@
     }
 
     function logout() {
-        localStorage.removeItem("jwtToken");
-        window.location.href = "/login.html";
+        localStorage.removeItem("Authorization");
+        window.location.href = "/login";
     }
 
     function searchBooks() {

@@ -14,9 +14,9 @@ function togglePassword() {
     }
 }
 
-// login.js
-document.getElementById('loginForm').addEventListener('submit', async function(e) {
-    e.preventDefault(); // 폼 기본 제출 방지
+// 로그인 폼 제출 이벤트
+document.getElementById('loginForm').addEventListener('submit', async function (e) {
+    e.preventDefault(); // 기본 폼 제출 방지
 
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -37,11 +37,13 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 
         if (response.ok) {
             const token = response.headers.get('Authorization');
+            const role = response.headers.get('Role');
+            console.log("getElementById: " + token);
             if (token) {
-                localStorage.setItem('Authorization', token);
-                checkChildProfile(); // 자녀 프로필 존재 여부 확인 함수 호출
+                localStorage.setItem('Authorization', `${token}`);
+                redirectToAppropriatePage(role, token); // 역할 확인 후 적절한 페이지로 리다이렉트
             } else {
-                throw new Error('토큰이 없습니다');
+                console.log('토큰이 없습니다');
             }
         } else {
             const errorData = await response.json();
@@ -53,6 +55,51 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     }
 });
 
+// 역할에 따라 적절한 페이지로 리다이렉트
+function redirectToAppropriatePage(role, token) {
+    // Admin 역할인 경우 바로 adminmain.html로 이동, 일반 사용자는 자녀 프로필 확인
+    console.log("redirectToAppropriatePage : " + token);
+    if (role === 'Admin') {
+        loadAdminMain(token)
+    } else {
+        checkChildProfile(); // 일반 사용자는 자녀 프로필 확인
+    }
+}
+
+
+async function loadAdminMain(token) {
+    console.log(token);
+    if (!token) {
+        alert("로그인이 필요합니다.");
+        return;
+    }
+
+    try {
+        const response = await fetch("/admin", {
+            method: "GET",
+            headers: {
+                "Authorization": `${token}`,
+                "Role" : "Admin",
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (response.ok) {
+            // 전체 페이지 리로딩
+            window.location.href = "/admin";
+            console.log("afterlogin : " + token);
+        } else {
+            alert("페이지를 불러오는 데 실패했습니다.");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("오류가 발생했습니다. 다시 시도해주세요.");
+    }
+}
+
+
+
+// 자녀 프로필 확인
 async function checkChildProfile() {
     try {
         const token = localStorage.getItem('Authorization');
@@ -75,12 +122,14 @@ async function checkChildProfile() {
                 localStorage.setItem('childId', childId);
                 window.location.href = '/main'; // 자녀 프로필이 있으면 main 페이지로 이동
             }
+        } else if (response.status === 403) {
+            alert("접근 권한이 없습니다. 다시 로그인 해주세요."); // 403 오류 처리
         } else {
             const error = await response.json();
             alert(error.message || '자녀 정보를 가져오는데 실패했습니다.');
         }
     } catch (error) {
-        console.error('Error loading profile:', error);
-        // 에러 처리 로직 추가 (예: 사용자에게 알림 표시)
+        console.error('프로필 로딩 중 오류:', error);
+        alert('프로필 로딩 중 오류가 발생했습니다.');
     }
 }
